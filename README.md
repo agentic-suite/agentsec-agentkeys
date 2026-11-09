@@ -12,11 +12,43 @@ for AI agents. Apache-2.0.
 
 ## Status
 
-**planned — PRD + WBS of record complete.** The full requirement set
-([PRD 00–23 + Appendix A](docs/prd/README.md)) and the build plan
+**in progress — the v0.1.0 foundation (M0) is built; the broker surface is planned.** The full
+requirement set ([PRD 00–23 + Appendix A](docs/prd/README.md)) and the build plan
 ([v0.1.0 WBS — 16 milestones, M0–M15](docs/wbs/v0.1.0/wbs-v0.1.0-index.md)) are written and published early
-on purpose, so we can be held to them. No release has shipped yet; every claim in this README is a *design*
-claim until the release gate proves it ([evidence labels](docs/prd/20-standards-and-claims.md)).
+on purpose, so we can be held to them. M0 ships the package, the frozen CLI surface, the reserved exit-code
+contract, the references-only config model, and `doctor`; every broker command is an honest stub. No release
+has shipped yet; every claim in this README is a *design* claim until the release gate proves it
+([evidence labels](docs/prd/20-standards-and-claims.md)).
+
+## Install & run (v0.1.0 foundation)
+
+```sh
+pip install agentsec-agentkeys   # stdlib-only, no runtime dependencies
+agentkeys --version              # agentkeys 0.1.0
+agentkeys --help                 # the frozen v0.1.0 command surface
+agentkeys doctor                 # read-only health check: 0 healthy · 2 denied · 3 tamper
+```
+
+Configuration lives under `AGENTKEYS_HOME` (default `~/.agentkeys`) in `config.toml`. It carries
+**references only** — a literal secret in config is an error, never stored and never printed. See the
+[foundation design](docs/design/v0.1.0/foundation.md) and the [CLI reference](docs/reference/cli.md).
+
+### Reserved exit codes (stable within v0.x)
+
+| Code | Meaning |
+|---|---|
+| `0` | success (and for `scan-usable`: **0 usable credentials** — the invariant holds) |
+| `1` | usage or internal error |
+| `2` | **denied** — fail-closed denial with a reason |
+| `3` | **tamper detected** — integrity check failed |
+| `4` | **revoke verified** — the replay was refused |
+
+Every broker command (`scan`, `migrate`, `ref`, `run`, `revoke`, `replay`, `context-dump`, `scan-usable`,
+`export`, `verify-log`, `conformance`, `serve`) is an **honest stub** in the foundation: it exits non-zero
+and names the milestone that delivers it. Nothing brokers a credential yet.
+
+**Platforms:** macOS and Linux. **Windows is not supported** — the CLI says so rather than failing
+cryptically.
 
 ## The problem
 
