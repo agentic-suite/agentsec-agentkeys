@@ -14,6 +14,7 @@ from collections.abc import Callable, Sequence
 from typing import Any, NoReturn
 
 from agentkeys import __version__
+from agentkeys.commands.ref import run_ref
 from agentkeys.doctor import run_doctor
 from agentkeys.exit_codes import ExitCode, json_envelope
 
@@ -84,6 +85,10 @@ def _stub(command: str) -> Callable[[argparse.Namespace], int]:
     return handler
 
 
+def _ref_handler(args: argparse.Namespace) -> int:
+    return run_ref(args)
+
+
 def _doctor_handler(args: argparse.Namespace) -> int:
     return run_doctor(config_path=getattr(args, "config", None), as_json=args.json)
 
@@ -126,6 +131,7 @@ def _build_parser() -> _Parser:
     _add_json_flag(p)
 
     p = sub.add_parser("ref", help="inspect references (never values)")
+    p.add_argument("--config", help="config path (default: $AGENTKEYS_HOME/config.toml)")
     ref_sub = p.add_subparsers(dest="ref_command", metavar="<list|show>")
     rp = ref_sub.add_parser("list", help="list references")
     _add_json_flag(rp)
@@ -181,9 +187,10 @@ def _build_parser() -> _Parser:
     p.set_defaults(handler=_version_handler)
 
     sub.choices["doctor"].set_defaults(handler=_doctor_handler)
+    sub.choices["ref"].set_defaults(handler=_ref_handler)
 
     for name in COMMANDS:
-        if name in {"version", "doctor"}:
+        if name in {"version", "doctor", "ref"}:
             continue
         sub.choices[name].set_defaults(handler=_stub(name))
 

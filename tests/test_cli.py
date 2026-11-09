@@ -40,7 +40,8 @@ def test_top_level_help_lists_every_command(capsys: pytest.CaptureFixture[str]) 
 
 
 @pytest.mark.parametrize(
-    "command", [c for c in EXPECTED_COMMANDS if c not in {"version", "doctor"}]
+    "command",
+    [c for c in EXPECTED_COMMANDS if c not in {"version", "doctor", "ref"}],
 )
 def test_broker_commands_refuse_honestly(command: str, capsys: pytest.CaptureFixture[str]) -> None:
     code = main([command])
