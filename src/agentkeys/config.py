@@ -22,6 +22,7 @@ __all__ = [
     "ConfigError",
     "TtlBound",
     "agentkeys_home",
+    "looks_like_secret",
     "discover_config_path",
     "load_config",
 ]
@@ -107,13 +108,14 @@ def discover_config_path(
     return _agentkeys_home(environ) / "config.toml"
 
 
-def _looks_like_secret(value: str) -> bool:
+def looks_like_secret(value: str) -> bool:
+    """Whether a string matches a known credential shape (single source of truth for M0+M2)."""
     return any(pattern.search(value) for pattern in _SECRET_PATTERNS)
 
 
 def _scan_for_secrets(node: Any, prefix: str) -> None:
     if isinstance(node, str):
-        if _looks_like_secret(node):
+        if looks_like_secret(node):
             raise ConfigError(
                 f"literal secret detected in config at key: {prefix} (references only)"
             )
