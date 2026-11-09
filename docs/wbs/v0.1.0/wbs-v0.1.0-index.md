@@ -112,6 +112,14 @@ A milestone is **closed** only when all of these hold:
 - **2026-11-08 — plan of record published.** No code yet. PRD set 00–23 + Appendix A complete
   ([PRD index](../../prd/README.md)); this WBS writes the build from it. Nothing checked off; the first
   milestone (M0) opens with `0.D0` (foundation design).
+- **2026-11-09 — M0 Foundation & identity closed** (branch `feat-v0.1.0`). Items `0.D0` and `0.1`–`0.7`
+  implemented test-first (RED → GREEN, one ticket at a time). Milestone gate run **once** at the end:
+  `ruff` clean · `mypy --strict` clean · full suite green · coverage **98.97% ≥ 95%**. Commits:
+  `4a6227b` (0.D0 design) · `06ed423` (0.1 packaging) · `9cabc83` (0.2 CLI) · `b5dd278` (0.3 exit codes) ·
+  `549b731` (0.4 config) · `afc1133` (0.5 CI) · `518c670` (0.6 doctor) · `3e70d2d` (0.7 identity) ·
+  `757f256` (gate coverage). `0.CR` logged 6 findings, all resolved ([codereview-log.md](codereview-log.md)).
+  Docs: [foundation design](../../design/v0.1.0/foundation.md) · [CLI reference status](../../reference/cli.md) ·
+  [PRD 12 §0](../../prd/12-traceability.md) wired. No credential is brokered yet. **Next: M1 opens at `1.D0`.**
 
 ## PRD coverage matrix (every doc 00–23 + Appendix A)
 

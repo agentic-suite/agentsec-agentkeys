@@ -8,6 +8,23 @@
 **BLUF:** One binary, `agentkeys`, fourteen commands at v0.1.0 (+1 at v0.1.x), four exit-code classes
 that scripts and CI can rely on forever — and a hard rule: **no command ever prints a secret value.**
 
+## Implementation status (v0.1.0 foundation, M0 — 2026-11-09)
+
+The command surface and exit codes below are **implemented in M0**. `doctor` and `version` are functional;
+every broker command is an honest stub that exits `1` and names the milestone that delivers it. No command
+brokers, stores, or revokes a credential yet.
+
+| Command | M0 | Delivered in |
+|---|---|---|
+| `doctor`, `version` | implemented | M0 |
+| `init` | stub | M1 |
+| `ref`, `context-dump`, `scan-usable` | stub | M2 |
+| `run`, `serve` | stub | M4 |
+| `revoke`, `replay` | stub | M6 |
+| `export`, `verify-log` | stub | M7 |
+| `scan`, `migrate` | stub | M8 |
+| `conformance` | stub | M11 |
+
 ## Commands
 
 | Command | Purpose | Key flags | Requirement |

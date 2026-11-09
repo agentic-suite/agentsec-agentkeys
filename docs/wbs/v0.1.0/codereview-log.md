@@ -25,7 +25,28 @@ close until it is resolved or the design is amended to match reality.
 
 ## Findings
 
-_None yet — no milestone has opened. The first entry is written at M0's `.CR` (0.CR)._
+### 0.CR — Foundation & identity (2026-11-09)
+
+- **CR-001** · minor · `src/agentkeys/cli.py` · `ArgumentParser.error` overrode a `Never`-returning
+  method with `-> None`, so `mypy --strict` failed · fixed: `-> NoReturn` · `757f256` · RESOLVED
+- **CR-002** · major · `src/agentkeys/config.py` · nested-key validation errors named only the leaf
+  (`path must be a string`) instead of the dotted key, weakening the "actionable error names the failing
+  field" NFR · fixed: `_require_*` take a `label` and `store.path` / `clock.skew_tolerance` report dotted ·
+  `757f256` · RESOLVED
+- **CR-003** · major · `src/agentkeys/config.py` · `ttl = 5` reached `_parse_ttl` and raised
+  `AttributeError` (a crash, not a fail-closed denial) · fixed: non-table `ttl` is a `ConfigError` ·
+  `757f256` · RESOLVED
+- **CR-004** · blocker · `src/agentkeys/config.py` · a literal secret could reach the parse path because
+  the pattern scan ran before key validation but a secret in a *list* element (`bindings[].reference`) was
+  untested; a gap here would let a secret persist (I1/I7) · fixed: recursive scan covers lists; test
+  asserts the secret is rejected and never echoed · `757f256` · RESOLVED
+- **CR-005** · minor · `.github/workflows/ci.yml` · the first cut risked being a placeholder that never
+  gated coverage; a docs-as-test now asserts every gate step is present · `afc1133`, `757f256` · RESOLVED
+- **CR-006** · minor · `Makefile` · targets hard-coded `.venv/bin`, so the same targets could not run in
+  CI · fixed: `PYTHON` resolves the venv when present, else PATH · `757f256` · RESOLVED
+
+No open findings. The milestone's public-surface invariants (fail-closed config, references-only,
+reserved exit codes, doctor exit precedence) each have a gating test.
 
 <!--
 Template:

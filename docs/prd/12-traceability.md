@@ -27,6 +27,22 @@ requirement may be unmapped**, and no cell may claim a higher confidence than it
 
 ---
 
+## 0. v0.1.0 — foundation (M0, built 2026-11-09)
+
+M0 carries no R-scenario of its own; it lands the first slice of **E4** (fail-closed config) and **E15**
+(the CI quality gate) and freezes the contracts every later row depends on.
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `0.D0` design | Foundation design of record (CLI surface, exit codes, config, store sketch) | `docs/design/v0.1.0/foundation.md` |
+| `0.1` packaging | `agentsec-agentkeys` dist, `agentkeys` package + console script (`E15`) | `tests/test_packaging.py` |
+| `0.2` CLI surface | the frozen v0.1.0 command surface + honest stubs | `tests/test_cli.py` |
+| `0.3` exit codes | reserved exit-code contract `0/1/2/3/4` | `tests/test_exit_codes.py` |
+| `0.4` config | references-only TOML model, fail-closed (`E4`) + branch coverage | `tests/test_config.py`, `tests/test_config_gate.py` |
+| `0.5` CI | `ruff` + `mypy --strict` + tests + coverage ≥95% + DCO (`E15`) | `tests/test_ci_workflow.py` |
+| `0.6` `doctor` | read-only health checks, exit-coded | `tests/test_doctor.py` |
+| `0.7` identity | README/LICENSE/CODEOWNERS/SECURITY/AGENTS/CONTRIBUTING | `tests/test_identity_docs.py` |
+
 ## 1. v0.1.0 — P0 product requirements (R1–R9 + R17)
 
 | Req | Story | CUJ | Scenario | Test file |
