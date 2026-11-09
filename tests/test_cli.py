@@ -39,7 +39,7 @@ def test_top_level_help_lists_every_command(capsys: pytest.CaptureFixture[str]) 
         assert command in out
 
 
-@pytest.mark.parametrize("command", [c for c in EXPECTED_COMMANDS if c != "version"])
+@pytest.mark.parametrize("command", [c for c in EXPECTED_COMMANDS if c not in {"version", "doctor"}])
 def test_broker_commands_refuse_honestly(
     command: str, capsys: pytest.CaptureFixture[str]
 ) -> None:

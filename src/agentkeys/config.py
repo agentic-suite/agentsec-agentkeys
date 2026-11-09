@@ -20,6 +20,7 @@ __all__ = [
     "Config",
     "ConfigError",
     "TtlBound",
+    "agentkeys_home",
     "discover_config_path",
     "load_config",
 ]
@@ -86,6 +87,11 @@ class Config:
 def _agentkeys_home(env: Mapping[str, str]) -> Path:
     raw = env.get("AGENTKEYS_HOME") or str(Path("~/.agentkeys"))
     return Path(os.path.expanduser(raw))
+
+
+def agentkeys_home(env: Mapping[str, str] | None = None) -> Path:
+    """The resolved `$AGENTKEYS_HOME` (default `~/.agentkeys`)."""
+    return _agentkeys_home(os.environ if env is None else env)
 
 
 def discover_config_path(

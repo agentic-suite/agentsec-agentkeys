@@ -14,6 +14,7 @@ from collections.abc import Callable, Sequence
 from typing import Any
 
 from agentkeys import __version__
+from agentkeys.doctor import run_doctor
 from agentkeys.exit_codes import ExitCode, json_envelope
 
 __all__ = ["COMMANDS", "main"]
@@ -83,6 +84,10 @@ def _stub(command: str) -> Callable[[argparse.Namespace], int]:
     return handler
 
 
+def _doctor_handler(args: argparse.Namespace) -> int:
+    return run_doctor(config_path=getattr(args, "config", None), as_json=args.json)
+
+
 def _version_handler(args: argparse.Namespace) -> int:
     if getattr(args, "json", False):
         print(json.dumps(json_envelope(ExitCode.OK, data={"version": __version__})))
@@ -105,6 +110,7 @@ def _build_parser() -> _Parser:
     _add_json_flag(p)
 
     p = sub.add_parser("doctor", help="explain effective config/backends/clock; read-only")
+    p.add_argument("--config", help="config path (default: $AGENTKEYS_HOME/config.toml)")
     _add_json_flag(p)
 
     p = sub.add_parser("scan", help="find candidate secrets where agents read them (masked only)")
@@ -174,8 +180,10 @@ def _build_parser() -> _Parser:
     _add_json_flag(p)
     p.set_defaults(handler=_version_handler)
 
+    sub.choices["doctor"].set_defaults(handler=_doctor_handler)
+
     for name in COMMANDS:
-        if name == "version":
+        if name in {"version", "doctor"}:
             continue
         sub.choices[name].set_defaults(handler=_stub(name))
 
