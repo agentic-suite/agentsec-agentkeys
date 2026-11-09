@@ -98,6 +98,12 @@ class SqliteStore:
     def pragma(self, name: str) -> str:
         return str(self._connection.execute(f"PRAGMA {name}").fetchone()[0])  # type: ignore[union-attr]
 
+    def schema_version(self) -> int | None:
+        """The store's schema version, or `None` when the store is not open."""
+        if self._connection is None:
+            return None
+        return schema.read_version(self._connection)
+
     def begin_immediate(self) -> None:
         self._execute("BEGIN IMMEDIATE")
 

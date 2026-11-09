@@ -72,8 +72,21 @@ MIGRATIONS: dict[int, str] = {1: _DDL_V1}
 
 
 def read_version(connection: sqlite3.Connection) -> int:
-    """Read the schema version, creating the (empty) version table if needed."""
-    connection.execute("CREATE TABLE IF NOT EXISTS schema_version (version INTEGER NOT NULL)")
+    """Read the schema version; a store with other tables but no version table is corrupt."""
+    tables = {
+        row[0]
+        for row in connection.execute(
+            "SELECT name FROM sqlite_master WHERE type = 'table'"
+        ).fetchall()
+    }
+    if "schema_version" not in tables:
+        if tables - {"sqlite_sequence"}:
+            raise StoreVersionError(
+                "store has no schema_version table but is not empty; refusing (corrupt store)"
+            )
+        connection.execute("CREATE TABLE schema_version (version INTEGER NOT NULL)")
+        connection.execute("INSERT INTO schema_version (version) VALUES (0)")
+        return 0
     row = connection.execute("SELECT version FROM schema_version LIMIT 1").fetchone()
     if row is None:
         connection.execute("INSERT INTO schema_version (version) VALUES (0)")
