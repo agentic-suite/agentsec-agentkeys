@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import os
 import sqlite3
 import uuid
@@ -26,7 +27,6 @@ from agentkeys.store.contract import (
     StoreError,
     StoreVersionError,
     compute_hash,
-    require_capabilities,
 )
 
 __all__ = ["SqliteStore"]
@@ -63,10 +63,8 @@ class SqliteStore:
     def open(self) -> None:
         if not self._memory:
             self.path.parent.mkdir(parents=True, exist_ok=True)
-            try:
+            with contextlib.suppress(OSError):  # chmod is best-effort on odd filesystems
                 self.path.parent.chmod(_DIR_MODE)
-            except OSError:  # pragma: no cover - permission change is best-effort on odd filesystems
-                pass
         connection = sqlite3.connect(
             ":memory:" if self._memory else str(self.path),
             isolation_level=None,
@@ -85,10 +83,8 @@ class SqliteStore:
             self._connection = None
             raise
         if not self._memory:
-            try:
+            with contextlib.suppress(OSError):  # pragma: no cover - best-effort
                 self.path.chmod(_FILE_MODE)
-            except OSError:  # pragma: no cover
-                pass
 
     def close(self) -> None:
         if self._connection is not None:
@@ -135,7 +131,7 @@ class SqliteStore:
         self.begin_immediate()
         try:
             row = self._execute(
-                '''SELECT * FROM "references" WHERE reference_id = ?''', (reference.reference_id,)
+                """SELECT * FROM "references" WHERE reference_id = ?""", (reference.reference_id,)
             ).fetchone()
             if row is not None:
                 existing = _reference(row)
@@ -144,7 +140,7 @@ class SqliteStore:
                 self.commit()
                 return existing
             self._execute(
-                '''INSERT INTO "references" (reference_id, akref_version, backend, path, class,'''
+                """INSERT INTO "references" (reference_id, akref_version, backend, path, class,"""
                 " scope_hint, label, created_at, created_by) VALUES (?,?,?,?,?,?,?,?,?)",
                 (
                     reference.reference_id,
@@ -166,12 +162,12 @@ class SqliteStore:
 
     def get_reference(self, reference_id: str) -> Reference | None:
         row = self._execute(
-            '''SELECT * FROM "references" WHERE reference_id = ?''', (reference_id,)
+            """SELECT * FROM "references" WHERE reference_id = ?""", (reference_id,)
         ).fetchone()
         return None if row is None else _reference(row)
 
     def list_references(self) -> tuple[Reference, ...]:
-        rows = self._execute('''SELECT * FROM "references" ORDER BY reference_id''').fetchall()
+        rows = self._execute("""SELECT * FROM "references" ORDER BY reference_id""").fetchall()
         return tuple(_reference(row) for row in rows)
 
     # ------------------------------------------------------------------ sessions
@@ -206,9 +202,7 @@ class SqliteStore:
         return session
 
     def get_session(self, session_id: str) -> Session | None:
-        row = self._execute(
-            "SELECT * FROM sessions WHERE session_id = ?", (session_id,)
-        ).fetchone()
+        row = self._execute("SELECT * FROM sessions WHERE session_id = ?", (session_id,)).fetchone()
         return None if row is None else _session(row)
 
     def get_binding(self, binding_hash: str) -> Binding | None:
@@ -507,19 +501,24 @@ class SqliteStore:
     def add_receipt(self, receipt: RedactionReceipt) -> RedactionReceipt:
         self.begin_immediate()
         try:
-            self._execute(
-                "INSERT INTO redaction_receipts (receipt_id, subject_id, field, class, count,"
-                " redactor_version, created_at) VALUES (?,?,?,?,?,?,?)",
-                (
-                    receipt.receipt_id,
-                    receipt.subject_id,
-                    receipt.field,
-                    receipt.class_,
-                    receipt.count,
-                    receipt.redactor_version,
-                    receipt.created_at,
-                ),
-            )
+            try:
+                self._execute(
+                    "INSERT INTO redaction_receipts (receipt_id, subject_id, field, class, count,"
+                    " redactor_version, created_at) VALUES (?,?,?,?,?,?,?)",
+                    (
+                        receipt.receipt_id,
+                        receipt.subject_id,
+                        receipt.field,
+                        receipt.class_,
+                        receipt.count,
+                        receipt.redactor_version,
+                        receipt.created_at,
+                    ),
+                )
+            except StoreError as exc:
+                if "UNIQUE" in str(exc):
+                    raise StoreError(f"duplicate receipt_id: {receipt.receipt_id}") from exc
+                raise
         except BaseException:
             self.rollback()
             raise

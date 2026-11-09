@@ -24,7 +24,8 @@ def test_records_are_frozen_dataclasses() -> None:
         c.ConsumeResult,
     ):
         assert dataclasses.is_dataclass(record), record
-        assert record.__dataclass_params__.frozen, record  # type: ignore[attr-defined]
+        params = getattr(record, "__dataclass_params__", None)
+        assert params is not None and params.frozen, record
 
 
 def test_reference_has_no_secret_field() -> None:

@@ -1,4 +1,4 @@
-"""SQLite schema: DDL, version table, forward-only migrations (M1, PRD 15 §5–§6)."""
+"""SQLite schema: DDL, version table, forward-only migrations (M1, PRD 15 §5-§6)."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import sqlite3
 
 from agentkeys.store.contract import StoreVersionError
 
-__all__ = ["CURRENT_SCHEMA_VERSION", "MIGRATIONS", "read_version", "migrate"]
+__all__ = ["CURRENT_SCHEMA_VERSION", "MIGRATIONS", "migrate", "read_version"]
 
 #: The schema version this binary writes and understands (M0's `doctor` reads the same table).
 CURRENT_SCHEMA_VERSION = 1

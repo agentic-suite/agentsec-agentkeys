@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from agentkeys.store import contract as c
 
 
@@ -78,7 +80,7 @@ def issue_kwargs(
     ttl_seconds: int = 60,
     single_use: bool = True,
     event_id: str = "evt_1",
-) -> dict[str, object]:
+) -> dict[str, Any]:
     """Keyword arguments for `BrokerStore.issue` (the store mints the issuance id)."""
     return {
         "reference_id": "ref_1",

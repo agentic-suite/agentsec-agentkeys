@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import dataclasses
+from collections.abc import Iterator
 
 import pytest
 
@@ -12,7 +13,7 @@ from tests.store_fixtures import issue_kwargs, make_event, make_reference, make_
 
 
 @pytest.fixture
-def store() -> MemoryStore:
+def store() -> Iterator[MemoryStore]:
     s = MemoryStore()
     s.open()
     yield s
@@ -40,16 +41,18 @@ def test_reference_session_and_conflict(store: MemoryStore) -> None:
     with pytest.raises(c.StoreError, match="conflict"):
         store.create_reference(dataclasses.replace(make_reference(), backend="file"))
     assert store.create_session(make_session()) == make_session()
+    assert store.create_session(make_session()) == make_session()  # idempotent
     assert store.get_session("s1") == make_session()
     assert store.get_session("nope") is None
+    assert store.list_references() == (make_reference(),)
 
 
 def test_issue_is_atomic_idempotent_and_chained(store: MemoryStore) -> None:
     _seed(store)
-    first = store.issue(**issue_kwargs())  # type: ignore[arg-type]
+    first = store.issue(**issue_kwargs())
     assert first.issuance_id.startswith("iss_")
     assert first.expires_at == 1060
-    assert store.issue(**issue_kwargs(event_id="evt_retry")) == first  # type: ignore[arg-type]
+    assert store.issue(**issue_kwargs(event_id="evt_retry")) == first
     binding = store.get_binding("bh_1")
     assert binding is not None and binding.issuance_count == 1
     rows = store.read_ledger()
@@ -61,7 +64,7 @@ def test_issue_is_atomic_idempotent_and_chained(store: MemoryStore) -> None:
 
 def test_consume_is_single_use(store: MemoryStore) -> None:
     _seed(store)
-    issuance = store.issue(**issue_kwargs())  # type: ignore[arg-type]
+    issuance = store.issue(**issue_kwargs())
     assert store.consume(issuance.issuance_id, now=1001).status == "consumed"
     assert store.consume(issuance.issuance_id, now=1002).status == "already_consumed"
     assert store.consume("iss_missing", now=1002).status == "unknown"
@@ -70,11 +73,9 @@ def test_consume_is_single_use(store: MemoryStore) -> None:
 
 def test_expiry_and_live_reads(store: MemoryStore) -> None:
     _seed(store)
-    live = store.issue(**issue_kwargs(binding_hash="bh_live", event_id="evt_l"))  # type: ignore[arg-type]
-    gone = store.issue(**issue_kwargs(binding_hash="bh_gone", event_id="evt_g"))  # type: ignore[arg-type]
-    short = store.issue(  # type: ignore[arg-type]
-        **issue_kwargs(binding_hash="bh_short", event_id="evt_s", ttl_seconds=1)
-    )
+    live = store.issue(**issue_kwargs(binding_hash="bh_live", event_id="evt_l"))
+    gone = store.issue(**issue_kwargs(binding_hash="bh_gone", event_id="evt_g"))
+    short = store.issue(**issue_kwargs(binding_hash="bh_short", event_id="evt_s", ttl_seconds=1))
     assert store.consume(gone.issuance_id, now=1001).status == "consumed"
     assert store.consume(short.issuance_id, now=1001).status == "expired"
     assert [i.issuance_id for i in store.list_live(now=1001)] == [live.issuance_id]
@@ -140,6 +141,8 @@ def test_receipts(store: MemoryStore) -> None:
     assert store.add_receipt(receipt) == receipt
     assert store.list_receipts("iss_1") == (receipt,)
     assert store.list_receipts("nope") == ()
+    with pytest.raises(c.StoreError, match="duplicate"):
+        store.add_receipt(receipt)
 
 
 def test_closed_store_refuses() -> None:

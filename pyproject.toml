@@ -37,6 +37,10 @@ dev = [
 [project.scripts]
 agentkeys = "agentkeys.cli:main"
 
+[project.entry-points."agentkeys.store"]
+sqlite = "agentkeys.store.sqlite:SqliteStore"
+memory = "agentkeys.store.memory:MemoryStore"
+
 [project.urls]
 Homepage = "https://github.com/agentic-suite/agentsec-agentkeys"
 
@@ -66,9 +70,11 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF", "S"]
+# N818: the store contract names its errors `CapabilityError`, `DriverNotFound`, … by design.
+ignore = ["N818"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101", "S105", "RUF043", "E501"]
+"tests/**" = ["S101", "S105", "S106", "S107", "S603", "SIM105", "RUF043", "E501"]
 
 [tool.mypy]
 python_version = "3.11"

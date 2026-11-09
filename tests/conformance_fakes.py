@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import uuid
 
-from agentkeys.store.contract import CapabilityFlags, ConsumeResult, Issuance
+from agentkeys.store.contract import CapabilityFlags, ConsumeResult, Issuance, LedgerRow
 from agentkeys.store.memory import MemoryStore
 
 __all__ = ["AmoebaStore", "GappedLedger", "LooseConsume", "NonIdempotentIssue"]
@@ -21,8 +21,8 @@ class NonIdempotentIssue(MemoryStore):
 class GappedLedger(MemoryStore):
     """Hides the first ledger row — breaks S4 (gapless ledger)."""
 
-    def read_ledger(self, since_seq: int = 0) -> tuple[object, ...]:
-        return super().read_ledger(since_seq)[1:]  # type: ignore[return-value]
+    def read_ledger(self, since_seq: int = 0) -> tuple[LedgerRow, ...]:
+        return super().read_ledger(since_seq)[1:]
 
 
 class LooseConsume(MemoryStore):

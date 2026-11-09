@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import dataclasses
 import sqlite3
+from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
@@ -14,7 +15,7 @@ from tests.store_fixtures import issue_kwargs, make_event, make_reference, make_
 
 
 @pytest.fixture
-def store(tmp_path: Path) -> SqliteStore:
+def store(tmp_path: Path) -> Iterator[SqliteStore]:
     s = SqliteStore(tmp_path / "agentkeys.db")
     s.open()
     yield s
@@ -75,7 +76,7 @@ def test_session_round_trip(store: SqliteStore) -> None:
 
 def test_issue_writes_binding_issuance_and_ledger_atomically(store: SqliteStore) -> None:
     _seed(store)
-    issuance = store.issue(**issue_kwargs())  # type: ignore[arg-type]
+    issuance = store.issue(**issue_kwargs())
     assert issuance.issuance_id.startswith("iss_")
     assert issuance.expires_at == 1060
     assert issuance.status == "live"
@@ -91,21 +92,21 @@ def test_issue_writes_binding_issuance_and_ledger_atomically(store: SqliteStore)
 
 def test_reissue_within_the_same_window_is_idempotent(store: SqliteStore) -> None:
     _seed(store)
-    first = store.issue(**issue_kwargs())  # type: ignore[arg-type]
-    second = store.issue(**issue_kwargs(event_id="evt_retry"))  # type: ignore[arg-type]
+    first = store.issue(**issue_kwargs())
+    second = store.issue(**issue_kwargs(event_id="evt_retry"))
     assert first == second
     assert len(store.read_ledger()) == 2  # no extra issuance event
     binding = store.get_binding("bh_1")
     assert binding is not None and binding.issuance_count == 1
     # a different window mints a new issuance
-    third = store.issue(**issue_kwargs(window=2, event_id="evt_next"))  # type: ignore[arg-type]
+    third = store.issue(**issue_kwargs(window=2, event_id="evt_next"))
     assert third.issuance_id != first.issuance_id
     assert len(store.read_ledger()) == 3
 
 
 def test_consume_is_single_use_and_typed(store: SqliteStore) -> None:
     _seed(store)
-    issuance = store.issue(**issue_kwargs())  # type: ignore[arg-type]
+    issuance = store.issue(**issue_kwargs())
     assert store.consume(issuance.issuance_id, now=1001).status == "consumed"
     again = store.consume(issuance.issuance_id, now=1002)
     assert again.status == "already_consumed"
@@ -115,19 +116,15 @@ def test_consume_is_single_use_and_typed(store: SqliteStore) -> None:
 
 def test_consume_after_expiry_is_expired(store: SqliteStore) -> None:
     _seed(store)
-    issuance = store.issue(**issue_kwargs())  # type: ignore[arg-type]
+    issuance = store.issue(**issue_kwargs())
     assert store.consume(issuance.issuance_id, now=2000).status == "expired"
     assert store.consume(issuance.issuance_id, now=2001).status == "expired"
 
 
 def test_list_live_excludes_expired_and_consumed(store: SqliteStore) -> None:
     _seed(store)
-    live = store.issue(  # type: ignore[arg-type]
-        **issue_kwargs(binding_hash="bh_live", event_id="evt_live")
-    )
-    gone = store.issue(  # type: ignore[arg-type]
-        **issue_kwargs(binding_hash="bh_gone", event_id="evt_gone")
-    )
+    live = store.issue(**issue_kwargs(binding_hash="bh_live", event_id="evt_live"))
+    gone = store.issue(**issue_kwargs(binding_hash="bh_gone", event_id="evt_gone"))
     store.consume(gone.issuance_id, now=1001)
     assert [i.issuance_id for i in store.list_live(now=1001)] == [live.issuance_id]
     assert store.list_live(now=5000) == ()
@@ -160,9 +157,7 @@ def test_cas_revoke_has_exactly_one_winner(store: SqliteStore) -> None:
     assert second.winner is False
     assert second.revocation.revocation_id == first.revocation.revocation_id
     assert store.get_revocation(first.revocation.revocation_id) == first.revocation
-    revoke_events = [
-        row for row in store.read_ledger() if row.event.event_name == "revoked"
-    ]
+    revoke_events = [row for row in store.read_ledger() if row.event.event_name == "revoked"]
     assert len(revoke_events) == 1
 
 
@@ -210,6 +205,9 @@ def test_receipts_round_trip(store: SqliteStore) -> None:
     assert store.add_receipt(receipt) == receipt
     assert store.list_receipts("iss_1") == (receipt,)
     assert store.list_receipts("nope") == ()
+    with pytest.raises(c.StoreError, match="duplicate"):
+        store.add_receipt(receipt)
+    assert store.get_revocation("nope") is None
 
 
 def test_duplicate_event_id_is_refused(store: SqliteStore) -> None:

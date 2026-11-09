@@ -79,9 +79,7 @@ class MemoryStore:
     def list_references(self) -> tuple[Reference, ...]:
         with self._lock:
             self._require_open()
-            return tuple(
-                self._references[key] for key in sorted(self._references)
-            )
+            return tuple(self._references[key] for key in sorted(self._references))
 
     # ------------------------------------------------------------------ sessions
 
@@ -301,8 +299,6 @@ class MemoryStore:
         with self._lock:
             self._require_open()
             matches = [
-                receipt
-                for receipt in self._receipts.values()
-                if receipt.subject_id == subject_id
+                receipt for receipt in self._receipts.values() if receipt.subject_id == subject_id
             ]
         return tuple(sorted(matches, key=lambda r: (r.created_at, r.receipt_id)))

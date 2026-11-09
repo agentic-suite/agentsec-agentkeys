@@ -1,7 +1,7 @@
 """The store conformance suite — the contract's executable form (M1, WBS 1.4).
 
 `run_conformance(factory)` returns findings; an empty list means the driver honours the six semantics
-(S1–S6) in `docs/design/v0.1.0/store.md` §5. The suite is deliberately strict: a broken driver must fail
+(S1-S6) in `docs/design/v0.1.0/store.md` §5. The suite is deliberately strict: a broken driver must fail
 it, which the tests prove with the fakes in `conformance_fakes.py`.
 """
 
@@ -20,7 +20,7 @@ Factory = Callable[[], c.BrokerStore]
 _NamespaceFactory = Callable[[str], c.BrokerStore]
 """The caller's factory: given a namespace key, return a store isolated to that key."""
 
-_CHECKS: list[Callable[[Factory, list["Finding"]], None]] = []
+_CHECKS: list[Callable[[Factory, list[Finding]], None]] = []
 
 
 @dataclass(frozen=True)
@@ -31,14 +31,14 @@ class Finding:
     detail: str
 
 
-def check(function: Callable[[Factory, list[Finding]], None]) -> Callable[[Factory, list[Finding]], None]:
+def check(
+    function: Callable[[Factory, list[Finding]], None],
+) -> Callable[[Factory, list[Finding]], None]:
     _CHECKS.append(function)
     return function
 
 
-def _expect(
-    condition: bool, findings: list[Finding], check_name: str, detail: str
-) -> None:
+def _expect(condition: bool, findings: list[Finding], check_name: str, detail: str) -> None:
     if not condition:
         findings.append(Finding(check=check_name, detail=detail))
 
@@ -90,7 +90,15 @@ def _seed(store: c.BrokerStore) -> None:
     )
 
 
-def _issue(store: c.BrokerStore, *, binding_hash: str = "bh_1", window: int = 1, event_id: str = "e1", ttl: int = 60, issued_at: int = 1000) -> c.Issuance:
+def _issue(
+    store: c.BrokerStore,
+    *,
+    binding_hash: str = "bh_1",
+    window: int = 1,
+    event_id: str = "e1",
+    ttl: int = 60,
+    issued_at: int = 1000,
+) -> c.Issuance:
     return store.issue(
         reference_id="ref_1",
         session_id="s1",
@@ -115,7 +123,9 @@ def capabilities_are_declared(factory: Factory, findings: list[Finding]) -> None
     store.open()
     try:
         flags = store.capabilities()
-        _expect(isinstance(flags, c.CapabilityFlags), findings, "capabilities", "not CapabilityFlags")
+        _expect(
+            isinstance(flags, c.CapabilityFlags), findings, "capabilities", "not CapabilityFlags"
+        )
         _expect(flags.atomic_issue, findings, "capabilities", "atomic_issue must be True")
     finally:
         store.close()
@@ -145,8 +155,10 @@ def references_are_idempotent(factory: Factory, findings: list[Finding]) -> None
         _seed(store)
         reference = store.get_reference("ref_1")
         _expect(reference is not None, findings, "references", "reference not stored")
+        if reference is None:  # pragma: no cover - guarded by the check above
+            return
         try:
-            store.create_reference(replace(reference, backend="file"))  # type: ignore[arg-type]
+            store.create_reference(replace(reference, backend="file"))
             findings.append(Finding("references", "conflicting reference was accepted"))
         except c.StoreError:
             pass
@@ -294,9 +306,7 @@ def revoke_has_one_winner_and_a_monotonic_epoch(factory: Factory, findings: list
             "cas_revoke",
             "loser must return the winner's revocation",
         )
-        revoke_events = [
-            row for row in store.read_ledger() if row.event.event_id.startswith("rev")
-        ]
+        revoke_events = [row for row in store.read_ledger() if row.event.event_id.startswith("rev")]
         _expect(len(revoke_events) == 1, findings, "cas_revoke", "loser appended an event")
         try:
             store.cas_revoke(
@@ -325,9 +335,7 @@ def ledger_is_gapless_and_hash_chained(factory: Factory, findings: list[Finding]
         rows = store.read_ledger()
         seqs = [row.seq for row in rows]
         _expect(seqs == list(range(1, len(seqs) + 1)), findings, "ledger", f"gap in seq: {seqs}")
-        _expect(
-            rows[0].prev_hash == c.GENESIS_PREV_HASH, findings, "ledger", "bad genesis anchor"
-        )
+        _expect(rows[0].prev_hash == c.GENESIS_PREV_HASH, findings, "ledger", "bad genesis anchor")
         previous = c.GENESIS_PREV_HASH
         for row in rows:
             if row.prev_hash != previous or row.hash != c.compute_hash(row.event, previous):

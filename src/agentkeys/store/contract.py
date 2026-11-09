@@ -1,4 +1,4 @@
-"""The BrokerStore contract: typed records, capability flags, chain hashing (M1, PRD 15 §5–§6).
+"""The BrokerStore contract: typed records, capability flags, chain hashing (M1, PRD 15 §5-§6).
 
 The store is the broker's truth. Every core, backend, and CLI path touches state only through the
 `BrokerStore` protocol; the six semantics in `docs/design/v0.1.0/store.md` §5 are the contract.
@@ -27,8 +27,8 @@ __all__ = [
     "LedgerRow",
     "RedactionReceipt",
     "Reference",
-    "RevokeResult",
     "Revocation",
+    "RevokeResult",
     "Session",
     "StoreBusyError",
     "StoreError",
