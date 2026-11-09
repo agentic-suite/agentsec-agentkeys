@@ -76,7 +76,8 @@ def test_the_engine_never_consults_the_environment(monkeypatch: pytest.MonkeyPat
     assert isinstance(outcome, Denial)
     assert "env-value" not in outcome.detail
     assert "env-fallback" not in outcome.detail
-    assert engine.resolve("nothing-registered", "slot").reason == "unknown-backend"
+    unknown = engine.resolve("nothing-registered", "slot")
+    assert isinstance(unknown, Denial) and unknown.reason == "unknown-backend"
 
 
 def test_the_fault_matrix_is_deny_or_pending_never_allow() -> None:

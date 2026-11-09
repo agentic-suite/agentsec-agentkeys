@@ -74,6 +74,21 @@ Lands the first slice of **E1** (contract + idempotent resolution), **E3** (sing
 | `2.5` single-use secret | hashed token, typed consume, replay rejected (`E3`) | `tests/test_resolution.py` |
 | `2.6` SDK / CLI | embedder surface + `ref list|show`; no `get_secret()` | `tests/test_sdk_cli_contract.py` |
 
+## 0.3 v0.1.0 — backends + fail-closed engine + redactor (M3, built 2026-11-09)
+
+Lands the first slice of **R5** (keychain + file backends), **E4** (fail closed), **E9** (pluggable
+backends), and **E5** (redaction by default + receipts).
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `3.D0` design | backend contract, drivers, fault matrix, redaction vocabulary | `docs/design/v0.1.0/backends.md` |
+| `3.1` contract | opaque `SecretValue`, capabilities, health, denial vocabulary | `tests/test_backend_contract.py` |
+| `3.2` keychain driver | unlock-per-resolve; no caching; no disk write | `tests/test_backend_keychain.py` |
+| `3.3` file driver | `0600` at open and resolve; rotation without restart | `tests/test_backend_file.py` |
+| `3.4` conformance suite | one suite for every backend; broken drivers must fail | `tests/test_backends_conformance.py` |
+| `3.5` fail-closed engine | every failure → a structured denial; no fallback | `tests/test_failclosed_matrix.py` |
+| `3.6` redactor + receipts | mask before persist/render/export; a receipt per field | `tests/test_redactor_receipts.py` |
+
 ## 1. v0.1.0 — P0 product requirements (R1–R9 + R17)
 
 | Req | Story | CUJ | Scenario | Test file |

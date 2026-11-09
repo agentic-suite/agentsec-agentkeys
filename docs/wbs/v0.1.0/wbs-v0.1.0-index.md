@@ -138,6 +138,14 @@ A milestone is **closed** only when all of these hold:
   [PRD 15 §2 note](../../prd/15-data-model.md) · [PRD 12 §0.2](../../prd/12-traceability.md).
   A harness can now resolve a reference into a bound, single-use issuance — it is not yet injected at
   egress (M4/M5). **Next: M3 opens at `3.D0`.**
+- **2026-11-09 — M3 Backends + fail-closed engine + redactor closed** (branch `feat-v0.1.0`). Items `3.D0`,
+  `3.1`-`3.6` implemented test-first. Milestone gate run **once** at the end: `ruff` clean · `mypy --strict`
+  clean · full suite green · coverage **96.71% ≥ 95%**. Commits: `630e764` (3.D0 + 3.1) · `f9e10dc` (3.2) ·
+  `8128f3b` (3.3) · `1611516` (3.4) · `7744166` (3.5) · (3.6 with the gate). `3.CR` logged 8 findings
+  (2 blockers), all resolved. Docs: [backends design](../../design/v0.1.0/backends.md) ·
+  [backends reference](../../reference/backends.md) · [conformance guide](../../reference/backends-conformance.md) ·
+  [PRD 12 §0.3](../../prd/12-traceability.md). Credentials can now be resolved fail-closed and redacted;
+  they are still not delivered to a target at egress. **Next: M4 opens at `4.D0`.**
 
 ## PRD coverage matrix (every doc 00–23 + Appendix A)
 

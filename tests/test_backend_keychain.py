@@ -115,3 +115,44 @@ def test_a_missing_keychain_tool_is_unavailable() -> None:
     backend = KeychainBackend(service="agentkeys", runner=MissingRunner(), platform="darwin")
     with pytest.raises(b.BackendUnavailable):
         backend.resolve("p")
+
+
+def test_a_closed_or_empty_path_is_refused() -> None:
+    backend, _ = _backend("darwin", [])
+    with pytest.raises(b.BackendUnavailable):
+        backend.resolve("p")
+    backend.open()
+    with pytest.raises(b.BackendAbsent, match="empty"):
+        backend.resolve("")
+
+
+def test_list_reports_the_enumeration_limitation() -> None:
+    backend, _ = _backend("darwin", [])
+    backend.open()
+    with pytest.raises(b.BackendUnavailable, match="enumerat"):
+        backend.list()
+
+
+def test_health_is_unconfigured_before_open_and_after_close() -> None:
+    backend, _ = _backend("darwin", [])
+    assert backend.health().state == "unconfigured"
+    backend.open()
+    assert backend.health().state == "healthy"
+    backend.close()
+    assert backend.health().state == "unconfigured"
+
+
+def test_an_unsupported_platform_reports_unconfigured_health() -> None:
+    backend, _ = _backend("win32", [])
+    assert backend.health().state == "unconfigured"
+
+
+def test_a_missing_tool_surfaces_as_unavailable() -> None:
+    class MissingRunner:
+        def run(self, argv: list[str]) -> CommandResult:
+            raise FileNotFoundError("security")
+
+    backend = KeychainBackend(service="agentkeys", runner=MissingRunner(), platform="darwin")
+    backend.open()
+    with pytest.raises(b.BackendUnavailable, match="not available"):
+        backend.resolve("p")

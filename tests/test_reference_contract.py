@@ -111,3 +111,12 @@ def test_the_reference_key_grammar_accepts_valid_keys(key: str, backend: str, pa
 def test_the_reference_key_grammar_refuses_malformed_keys(key: str) -> None:
     with pytest.raises(ReferenceError):
         parse_reference_key(key)
+
+
+def test_parsing_errors_are_typed() -> None:
+    with pytest.raises(ReferenceError, match="object"):
+        ReferenceDoc.from_json("[]")
+    with pytest.raises(ReferenceError, match="missing"):
+        ReferenceDoc.from_dict({"akref": "1.0", "reference_id": "r"})
+    with pytest.raises(ReferenceError, match="version"):
+        _doc(akref="9.9")

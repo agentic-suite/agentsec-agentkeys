@@ -76,9 +76,7 @@ def test_real_backends_conform(good_factory: Callable[[str], b.Backend]) -> None
         (ValueListingBackend, "list"),
     ],
 )
-def test_broken_backends_fail_the_suite(
-    fake: type[DictBackend], expected_check: str
-) -> None:
+def test_broken_backends_fail_the_suite(fake: type[DictBackend], expected_check: str) -> None:
     findings = run_backend_conformance(lambda key: fake({SLOT: VALUE}), SLOT, VALUE)
     assert findings, f"{fake.__name__} passed a suite it must fail"
     assert expected_check in {finding.check for finding in findings}

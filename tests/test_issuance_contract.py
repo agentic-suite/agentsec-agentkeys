@@ -108,3 +108,26 @@ def test_unknown_fields_are_ignored() -> None:
 def test_a_secret_shaped_reference_id_is_refused() -> None:
     with pytest.raises((IssuanceError, ReferenceError), match="reference_id"):
         _doc(reference_id="sk-0123456789abcdefghijklmnopqrstuvwxyz")
+
+
+def test_parsing_errors_are_typed() -> None:
+    with pytest.raises(IssuanceError, match="JSON"):
+        IssuanceDoc.from_json("[]")
+    with pytest.raises(IssuanceError, match="version"):
+        IssuanceDoc.from_dict({"issuance": "9.9"})
+    with pytest.raises(IssuanceError, match="binding"):
+        IssuanceDoc.from_dict({"issuance": "1.0", "binding": 5})
+    with pytest.raises(IssuanceError, match="missing"):
+        IssuanceDoc.from_dict({"issuance": "1.0", "binding": {"audience": "a", "tool": "t"}})
+
+
+def test_empty_and_wrong_typed_fields_are_refused() -> None:
+    with pytest.raises(IssuanceError, match="issuance_id"):
+        _doc(issuance_id="")
+    with pytest.raises(IssuanceError, match="positive integer"):
+        _doc(ttl=True, expires_at=1001)
+
+
+def test_an_unsupported_contract_version_is_refused() -> None:
+    with pytest.raises(IssuanceError, match="version"):
+        _doc(issuance="2.0")

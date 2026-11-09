@@ -1,4 +1,5 @@
-"""The OS-keychain backend: unlock-per-resolve, never a cached or written plaintext (M3, WBS 3.2)."""
+"""The OS-keychain backend: unlock-per-resolve, never a cached or written plaintext
+(M3, WBS 3.2)."""
 
 from __future__ import annotations
 
@@ -43,7 +44,10 @@ class SubprocessRunner:
 
     def run(self, argv: list[str]) -> CommandResult:
         try:
-            completed = subprocess.run(argv, capture_output=True, text=True, check=False)
+            # Fixed argv, no shell; the tool and slot come from trusted config, not agent input.
+            completed = subprocess.run(  # noqa: S603
+                argv, capture_output=True, text=True, check=False
+            )
         except FileNotFoundError as exc:
             raise BackendUnavailable(f"keychain tool not available: {argv[0]}") from exc
         return CommandResult(completed.returncode, completed.stdout, completed.stderr)
@@ -103,7 +107,10 @@ class KeychainBackend:
             raise BackendUnavailable("keychain backend is not open")
         if not path:
             raise BackendAbsent("empty keychain path")
-        result = self._runner.run(self._argv(path))
+        try:
+            result = self._runner.run(self._argv(path))
+        except FileNotFoundError as exc:
+            raise BackendUnavailable(f"keychain tool not available: {self._argv(path)[0]}") from exc
         if result.returncode == 0:
             value = result.stdout.strip("\n")
             if not value:

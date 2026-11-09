@@ -8,12 +8,13 @@ failing key. Values are never echoed back (a literal secret is a location, not a
 from __future__ import annotations
 
 import os
-import re
 import tomllib
 from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+
+from agentkeys.redact import looks_like_secret
 
 __all__ = [
     "Backend",
@@ -30,17 +31,6 @@ __all__ = [
 _ENFORCE_MODES = ("monitor", "enforce")
 _TTL_CLASSES = ("public", "dev", "staging", "prod")
 _TOP_LEVEL = {"enforce_mode", "sink", "store", "clock", "ttl", "backends", "bindings"}
-
-# Known credential shapes. A config must carry references, never values — a match is a hard error.
-_SECRET_PATTERNS = (
-    re.compile(r"sk-[A-Za-z0-9_\-]{20,}"),
-    re.compile(r"ghp_[A-Za-z0-9]{20,}"),
-    re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
-    re.compile(r"AKIA[0-9A-Z]{16}"),
-    re.compile(r"xox[baprs]-[A-Za-z0-9-]{10,}"),
-    re.compile(r"eyJ[A-Za-z0-9_-]{5,}\.[A-Za-z0-9_-]{5,}\.[A-Za-z0-9_-]{5,}"),
-    re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----"),
-)
 
 
 class ConfigError(Exception):
@@ -106,11 +96,6 @@ def discover_config_path(
     if explicit is not None:
         return Path(os.path.expanduser(str(explicit)))
     return _agentkeys_home(environ) / "config.toml"
-
-
-def looks_like_secret(value: str) -> bool:
-    """Whether a string matches a known credential shape (single source of truth for M0+M2)."""
-    return any(pattern.search(value) for pattern in _SECRET_PATTERNS)
 
 
 def _scan_for_secrets(node: Any, prefix: str) -> None:

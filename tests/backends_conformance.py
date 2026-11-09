@@ -15,7 +15,7 @@ from agentkeys.backends import contract as b
 __all__ = ["Finding", "run_backend_conformance"]
 
 Factory = Callable[[str], b.Backend]
-_CHECKS: list[Callable[[Factory, str, str, list["Finding"]], None]] = []
+_CHECKS: list[Callable[[Factory, str, str, list[Finding]], None]] = []
 
 
 @dataclass(frozen=True)
@@ -39,7 +39,9 @@ def _expect(condition: bool, findings: list[Finding], name: str, detail: str) ->
 
 
 @check
-def capabilities_are_declared(factory: Factory, slot: str, value: str, findings: list[Finding]) -> None:
+def capabilities_are_declared(
+    factory: Factory, slot: str, value: str, findings: list[Finding]
+) -> None:
     backend = factory("capabilities")
     backend.open()
     try:
@@ -61,7 +63,9 @@ def capabilities_are_declared(factory: Factory, slot: str, value: str, findings:
 
 
 @check
-def resolve_returns_an_opaque_secret(factory: Factory, slot: str, value: str, findings: list[Finding]) -> None:
+def resolve_returns_an_opaque_secret(
+    factory: Factory, slot: str, value: str, findings: list[Finding]
+) -> None:
     backend = factory("resolve")
     backend.open()
     try:
@@ -88,7 +92,9 @@ def resolve_returns_an_opaque_secret(factory: Factory, slot: str, value: str, fi
 
 
 @check
-def an_unknown_slot_fails_closed(factory: Factory, slot: str, value: str, findings: list[Finding]) -> None:
+def an_unknown_slot_fails_closed(
+    factory: Factory, slot: str, value: str, findings: list[Finding]
+) -> None:
     backend = factory("unknown-slot")
     backend.open()
     try:
@@ -98,14 +104,16 @@ def an_unknown_slot_fails_closed(factory: Factory, slot: str, value: str, findin
         )
     except b.BackendError:
         pass
-    except Exception as exc:  # noqa: BLE001 - any other exception is a contract violation
+    except Exception as exc:
         findings.append(Finding("fail-closed", f"unknown slot raised {exc!r}, not BackendError"))
     finally:
         backend.close()
 
 
 @check
-def listing_never_leaks_a_value(factory: Factory, slot: str, value: str, findings: list[Finding]) -> None:
+def listing_never_leaks_a_value(
+    factory: Factory, slot: str, value: str, findings: list[Finding]
+) -> None:
     backend = factory("list")
     backend.open()
     try:
@@ -120,9 +128,7 @@ def listing_never_leaks_a_value(factory: Factory, slot: str, value: str, finding
                 "an unsupported enumeration must say so",
             )
             return
-        _expect(
-            isinstance(listed, tuple), findings, "list", "list() must return a tuple of paths"
-        )
+        _expect(isinstance(listed, tuple), findings, "list", "list() must return a tuple of paths")
         _expect(
             all(isinstance(entry, str) for entry in listed),
             findings,
@@ -136,7 +142,9 @@ def listing_never_leaks_a_value(factory: Factory, slot: str, value: str, finding
 
 
 @check
-def health_is_valid_and_non_secret(factory: Factory, slot: str, value: str, findings: list[Finding]) -> None:
+def health_is_valid_and_non_secret(
+    factory: Factory, slot: str, value: str, findings: list[Finding]
+) -> None:
     backend = factory("health")
     backend.open()
     try:
@@ -177,7 +185,9 @@ def file_backed_drivers_enforce_owner_only_permissions(
 
 
 @check
-def capabilities_are_honest_about_file_backing(factory: Factory, slot: str, value: str, findings: list[Finding]) -> None:
+def capabilities_are_honest_about_file_backing(
+    factory: Factory, slot: str, value: str, findings: list[Finding]
+) -> None:
     backend = factory("honesty")
     backend.open()
     try:

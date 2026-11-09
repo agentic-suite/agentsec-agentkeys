@@ -121,3 +121,68 @@ def test_health_reports_the_loud_warning_for_a_file_backend(tmp_path: Path) -> N
     backend = FileBackend(credentials)
     backend.open()
     assert "warning" in backend.health().detail.lower()
+
+
+def test_an_empty_file_has_no_entries(tmp_path: Path) -> None:
+    credentials = tmp_path / "empty.env"
+    credentials.write_text("", encoding="utf-8")
+    credentials.chmod(0o600)
+    backend = FileBackend(credentials)
+    backend.open()
+    assert backend.list() == ()
+    with pytest.raises(b.BackendAbsent):
+        backend.resolve("anything")
+
+
+def test_a_json_non_object_is_ambiguous(tmp_path: Path) -> None:
+    credentials = tmp_path / "list.json"
+    credentials.write_text("[1, 2]", encoding="utf-8")
+    credentials.chmod(0o600)
+    with pytest.raises(b.BackendAmbiguous, match="object"):
+        FileBackend(credentials).open()
+
+
+def test_a_malformed_line_without_a_separator_is_ambiguous(tmp_path: Path) -> None:
+    credentials = tmp_path / "bad.env"
+    credentials.write_text("JUSTANAME\n", encoding="utf-8")
+    credentials.chmod(0o600)
+    with pytest.raises(b.BackendAmbiguous, match="JUSTANAME"):
+        FileBackend(credentials).open()
+
+
+def test_an_empty_entry_value_is_absent(tmp_path: Path) -> None:
+    credentials = tmp_path / "creds.json"
+    credentials.write_text(json.dumps({"p": ""}), encoding="utf-8")
+    credentials.chmod(0o600)
+    backend = FileBackend(credentials)
+    backend.open()
+    with pytest.raises(b.BackendAbsent, match="empty"):
+        backend.resolve("p")
+
+
+def test_a_closed_backend_refuses_list_and_resolve(tmp_path: Path) -> None:
+    credentials = _write(tmp_path / "creds.json", {"p": "v"})
+    backend = FileBackend(credentials)
+    with pytest.raises(b.BackendUnavailable):
+        backend.resolve("p")
+    with pytest.raises(b.BackendUnavailable):
+        backend.list()
+
+
+def test_health_states(tmp_path: Path) -> None:
+    missing = FileBackend(tmp_path / "nope.json")
+    assert missing.health().state == "absent"
+    credentials = _write(tmp_path / "creds.json", {"p": "v"})
+    closed = FileBackend(credentials)
+    assert closed.health().state == "unconfigured"
+
+
+def test_chmod_owner_only_fixes_permissions(tmp_path: Path) -> None:
+    from agentkeys.backends.file import chmod_owner_only
+
+    credentials = _write(tmp_path / "creds.json", {"p": "v"}, mode=0o644)
+    chmod_owner_only(credentials)
+    assert credentials.stat().st_mode & 0o777 == 0o600
+    backend = FileBackend(credentials)
+    backend.open()
+    assert backend.resolve("p").reveal() == "v"

@@ -107,6 +107,39 @@ No open findings. Every semantic (S1-S6) has a gating fixture; the
 No open findings. Idempotency (E1) and single-use (E3) each have gating fixtures, and the "no plaintext
 field" rule is asserted structurally rather than by convention.
 
+### 3.CR — Backends + fail-closed engine + redactor (2026-11-09)
+
+- **CR-021** · blocker · `src/agentkeys/backends/contract.py` · a backend could have returned a bare `str`,
+  which would then flow into a log or an error message · fixed: `resolve` returns a `SecretValue` whose
+  `repr`/`str`/`format` are redacted and which refuses comparison to a string; the conformance suite fails a
+  driver that returns a string · `630e764`, `1611516` · RESOLVED
+- **CR-022** · blocker · `src/agentkeys/backends/file.py` · the credential file was read once at `open`, so
+  a rotation would have kept serving the **old** secret (CUJ-10 broken, stale credential held in memory) ·
+  fixed: the file is re-read on every `resolve`, with permissions re-checked; the engine caches nothing ·
+  `8128f3b` · RESOLVED
+- **CR-023** · major · `src/agentkeys/backends/file.py` · permissions were validated only at `open`, so a
+  mode widened afterwards was invisible · fixed: `_check_permissions` runs at open and at every resolve,
+  and the conformance suite asserts `0600` for file-backed drivers · `8128f3b` · RESOLVED
+- **CR-024** · major · `tests/backends_conformance.py` · an early check asserted that any backend denies when
+  "locked", which every correct driver trivially failed; the suite would have reported false findings ·
+  fixed: the generic locked check was removed (locking is exercised by the fault matrix at `3.5`) and the
+  list-leak check now compares against the value the driver actually resolves · `1611516` · RESOLVED
+- **CR-025** · major · `src/agentkeys/backends/keychain.py` · a missing `security`/`secret-tool` binary raised
+  a raw `FileNotFoundError` out of `resolve`, escaping the denial vocabulary · fixed: mapped to
+  `BackendUnavailable`, with a test · `7744166` · RESOLVED
+- **CR-026** · minor · `src/agentkeys/redact.py` · class ordering classified `Authorization: Bearer <jwt>`
+  as a `jwt` rather than a `bearer` span, so the receipt under-reported the field's nature · fixed: bearer
+  patterns precede the jwt pattern · `3.6` · RESOLVED
+- **CR-027** · minor · `src/agentkeys/config.py` · the M0 secret patterns would have become a second,
+  drifting copy of the redactor's · fixed: `looks_like_secret` is imported from `agentkeys.redact` and a
+  test asserts the objects are identical · `3.6` · RESOLVED
+- **CR-028** · minor · `src/agentkeys/backends/keychain.py` · `subprocess` with an argv list is correct, but
+  the audit trail needed the reasoning recorded · documented in-line: fixed argv, no shell, slot from
+  trusted config, never from agent input · `3.6` · RESOLVED
+
+No open findings. The fault matrix is 100% deny-or-pending, both drivers pass one shared conformance suite,
+and the redactor's pattern set is the single source shared with M0/M2.
+
 <!--
 Template:
 

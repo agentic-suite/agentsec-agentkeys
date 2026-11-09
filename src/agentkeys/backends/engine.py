@@ -1,4 +1,5 @@
-"""The fail-closed engine: a backend failure is a structured denial, never a fallback (M3, WBS 3.5)."""
+"""The fail-closed engine: a backend failure is a structured denial, never a fallback
+(M3, WBS 3.5)."""
 
 from __future__ import annotations
 

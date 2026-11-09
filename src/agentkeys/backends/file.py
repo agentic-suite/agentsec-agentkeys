@@ -63,11 +63,13 @@ class FileBackend:
         try:
             text = self.path.read_text(encoding="utf-8")
         except OSError as exc:
-            raise BackendUnavailable(f"credential file unreadable: {exc.__class__.__name__}") from exc
+            raise BackendUnavailable(
+                f"credential file unreadable: {exc.__class__.__name__}"
+            ) from exc
         stripped = text.strip()
         if not stripped:
             return {}
-        if stripped.startswith("{"):
+        if stripped.startswith(("{", "[")):
             try:
                 data = json.loads(stripped)
             except json.JSONDecodeError as exc:
@@ -96,7 +98,9 @@ class FileBackend:
     def resolve(self, path: str) -> SecretValue:
         if not self._open:
             raise BackendUnavailable("credential-file backend is not open")
-        self._entries = self._load()  # re-read every resolve: rotation is picked up, nothing is cached
+        self._entries = (
+            self._load()
+        )  # re-read every resolve: rotation is picked up, nothing is cached
         if path not in self._entries:
             raise BackendAbsent(f"missing credential entry: {path}")
         value = self._entries[path]

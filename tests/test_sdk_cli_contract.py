@@ -169,3 +169,42 @@ def test_cli_ref_requires_a_config(
     monkeypatch.setenv("AGENTKEYS_HOME", str(tmp_path / "missing"))
     assert main(["ref", "list"]) == 2
     assert capsys.readouterr().err.strip()
+
+
+def test_cli_ref_human_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    home = _home(tmp_path, monkeypatch)
+    _seed_store(home / "agentkeys.db")
+    assert main(["ref", "list"]) == 0
+    assert "akref:keychain/agentkeys/dev/token" in capsys.readouterr().out
+    assert main(["ref", "show", "ref_1"]) == 0
+    assert "keychain" in capsys.readouterr().out
+
+
+def test_cli_ref_without_a_subcommand_is_usage(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    _home(tmp_path, monkeypatch)
+    assert main(["ref"]) == 1
+    assert "subcommand" in capsys.readouterr().err
+
+
+def test_cli_ref_malformed_key_is_denied(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    home = _home(tmp_path, monkeypatch)
+    _seed_store(home / "agentkeys.db")
+    assert main(["ref", "show", "not-a-key"]) == 2
+    assert capsys.readouterr().err.strip()
+
+
+def test_cli_ref_with_a_broken_config_is_denied(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    home = tmp_path / "ak"
+    home.mkdir(mode=0o700)
+    (home / "config.toml").write_text("enforce_mode = 5\n", encoding="utf-8")
+    monkeypatch.setenv("AGENTKEYS_HOME", str(home))
+    assert main(["ref", "list"]) == 2
+    assert capsys.readouterr().err.strip()

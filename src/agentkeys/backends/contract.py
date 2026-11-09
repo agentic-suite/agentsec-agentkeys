@@ -1,4 +1,5 @@
-"""The Backend contract: one interface, an opaque secret handle, a denial vocabulary (M3, WBS 3.1)."""
+"""The Backend contract: one interface, an opaque secret handle, a denial vocabulary
+(M3, WBS 3.1)."""
 
 from __future__ import annotations
 
