@@ -69,6 +69,7 @@ def test_a_secret_shaped_value_is_rejected_and_named(secret: str) -> None:
     with pytest.raises(ReferenceError, match="scope_hint"):
         _doc(scope_hint=secret)
 
+
 def test_the_serialised_document_contains_no_secret_material() -> None:
     doc = _doc(scope_hint="repo:read", label="prod-ish token")
     text = doc.to_json()
@@ -92,9 +93,7 @@ def test_wrong_contract_version_is_refused() -> None:
         ("akref:file/a", "file", "a"),
     ],
 )
-def test_the_reference_key_grammar_accepts_valid_keys(
-    key: str, backend: str, path: str
-) -> None:
+def test_the_reference_key_grammar_accepts_valid_keys(key: str, backend: str, path: str) -> None:
     assert parse_reference_key(key) == (backend, path)
 
 

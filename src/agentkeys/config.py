@@ -22,9 +22,9 @@ __all__ = [
     "ConfigError",
     "TtlBound",
     "agentkeys_home",
-    "looks_like_secret",
     "discover_config_path",
     "load_config",
+    "looks_like_secret",
 ]
 
 _ENFORCE_MODES = ("monitor", "enforce")
