@@ -27,6 +27,7 @@ __all__ = [
     "LedgerRow",
     "RedactionReceipt",
     "Reference",
+    "RevokeResult",
     "Revocation",
     "Session",
     "StoreBusyError",
@@ -207,6 +208,16 @@ class ConsumeResult:
     issuance: Issuance | None
 
 
+@dataclass(frozen=True)
+class RevokeResult:
+    """The outcome of a CAS revoke: the effective revocation and whether this caller won."""
+
+    revocation: Revocation
+    winner: bool
+    epoch_before: int
+    epoch_after: int
+
+
 def canonical_event_json(event: LedgerEvent) -> str:
     """Deterministic, ordered JSON of an event (the chain's canonical form)."""
     payload: dict[str, Any] = asdict(event)
@@ -249,6 +260,8 @@ class BrokerStore(Protocol):
 
     def get_session(self, session_id: str) -> Session | None: ...
 
+    def get_binding(self, binding_hash: str) -> Binding | None: ...
+
     def issue(
         self,
         *,
@@ -285,7 +298,7 @@ class BrokerStore(Protocol):
         requested_at: int,
         reason: str,
         event: LedgerEvent,
-    ) -> Revocation: ...
+    ) -> RevokeResult: ...
 
     def get_revocation(self, revocation_id: str) -> Revocation | None: ...
 

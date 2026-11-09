@@ -92,6 +92,7 @@ class BrokerStore(Protocol):
     # sessions
     def create_session(self, session: Session) -> Session: ...
     def get_session(self, session_id: str) -> Session | None: ...
+    def get_binding(self, binding_hash: str) -> Binding | None: ...
 
     # issuance (atomic: binding + issuance + ledger row in one transaction)
     def issue(self, *, reference_id: str, session_id: str, agent_id: str, audience: str,
@@ -105,7 +106,7 @@ class BrokerStore(Protocol):
 
     # revocation (CAS on sessions.revoke_epoch)
     def cas_revoke(self, *, scope: str, target_id: str, requested_by: str, requested_at: int,
-                   reason: str, event: LedgerEvent) -> Revocation: ...
+                   reason: str, event: LedgerEvent) -> RevokeResult: ...
     def get_revocation(self, revocation_id: str) -> Revocation | None: ...
 
     # ledger
@@ -120,7 +121,11 @@ class BrokerStore(Protocol):
 
 `ConsumeResult` is a frozen dataclass: `status: Literal["consumed", "already_consumed", "expired", "unknown"]`
 plus the `Issuance | None`. A second consume is never an exception — it is a typed result the caller maps
-to `exchange-rejected` (SC-08–SC-11).
+to `exchange-rejected` (SC-08–SC-11). `RevokeResult` carries the effective `Revocation`, `winner: bool`, and
+`epoch_before`/`epoch_after`.
+
+The store **mints** the ids for state it creates (`iss_…` for an issuance, `rev_…` for a revocation) and
+rewrites the ledger event's `issuance_id` accordingly, so the evidence row and the state row never disagree.
 
 `issue` takes its ledger event as a parameter so the **one transaction** covers binding + issuance +
 ledger (PRD 15 §5 "atomic issue"), and the store assigns `seq`/`hash` for the appended row.
