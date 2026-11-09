@@ -15,6 +15,7 @@ from agentkeys.contracts.reference import (
     ReferenceError,
     parse_reference_key,
 )
+from agentkeys.contracts.registry import ReferenceRegistry, UnknownReference
 
 __all__ = [
     "AKREF_VERSION",
@@ -25,5 +26,7 @@ __all__ = [
     "IssuanceError",
     "ReferenceDoc",
     "ReferenceError",
+    "ReferenceRegistry",
+    "UnknownReference",
     "parse_reference_key",
 ]
