@@ -48,6 +48,40 @@ close until it is resolved or the design is amended to match reality.
 No open findings. The milestone's public-surface invariants (fail-closed config, references-only,
 reserved exit codes, doctor exit precedence) each have a gating test.
 
+### 1.CR — BrokerStore contract + drivers (2026-11-09)
+
+- **CR-007** · blocker · `src/agentkeys/store/schema.py` · the `references` table name is a SQLite
+  keyword; unquoted DDL/statements raised `near "references": syntax error`, so **no store could open**
+  (the truth layer did not exist) · fixed: the table and its statements are quoted · `dac066b` · RESOLVED
+- **CR-008** · blocker · `src/agentkeys/store/schema.py` · `migrate()` used `executescript`, which commits
+  implicitly; the following `ROLLBACK` failed and a partially applied migration could survive (a schema
+  built halfway, then used) · fixed: statements are applied individually inside one explicit
+  `BEGIN IMMEDIATE`/`COMMIT` per migration · `dac066b` · RESOLVED
+- **CR-009** · major · `src/agentkeys/store/sqlite.py` · `cas_revoke` rolled back in its `except` block and
+  the caller's handler rolled back again, so `sqlite3.OperationalError: cannot rollback` replaced the real
+  denial — a fail-closed reason lost and an untyped error escaping the store · fixed: one rollback, in the
+  handler only · `dac066b` · RESOLVED
+- **CR-010** · major · `src/agentkeys/store/schema.py` · a store file with tables but no `schema_version`
+  (a corrupt or foreign database) was entered, a version table was created inside it, and migration then
+  raised a raw `sqlite3.OperationalError` — neither loud nor fail-closed · fixed: refuse loudly naming
+  `schema_version` · `2590b97` · RESOLVED
+- **CR-011** · major · `tests/store_conformance.py` · every check shared one store, so a file-backed
+  driver saw another check's issuance on the retry path — the suite could pass a driver that violates S1
+  (or fail a conformant one), which would have made the contract gate untrustworthy · fixed: each check
+  runs in its own namespace key; the suite now provably fails four deliberately broken drivers ·
+  `040f7e8` · RESOLVED
+- **CR-012** · minor · `src/agentkeys/store/{sqlite,memory}.py` · duplicate `receipt_id`/`event_id` surfaced
+  raw SQLite `UNIQUE constraint failed: …` text instead of a named error · fixed: named
+  `duplicate receipt_id` / `duplicate event_id` · `dac066b` · RESOLVED
+- **CR-013** · minor · `src/agentkeys/store/sqlite.py` · a test-only crash hook is risk-bearing; it is
+  accepted only because it is inert unless `AGENTKEYS_TEST_CRASH_POINT=after_write_before_commit` is set,
+  and a test asserts it is inert without the variable · `dac066b` · RESOLVED
+- **CR-014** · minor · `src/agentkeys/store/sqlite.py` · `:memory:` reports `durable=False` and is skipped
+  by the durability check, so a `:memory:` store can never masquerade as durable · `040f7e8` · RESOLVED
+
+No open findings. Every semantic (S1-S6) has a gating fixture; the
+[conformance suite](../../reference/store-conformance.md) is the contract's executable form.
+
 <!--
 Template:
 

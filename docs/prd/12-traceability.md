@@ -43,6 +43,22 @@ M0 carries no R-scenario of its own; it lands the first slice of **E4** (fail-cl
 | `0.6` `doctor` | read-only health checks, exit-coded | `tests/test_doctor.py` |
 | `0.7` identity | README/LICENSE/CODEOWNERS/SECURITY/AGENTS/CONTRIBUTING | `tests/test_identity_docs.py` |
 
+## 0.1 v0.1.0 — store (M1, built 2026-11-09)
+
+The BrokerStore contract and its two drivers. Lands the first real slice of **E2** (durable store) and
+**E11** (versioning), and the foundation **E12**'s ledger will build on.
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `1.D0` design | BrokerStore contract, six semantics, DDL, capability selection | `docs/design/v0.1.0/store.md` |
+| `1.1` contract | typed records, `CapabilityFlags`, chain hashing, errors | `tests/test_store_contract.py` |
+| `1.2` SQLite driver | WAL, fsync'd commits, `0700`/`0600`, indexes, atomic issue, CAS revoke | `tests/test_store_sqlite.py` |
+| `1.3` memory driver | identical semantics, ephemeral | `tests/test_store_memory.py` |
+| `1.4` conformance suite | S1-S6 as fixtures; four broken fakes must fail it | `tests/test_store_conformance.py`, `tests/store_conformance.py` |
+| `1.5` migrations | forward-only, loud downgrade refusal, corrupt-store refusal | `tests/test_store_migrations.py` |
+| `1.6` loader | `agentkeys.store` entry points, admission, capability refusal | `tests/test_store_loader.py` |
+| `1.T` recovery | crash mid-issue → all-or-none, retry exactly once | `tests/test_store_recovery.py` |
+
 ## 1. v0.1.0 — P0 product requirements (R1–R9 + R17)
 
 | Req | Story | CUJ | Scenario | Test file |

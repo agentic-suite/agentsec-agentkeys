@@ -120,6 +120,15 @@ A milestone is **closed** only when all of these hold:
   `757f256` (gate coverage). `0.CR` logged 6 findings, all resolved ([codereview-log.md](codereview-log.md)).
   Docs: [foundation design](../../design/v0.1.0/foundation.md) · [CLI reference status](../../reference/cli.md) ·
   [PRD 12 §0](../../prd/12-traceability.md) wired. No credential is brokered yet. **Next: M1 opens at `1.D0`.**
+- **2026-11-09 — M1 BrokerStore contract + drivers closed** (branch `feat-v0.1.0`). Items `1.D0`, `1.1`-`1.6`
+  implemented test-first. Milestone gate run **once** at the end: `ruff` clean · `mypy --strict` clean ·
+  full suite green (32 modules) · coverage **95.61% ≥ 95%**. Commits: `f461293` (1.D0 design) ·
+  `da3aba1` (1.1 contract) · `d0465b5` (1.2 SQLite) · `5aeb470` (1.3 memory) · `040f7e8` (1.4 conformance) ·
+  `2590b97` (1.5 migrations) · `dac066b` (1.6 loader + 1.T/1.C/1.L gate). `1.CR` logged 8 findings
+  (3 blockers), all resolved ([codereview-log.md](codereview-log.md)). Docs:
+  [store design](../../design/v0.1.0/store.md) · [store reference](../../reference/store.md) ·
+  [conformance guide](../../reference/store-conformance.md) · [PRD 12 §0.1](../../prd/12-traceability.md).
+  No credential is brokered yet. **Next: M2 opens at `2.D0`.**
 
 ## PRD coverage matrix (every doc 00–23 + Appendix A)
 
