@@ -10,7 +10,7 @@ from __future__ import annotations
 from enum import IntEnum
 from typing import Any
 
-__all__ = ["ExitCode", "EXIT_CLASS", "json_envelope"]
+__all__ = ["EXIT_CLASS", "ExitCode", "json_envelope"]
 
 
 class ExitCode(IntEnum):
@@ -23,7 +23,8 @@ class ExitCode(IntEnum):
     """Usage or internal error (unknown command, bad flag, unimplemented stub)."""
 
     DENIED = 2
-    """Fail-closed denial with a reason (backend locked/absent/ambiguous, binding mismatch, no approval)."""
+    """Fail-closed denial with a reason (backend locked/absent/ambiguous, binding mismatch,
+    no approval)."""
 
     TAMPER = 3
     """Integrity failure (chain break, corrupt store, config integrity check)."""
@@ -39,7 +40,8 @@ EXIT_CLASS: dict[ExitCode, str] = {
     ExitCode.TAMPER: "tamper",
     ExitCode.REVOKE_VERIFIED: "revoke_verified",
 }
-"""Stable machine-readable name for each exit code (docs/reference/cli.md §Machine-readable mode)."""
+"""Stable machine-readable name for each exit code (docs/reference/cli.md §Machine-readable
+mode)."""
 
 
 def json_envelope(

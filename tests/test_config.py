@@ -77,7 +77,10 @@ def test_malformed_toml_fails_closed(tmp_path: Path) -> None:
 
 
 def test_unknown_key_names_the_dotted_path(tmp_path: Path) -> None:
-    path = _write(tmp_path, VALID.replace('enforce_mode = "enforce"', 'enforce_mode = "enforce"\nsurprise = "x"'))
+    path = _write(
+        tmp_path,
+        VALID.replace('enforce_mode = "enforce"', 'enforce_mode = "enforce"\nsurprise = "x"'),
+    )
     with pytest.raises(ConfigError, match=r"unknown key: surprise"):
         load_config(path)
 
@@ -168,7 +171,9 @@ def test_discovery_prefers_explicit_then_home_then_default(
     assert discover_config_path(None, env={}) == tmp_path / ".agentkeys" / "config.toml"
 
 
-def test_agentkeys_home_default_is_expandable(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_agentkeys_home_default_is_expandable(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     monkeypatch.setenv("AGENTKEYS_HOME", str(tmp_path / "ak"))
     monkeypatch.setenv("HOME", str(tmp_path))
     assert discover_config_path(None) == tmp_path / "ak" / "config.toml"

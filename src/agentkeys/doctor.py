@@ -11,9 +11,10 @@ import os
 import sqlite3
 import sys
 import time
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any
 
 from agentkeys import __version__
 from agentkeys.config import Config, ConfigError, agentkeys_home, load_config
@@ -49,7 +50,9 @@ def check_platform(platform: str) -> Check:
     return Check(id="platform", status="fail", detail=reason)
 
 
-def _check_config(config_path: str | Path | None, env: Mapping[str, str]) -> tuple[Check, Config | None]:
+def _check_config(
+    config_path: str | Path | None, env: Mapping[str, str]
+) -> tuple[Check, Config | None]:
     try:
         config = load_config(config_path, env=env)
     except ConfigError as exc:
@@ -66,7 +69,9 @@ def _check_home(home: Path) -> Check:
         return Check(id="home", status="fail", detail=f"not a directory: {home}")
     mode = home.stat().st_mode & 0o777
     if mode != _HOME_MODE:
-        return Check(id="home", status="fail", detail=f"permissions {mode:04o}, want {_HOME_MODE:04o}")
+        return Check(
+            id="home", status="fail", detail=f"permissions {mode:04o}, want {_HOME_MODE:04o}"
+        )
     return Check(id="home", status="ok", detail=f"{home} (0700)")
 
 
@@ -179,8 +184,10 @@ def run_doctor(
                 json_envelope(
                     code,
                     reason=failures[0].detail if failures else None,
-                    data={"checks": [check.as_dict() for check in checks],
-                          "effective_config": _effective_config(config)},
+                    data={
+                        "checks": [check.as_dict() for check in checks],
+                        "effective_config": _effective_config(config),
+                    },
                 )
             )
         )

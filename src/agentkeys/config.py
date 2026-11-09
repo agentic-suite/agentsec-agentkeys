@@ -10,9 +10,10 @@ from __future__ import annotations
 import os
 import re
 import tomllib
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 
 __all__ = [
     "Backend",
@@ -29,7 +30,7 @@ _ENFORCE_MODES = ("monitor", "enforce")
 _TTL_CLASSES = ("public", "dev", "staging", "prod")
 _TOP_LEVEL = {"enforce_mode", "sink", "store", "clock", "ttl", "backends", "bindings"}
 
-# Known credential shapes. A config must carry references, never values — so a match is a hard error.
+# Known credential shapes. A config must carry references, never values — a match is a hard error.
 _SECRET_PATTERNS = (
     re.compile(r"sk-[A-Za-z0-9_\-]{20,}"),
     re.compile(r"ghp_[A-Za-z0-9]{20,}"),
@@ -99,7 +100,7 @@ def discover_config_path(
     *,
     env: Mapping[str, str] | None = None,
 ) -> Path:
-    """Resolve the config location: explicit → `$AGENTKEYS_HOME` → `~/.agentkeys` (first hit wins)."""
+    """Resolve the config path: explicit → `$AGENTKEYS_HOME` → `~/.agentkeys` (first hit wins)."""
     environ: Mapping[str, str] = os.environ if env is None else env
     if explicit is not None:
         return Path(os.path.expanduser(str(explicit)))
@@ -113,7 +114,9 @@ def _looks_like_secret(value: str) -> bool:
 def _scan_for_secrets(node: Any, prefix: str) -> None:
     if isinstance(node, str):
         if _looks_like_secret(node):
-            raise ConfigError(f"literal secret detected in config at key: {prefix} (references only)")
+            raise ConfigError(
+                f"literal secret detected in config at key: {prefix} (references only)"
+            )
         return
     if isinstance(node, Mapping):
         for key, value in node.items():
@@ -124,30 +127,35 @@ def _scan_for_secrets(node: Any, prefix: str) -> None:
             _scan_for_secrets(item, f"{prefix}[{index}]")
 
 
-def _require_table(data: Mapping[str, Any], key: str) -> Mapping[str, Any]:
+def _require_table(
+    data: Mapping[str, Any], key: str, label: str | None = None
+) -> Mapping[str, Any]:
+    shown = label or key
     if key not in data:
-        raise ConfigError(f"missing required key: {key}")
+        raise ConfigError(f"missing required key: {shown}")
     value = data[key]
     if not isinstance(value, dict):
-        raise ConfigError(f"invalid config: {key} must be a table")
+        raise ConfigError(f"invalid config: {shown} must be a table")
     return value
 
 
-def _require_str(data: Mapping[str, Any], key: str) -> str:
+def _require_str(data: Mapping[str, Any], key: str, label: str | None = None) -> str:
+    shown = label or key
     if key not in data:
-        raise ConfigError(f"missing required key: {key}")
+        raise ConfigError(f"missing required key: {shown}")
     value = data[key]
     if not isinstance(value, str):
-        raise ConfigError(f"invalid config: {key} must be a string")
+        raise ConfigError(f"invalid config: {shown} must be a string")
     return value
 
 
-def _require_int(data: Mapping[str, Any], key: str) -> int:
+def _require_int(data: Mapping[str, Any], key: str, label: str | None = None) -> int:
+    shown = label or key
     if key not in data:
-        raise ConfigError(f"missing required key: {key}")
+        raise ConfigError(f"missing required key: {shown}")
     value = data[key]
     if isinstance(value, bool) or not isinstance(value, int):
-        raise ConfigError(f"invalid config: {key} must be an integer")
+        raise ConfigError(f"invalid config: {shown} must be an integer")
     return value
 
 
@@ -158,7 +166,9 @@ def _allowed_keys(data: Mapping[str, Any], allowed: set[str], prefix: str) -> No
             raise ConfigError(f"unknown key: {dotted}")
 
 
-def _parse_ttl(raw: Mapping[str, Any]) -> dict[str, TtlBound]:
+def _parse_ttl(raw: Any) -> dict[str, TtlBound]:
+    if not isinstance(raw, dict):
+        raise ConfigError("invalid config: ttl must be a table")
     if not raw:
         raise ConfigError("missing required key: ttl (at least one class)")
     bounds: dict[str, TtlBound] = {}
@@ -266,13 +276,13 @@ def load_config(
 
     store = _require_table(data, "store")
     _allowed_keys(store, {"path"}, "store")
-    store_path = Path(os.path.expanduser(_require_str(store, "path")))
+    store_path = Path(os.path.expanduser(_require_str(store, "path", "store.path")))
     if store_path.is_dir():
         raise ConfigError("invalid config: store.path points at an existing directory")
 
     clock = _require_table(data, "clock")
     _allowed_keys(clock, {"skew_tolerance"}, "clock")
-    skew = _require_int(clock, "skew_tolerance")
+    skew = _require_int(clock, "skew_tolerance", "clock.skew_tolerance")
     if skew < 0:
         raise ConfigError("invalid config: clock.skew_tolerance must be >= 0")
 

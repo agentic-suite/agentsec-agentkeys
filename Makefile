@@ -1,35 +1,30 @@
 # agentkeys — development targets. Runtime is stdlib-only; these are dev conveniences.
 
-PYTHON ?= python3
 VENV ?= .venv
 COV_MIN ?= 95
 
-# Use the venv's tools when present; otherwise fall back to PATH (as in CI).
-ifeq ($(wildcard $(VENV)/bin/ruff),)
-BIN :=
-else
-BIN := $(VENV)/bin/
-endif
+# Use the project venv when it exists (local), else the interpreter on PATH (as in CI).
+PYTHON ?= $(if $(wildcard $(VENV)/bin/python),$(VENV)/bin/python,python3)
 
 .PHONY: setup lint typecheck test cov gate clean
 
 setup: ## create the dev environment and install the package (editable) + dev extras
-	python3 -m venv $(VENV)
+	$(PYTHON) -m venv $(VENV)
 	$(VENV)/bin/python -m pip install --upgrade pip
 	$(VENV)/bin/python -m pip install -e ".[dev]"
 
 lint: ## ruff, zero violations
-	$(BIN)/ruff check src tests
-	$(BIN)/ruff format --check src tests
+	$(PYTHON) -m ruff check src tests
+	$(PYTHON) -m ruff format --check src tests
 
 typecheck: ## mypy --strict
-	$(BIN)/mypy
+	$(PYTHON) -m mypy
 
 test: ## run the test suite
-	$(BIN)/pytest
+	$(PYTHON) -m pytest
 
 cov: ## run tests with coverage and enforce the milestone floor
-	$(BIN)/pytest --cov=agentkeys --cov-report=term-missing --cov-fail-under=$(COV_MIN)
+	$(PYTHON) -m pytest --cov=agentkeys --cov-report=term-missing --cov-fail-under=$(COV_MIN)
 
 gate: lint typecheck cov ## the standing milestone gate
 

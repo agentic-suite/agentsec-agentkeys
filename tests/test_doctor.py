@@ -169,7 +169,9 @@ def test_missing_store_parent_denies(
     assert code == 2
     checks = {check["id"]: check["status"] for check in payload["data"]["checks"]}
     assert checks["store"] == "fail"
-    assert "parent" in {check["id"]: check for check in payload["data"]["checks"]}["store"]["detail"]
+    assert (
+        "parent" in {check["id"]: check for check in payload["data"]["checks"]}["store"]["detail"]
+    )
 
 
 def test_windows_platform_is_denied_with_a_clear_reason() -> None:
@@ -204,3 +206,60 @@ def test_human_output_names_each_check(
     out = capsys.readouterr().out
     assert "config" in out
     assert "effective config" in out.lower()
+
+
+def test_human_output_handles_invalid_config(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setenv("AGENTKEYS_HOME", str(tmp_path / "missing"))
+    assert main(["doctor"]) == 2
+    assert "unavailable" in capsys.readouterr().out
+
+
+def test_home_that_is_a_file_denies(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    home = tmp_path / "ak"
+    home.write_text("not a directory", encoding="utf-8")
+    monkeypatch.setenv("AGENTKEYS_HOME", str(home))
+    assert main(["doctor"]) == 2
+    assert "not a directory" in capsys.readouterr().out
+
+
+def test_unwritable_store_parent_denies(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    home = _home(tmp_path)
+    monkeypatch.setenv("AGENTKEYS_HOME", str(home))
+    monkeypatch.setattr("agentkeys.doctor.os.access", lambda *_args: False)
+    assert main(["doctor"]) == 2
+    assert "not writable" in capsys.readouterr().out
+
+
+def test_empty_schema_version_is_tamper(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    home = _home(tmp_path)
+    connection = sqlite3.connect(home / "agentkeys.db")
+    connection.execute("CREATE TABLE schema_version (version INTEGER NOT NULL)")
+    connection.commit()
+    connection.close()
+    monkeypatch.setenv("AGENTKEYS_HOME", str(home))
+    assert main(["doctor"]) == 3
+    assert "empty" in capsys.readouterr().out
+
+
+def test_backwards_wall_clock_denies(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    home = _home(tmp_path)
+    monkeypatch.setenv("AGENTKEYS_HOME", str(home))
+    ticks = iter([100.0, 50.0])
+
+    class FakeTime:
+        def time(self) -> float:
+            return next(ticks)
+
+    monkeypatch.setattr("agentkeys.doctor.time", FakeTime())
+    assert main(["doctor"]) == 2
+    assert "backwards" in capsys.readouterr().out

@@ -39,10 +39,10 @@ def test_top_level_help_lists_every_command(capsys: pytest.CaptureFixture[str]) 
         assert command in out
 
 
-@pytest.mark.parametrize("command", [c for c in EXPECTED_COMMANDS if c not in {"version", "doctor"}])
-def test_broker_commands_refuse_honestly(
-    command: str, capsys: pytest.CaptureFixture[str]
-) -> None:
+@pytest.mark.parametrize(
+    "command", [c for c in EXPECTED_COMMANDS if c not in {"version", "doctor"}]
+)
+def test_broker_commands_refuse_honestly(command: str, capsys: pytest.CaptureFixture[str]) -> None:
     code = main([command])
     err = capsys.readouterr().err
     assert code != 0
@@ -70,6 +70,19 @@ def test_unknown_command_is_usage_error(capsys: pytest.CaptureFixture[str]) -> N
     err = capsys.readouterr().err
     assert code == 1
     assert err.strip()
+
+
+def test_no_command_is_usage_error(capsys: pytest.CaptureFixture[str]) -> None:
+    code = main([])
+    assert code == 1
+    assert "usage" in capsys.readouterr().err.lower()
+
+
+def test_version_flag(capsys: pytest.CaptureFixture[str]) -> None:
+    with pytest.raises(SystemExit) as excinfo:
+        main(["--version"])
+    assert excinfo.value.code == 0
+    assert "agentkeys" in capsys.readouterr().out
 
 
 def test_stub_json_mode_emits_stable_envelope(capsys: pytest.CaptureFixture[str]) -> None:

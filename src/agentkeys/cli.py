@@ -1,8 +1,8 @@
 """agentkeys command-line surface (WBS 0.2).
 
 The command set is frozen for v0.1.0: `--help` lists it, and every broker command that is not yet
-implemented refuses honestly (non-zero, clear message, no secret, no state written). `version` works;
-`doctor` gains real checks in WBS 0.6.
+implemented refuses honestly (non-zero, clear message, no secret, no state written). `version` and
+`doctor` are implemented.
 """
 
 from __future__ import annotations
@@ -11,7 +11,7 @@ import argparse
 import json
 import sys
 from collections.abc import Callable, Sequence
-from typing import Any
+from typing import Any, NoReturn
 
 from agentkeys import __version__
 from agentkeys.doctor import run_doctor
@@ -62,7 +62,7 @@ class _UsageError(Exception):
 
 
 class _Parser(argparse.ArgumentParser):
-    def error(self, message: str) -> None:  # pragma: no cover - exercised via main()
+    def error(self, message: str) -> NoReturn:  # pragma: no cover - exercised via main()
         raise _UsageError(message)
 
 
