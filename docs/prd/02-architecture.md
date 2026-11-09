@@ -160,6 +160,10 @@ documented incidents.
 - The reference pattern is documented for server authors and prepared as an **MCP ext-auth contribution**
   ([PRD 20](20-standards-and-claims.md)).
 
+> **Implemented (M5, 2026-11-09).** stdio credential virtualization is implemented in
+> `src/agentkeys/stdio/`; the reference/placeholder pattern and the honest boundary limit are documented in
+> the [stdio virtualization reference](../reference/stdio-virtualization.md).
+
 ### The honest co-located-runtime limit
 
 A stdio server is a **child process**. If it shares the *same readable runtime* as arbitrary agent code

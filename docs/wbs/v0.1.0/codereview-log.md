@@ -168,6 +168,34 @@ and the redactor's pattern set is the single source shared with M0/M2.
 No open findings. Every refusal path returns a typed reason and emits `exchange-rejected`; the four rules
 each have a gating test.
 
+### 5.CR — stdio MCP credential virtualization (2026-11-09)
+
+- **CR-036** · blocker · `src/agentkeys/stdio/substitute.py` · stripping client credentials ran before
+  placeholder substitution, so the documented pattern (`GITHUB_TOKEN=akref:…`) would have been *dropped*
+  instead of virtualized — the flagship's primary use case silently lost its token · fixed: a placeholder is
+  a reference, not a credential; only a **literal** value in a credential variable is stripped, and both
+  behaviours are tested · `(5.3/5.4)` · RESOLVED
+- **CR-037** · blocker · `src/agentkeys/stdio/proxy.py` · the child's stderr was drained only after stdin
+  closed; a chatty server could fill the pipe and deadlock the proxy · fixed: stderr is drained on its own
+  thread · `(5.2)` · RESOLVED
+- **CR-038** · major · `src/agentkeys/stdio/proxy.py` · an oversized frame could have been forwarded
+  truncated (a malformed JSON-RPC message to the server) · fixed: `forward_frame` refuses the frame, the
+  proxy logs the refusal to stderr and forwards nothing · `(5.2)` · RESOLVED
+- **CR-039** · major · `src/agentkeys/stdio/wrapper.py` · the child environment was the caller's environment;
+  the broker's own environment (including any harness-injected credential) would have been inherited · fixed:
+  the child env is built by explicit substitution + stripping, with a virtualization marker · `(5.1)` · RESOLVED
+- **CR-040** · major · `src/agentkeys/commands/run.py` · the CLI minted tokens without recording a `use`
+  event, so a stdio issuance had no evidence trail · fixed: each substitution appends a `use` event in the
+  session · `(5.1)` · RESOLVED
+- **CR-041** · minor · `src/agentkeys/stdio/proxy.py` · `assert`-based pipe checks vanished under `-O`,
+  turning a programming error into an obscure `AttributeError` · fixed: an explicit `RuntimeError` · `(5.2)` · RESOLVED
+- **CR-042** · minor · `src/agentkeys/stdio/substitute.py` · a malformed placeholder was passed through to the
+  child; a typo could therefore send the literal string `akref:…` (or worse, a value) to a server · fixed:
+  the key grammar is checked before substitution; a malformed placeholder is refused · `(5.3)` · RESOLVED
+
+No open findings. The co-located-runtime limit is documented as a first-class property
+([stdio virtualization](../reference/stdio-virtualization.md)), not a footnote.
+
 <!--
 Template:
 

@@ -153,6 +153,15 @@ A milestone is **closed** only when all of these hold:
   [PRD 02 §4 note](../../prd/02-architecture.md) · [PRD 12 §0.4](../../prd/12-traceability.md).
   A minted issuance can now be injected into a child environment, an HTTP header, or an RFC 8693 exchange —
   with the audience enforced at the injector and no client-token passthrough. **Next: M5 opens at `5.D0`.**
+- **2026-11-09 — M5 stdio MCP credential virtualization closed** (branch `feat-v0.1.0`) — the flagship.
+  Items `5.D0`, `5.1`-`5.5` implemented test-first. Milestone gate run **once** at the end: `ruff` clean ·
+  `mypy --strict` clean · full suite green · coverage **96.17% ≥ 95%**. `5.CR` logged 7 findings (2 blockers),
+  all resolved. Docs: [stdio design](../../design/v0.1.0/stdio.md) ·
+  [stdio virtualization reference](../../reference/stdio-virtualization.md) ·
+  [ext-auth appendix](../../design/v0.1.0/stdio-ext-auth-appendix.md) ·
+  [PRD 02 §5 note](../../prd/02-architecture.md) · [PRD 12 §0.5](../../prd/12-traceability.md).
+  A stock stdio server now authenticates under the broker with references in its config and a scoped token at
+  its egress; the co-located-runtime limit is documented, not hidden. **Next: M6 opens at `6.D0`.**
 
 ## PRD coverage matrix (every doc 00–23 + Appendix A)
 

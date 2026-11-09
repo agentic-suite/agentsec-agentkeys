@@ -104,6 +104,20 @@ Lands the first slice of **R2/R3** (egress injection; bindings), **E7** (the inj
 | `4.5` audience enforcement | SC-08-SC-11 + SC-42 deny and log | `tests/test_binding_audience.py` |
 | `4.6` session binding | one agent per session (D-17) | `tests/test_binding_session.py` |
 
+## 0.5 v0.1.0 — stdio MCP credential virtualization (M5, built 2026-11-09)
+
+Lands the flagship: **R8** (stdio virtualization), with **E7** (the injection engine) and **E14** (no
+passthrough) applied to the stdio case.
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `5.D0` design | wrapper, proxy, substitution, the honest boundary limit | `docs/design/v0.1.0/stdio.md` |
+| `5.1` launch wrapper | `agentkeys run --server` builds the child env and proxies stdio | `tests/test_stdio_cli_run.py`, `tests/test_stdio_virtualization.py` |
+| `5.2` stdio proxy | byte-for-byte frames, stderr-only logging, frame cap | `tests/test_stdio_proxy.py` |
+| `5.3` substitution | placeholder → scoped token, with receipts | `tests/test_stdio_virtualization.py` |
+| `5.4` no passthrough | client credential stripped; server receives a broker token | `tests/test_stdio_no_token_passthrough.py` |
+| `5.5` pattern + ext-auth | the placeholder pattern documented; fixtures + appendix staged | `docs/reference/stdio-virtualization.md`, `docs/design/v0.1.0/stdio-ext-auth-appendix.md` |
+
 ## 1. v0.1.0 — P0 product requirements (R1–R9 + R17)
 
 | Req | Story | CUJ | Scenario | Test file |

@@ -15,6 +15,7 @@ from typing import Any, NoReturn
 
 from agentkeys import __version__
 from agentkeys.commands.ref import run_ref
+from agentkeys.commands.run import run_run
 from agentkeys.doctor import run_doctor
 from agentkeys.exit_codes import ExitCode, json_envelope
 
@@ -89,6 +90,10 @@ def _ref_handler(args: argparse.Namespace) -> int:
     return run_ref(args)
 
 
+def _run_handler(args: argparse.Namespace) -> int:
+    return run_run(args)
+
+
 def _doctor_handler(args: argparse.Namespace) -> int:
     return run_doctor(config_path=getattr(args, "config", None), as_json=args.json)
 
@@ -140,7 +145,9 @@ def _build_parser() -> _Parser:
     _add_json_flag(rp)
 
     p = sub.add_parser("run", help="launch a child under the broker with a virtualized env")
-    p.add_argument("--server")
+    p.add_argument("--server", help="the reference the child's placeholders resolve through")
+    p.add_argument("--session", help="session id (default: stdio)")
+    p.add_argument("--config", help="config path (default: $AGENTKEYS_HOME/config.toml)")
     p.add_argument("child", nargs="*", help="command to run after --")
     _add_json_flag(p)
 
@@ -188,9 +195,10 @@ def _build_parser() -> _Parser:
 
     sub.choices["doctor"].set_defaults(handler=_doctor_handler)
     sub.choices["ref"].set_defaults(handler=_ref_handler)
+    sub.choices["run"].set_defaults(handler=_run_handler)
 
     for name in COMMANDS:
-        if name in {"version", "doctor", "ref"}:
+        if name in {"version", "doctor", "ref", "run"}:
             continue
         sub.choices[name].set_defaults(handler=_stub(name))
 
