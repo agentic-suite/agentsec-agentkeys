@@ -82,6 +82,31 @@ reserved exit codes, doctor exit precedence) each have a gating test.
 No open findings. Every semantic (S1-S6) has a gating fixture; the
 [conformance suite](../../reference/store-conformance.md) is the contract's executable form.
 
+### 2.CR — Reference + issuance contracts (2026-11-09)
+
+- **CR-015** · blocker · `src/agentkeys/contracts/issuance.py` · an early draft reused the storage record as
+  the wire document, which would have put `secret_hash` (and, via repr, a token) one step from the caller's
+  context · fixed: the wire document is a distinct type with no secret field, asserted by an attribute scan,
+  and `ResolvedIssuance.__repr__` redacts the token · `6ddef6d`, `fd2eeeb` · RESOLVED
+- **CR-016** · major · `src/agentkeys/core/resolution.py` · a token mismatch could have been reported as
+  `already_consumed` (a pass-shaped result) if the hash compare were skipped · fixed: constant-time
+  `hmac.compare_digest` first, with a distinct `rejected` outcome and its own test · `6ddef6d` · RESOLVED
+- **CR-017** · major · `src/agentkeys/contracts/issuance.py` · TTL was validated by the caller only, so a
+  misconfigured window could mint an over-broad token · fixed: `validate_ttl` runs on the mint path and the
+  issuance constructor refuses an `expires_at` that is not `issued_at + ttl` · `0ec2150` · RESOLVED
+- **CR-018** · minor · `src/agentkeys/contracts/reference.py` · a secret-shaped `path`/`label` would have
+  been serialised into a context-dump · fixed: the shared `looks_like_secret` detector refuses such values,
+  and the reference module reuses the M0 detector rather than duplicating patterns · `28cc831` · RESOLVED
+- **CR-019** · minor · `src/agentkeys/commands/ref.py` · a missing config initially returned a usage code,
+  which conflated "you typed it wrong" with "the broker cannot run safely" · fixed: a missing/invalid config
+  is a **denial** (exit 2), tested · `fd2eeeb` · RESOLVED
+- **CR-020** · minor · `src/agentkeys/sdk.py` · the embedder surface is the likeliest place for a
+  `get_secret()` to be added later; a test asserts no public name contains "secret"/"plaintext" and the
+  class refuses unknown attributes with a named reason · `fd2eeeb` · RESOLVED
+
+No open findings. Idempotency (E1) and single-use (E3) each have gating fixtures, and the "no plaintext
+field" rule is asserted structurally rather than by convention.
+
 <!--
 Template:
 

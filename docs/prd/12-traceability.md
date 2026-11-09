@@ -59,6 +59,21 @@ The BrokerStore contract and its two drivers. Lands the first real slice of **E2
 | `1.6` loader | `agentkeys.store` entry points, admission, capability refusal | `tests/test_store_loader.py` |
 | `1.T` recovery | crash mid-issue → all-or-none, retry exactly once | `tests/test_store_recovery.py` |
 
+## 0.2 v0.1.0 — contracts + resolution (M2, built 2026-11-09)
+
+Lands the first slice of **E1** (contract + idempotent resolution), **E3** (single-use issuance), and
+**R1/R3** (references only; audience/tool/session bindings).
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `2.D0` design | contracts design of record (identity chain, pipeline order) | `docs/design/v0.1.0/contracts.md` |
+| `2.1` `akref/1.0` | reference model + strict key grammar; opaque + loggable | `tests/test_reference_contract.py` |
+| `2.2` `issuance/1.0` | binding triple; TTL within class window; no plaintext field | `tests/test_issuance_contract.py` |
+| `2.3` registry | register/list; unknown key refused loudly | `tests/test_registry.py` |
+| `2.4` idempotent resolution | retry returns the same issuance, mints nothing (`E1`) | `tests/test_resolution.py` |
+| `2.5` single-use secret | hashed token, typed consume, replay rejected (`E3`) | `tests/test_resolution.py` |
+| `2.6` SDK / CLI | embedder surface + `ref list|show`; no `get_secret()` | `tests/test_sdk_cli_contract.py` |
+
 ## 1. v0.1.0 — P0 product requirements (R1–R9 + R17)
 
 | Req | Story | CUJ | Scenario | Test file |

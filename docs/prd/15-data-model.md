@@ -41,6 +41,11 @@ change appends a **LifecycleEvent**; **RedactionReceipts** annotate any event/is
 - `Backend.capability_flags` ∈ `single_writer`, `durable`, `atomic_issue`, `cluster_safe`; a failing capability refuses to load (E2, E9).
 - `RedactionReceipt` records `field`, `class`, `count` for every masked secret-shaped value (E5).
 
+> **Implemented (M2, 2026-11-09).** The reference and issuance contracts below are built in
+> `src/agentkeys/contracts/` with the resolution pipeline in `src/agentkeys/core/resolution.py`; see the
+> [contracts reference](../reference/contracts.md). `secret_hash` (see §5) is the only secret-adjacent
+> column and is never on the wire.
+
 ## 2. The reference contract (`akref/1.0`)
 
 A **versioned JSON** document. It is **safe to print, serialize, and log**: no secret bytes, resolvable only

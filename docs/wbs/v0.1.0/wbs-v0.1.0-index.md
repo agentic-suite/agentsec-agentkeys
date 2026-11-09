@@ -129,6 +129,15 @@ A milestone is **closed** only when all of these hold:
   [store design](../../design/v0.1.0/store.md) · [store reference](../../reference/store.md) ·
   [conformance guide](../../reference/store-conformance.md) · [PRD 12 §0.1](../../prd/12-traceability.md).
   No credential is brokered yet. **Next: M2 opens at `2.D0`.**
+- **2026-11-09 — M2 Reference + issuance contracts closed** (branch `feat-v0.1.0`). Items `2.D0`, `2.1`-`2.6`
+  implemented test-first. Milestone gate run **once** at the end: `ruff` clean · `mypy --strict` clean ·
+  full suite green · coverage **95.48% ≥ 95%**. Commits: `67c07c3` (2.D0 design + 2.1 akref) ·
+  `0ec2150` (2.2 issuance) · `12448ab` (2.3 registry) · `6ddef6d` (2.4/2.5 resolution) ·
+  `fd2eeeb` (2.6 SDK + CLI). `2.CR` logged 6 findings (1 blocker), all resolved. Docs:
+  [contracts design](../../design/v0.1.0/contracts.md) · [contracts reference](../../reference/contracts.md) ·
+  [PRD 15 §2 note](../../prd/15-data-model.md) · [PRD 12 §0.2](../../prd/12-traceability.md).
+  A harness can now resolve a reference into a bound, single-use issuance — it is not yet injected at
+  egress (M4/M5). **Next: M3 opens at `3.D0`.**
 
 ## PRD coverage matrix (every doc 00–23 + Appendix A)
 
