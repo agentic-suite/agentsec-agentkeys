@@ -146,6 +146,13 @@ A milestone is **closed** only when all of these hold:
   [backends reference](../../reference/backends.md) · [conformance guide](../../reference/backends-conformance.md) ·
   [PRD 12 §0.3](../../prd/12-traceability.md). Credentials can now be resolved fail-closed and redacted;
   they are still not delivered to a target at egress. **Next: M4 opens at `4.D0`.**
+- **2026-11-09 — M4 Egress-injection engine closed** (branch `feat-v0.1.0`). Items `4.D0`, `4.1`-`4.6`
+  implemented test-first. Milestone gate run **once** at the end: `ruff` clean · `mypy --strict` clean ·
+  full suite green · coverage **96.43% ≥ 95%**. `4.CR` logged 7 findings (2 blockers), all resolved. Docs:
+  [egress design](../../design/v0.1.0/egress.md) · [egress reference](../../reference/egress.md) ·
+  [PRD 02 §4 note](../../prd/02-architecture.md) · [PRD 12 §0.4](../../prd/12-traceability.md).
+  A minted issuance can now be injected into a child environment, an HTTP header, or an RFC 8693 exchange —
+  with the audience enforced at the injector and no client-token passthrough. **Next: M5 opens at `5.D0`.**
 
 ## PRD coverage matrix (every doc 00–23 + Appendix A)
 

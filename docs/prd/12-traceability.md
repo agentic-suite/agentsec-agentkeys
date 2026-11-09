@@ -89,6 +89,21 @@ backends), and **E5** (redaction by default + receipts).
 | `3.5` fail-closed engine | every failure → a structured denial; no fallback | `tests/test_failclosed_matrix.py` |
 | `3.6` redactor + receipts | mask before persist/render/export; a receipt per field | `tests/test_redactor_receipts.py` |
 
+## 0.4 v0.1.0 — egress-injection engine (M4, built 2026-11-09)
+
+Lands the first slice of **R2/R3** (egress injection; bindings), **E7** (the injection engine),
+**E14** (no passthrough), and **E13** (RFC 8693 conformance at the driver level).
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `4.D0` design | one interface, three drivers, the four rules, denials | `docs/design/v0.1.0/egress.md` |
+| `4.1` interface + rules | binding is the ceiling; forget; typed denials; rejection events | `tests/test_inject_contract.py` |
+| `4.2` env driver | child environment only; parent untouched | `tests/test_inject_env.py` |
+| `4.3` header driver | overwrite client credential headers | `tests/test_inject_header.py` |
+| `4.4` RFC 8693 driver | narrow audience/scope; broker subject; `act` | `tests/test_inject_exchange.py` |
+| `4.5` audience enforcement | SC-08-SC-11 + SC-42 deny and log | `tests/test_binding_audience.py` |
+| `4.6` session binding | one agent per session (D-17) | `tests/test_binding_session.py` |
+
 ## 1. v0.1.0 — P0 product requirements (R1–R9 + R17)
 
 | Req | Story | CUJ | Scenario | Test file |

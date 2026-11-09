@@ -140,6 +140,34 @@ field" rule is asserted structurally rather than by convention.
 No open findings. The fault matrix is 100% deny-or-pending, both drivers pass one shared conformance suite,
 and the redactor's pattern set is the single source shared with M0/M2.
 
+### 4.CR — Egress-injection engine (2026-11-09)
+
+- **CR-029** · blocker · `src/agentkeys/egress/contract.py` · the passthrough rule was only a convention: a
+  driver could have put `request.client_token` into its output and nothing would have noticed · fixed:
+  `BaseInjector.apply` inspects the delivered material, raises `passthrough-stripped`, and marks
+  `overwrote_client_credential`; each driver has a test with a client-supplied token · `(4.1)` · RESOLVED
+- **CR-030** · blocker · `src/agentkeys/egress/exchange.py` · an exchange could have used the *client's* token
+  as `subject_token`, silently forwarding it upstream (E14 violation) · fixed: the subject is the broker's
+  single-use token, the client token is refused if it appears in the request body, and the test asserts it is
+  absent · `(4.4)` · RESOLVED
+- **CR-031** · major · `src/agentkeys/egress/contract.py` · audience was checked against the *request* only,
+  so an injector configured for another audience would have accepted a mismatched issuance · fixed: the
+  injector's own audience is compared too, and `check_injection` covers the injector-side case · `(4.5)` · RESOLVED
+- **CR-032** · major · `src/agentkeys/egress/header.py` · leaving a client-supplied credential header in place
+  would have sent both credentials, letting the downstream pick the attacker's · fixed: credential-family
+  headers are removed before the bound one is set · `(4.3)` · RESOLVED
+- **CR-033** · major · `src/agentkeys/core/sessions.py` · an unbounded session would have let a second agent
+  inherit the first agent's binding · fixed: `SessionBinder` refuses a different agent and a revoked session,
+  and a new session starts unbound · `(4.6)` · RESOLVED
+- **CR-034** · minor · `tests/test_inject_exchange.py` · the fake exchange treated an empty response as
+  "absent", so the failure path was never exercised · fixed: an explicit empty response is honoured and the
+  denial is asserted · `(4.4)` · RESOLVED
+- **CR-035** · minor · `src/agentkeys/egress/exchange.py` · a hard-coded `actor_token` default needed a
+  security-scanner justification; documented as an identifier, never a secret · `(4.4)` · RESOLVED
+
+No open findings. Every refusal path returns a typed reason and emits `exchange-rejected`; the four rules
+each have a gating test.
+
 <!--
 Template:
 
