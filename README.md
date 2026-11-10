@@ -12,15 +12,25 @@ for AI agents. Apache-2.0.
 
 ## Status
 
-**in progress — the broker core is built through M13; field tests and release (M14/M15) are next.** The
-full requirement set ([PRD 00–23 + Appendix A](docs/prd/README.md)) and the build plan
+**v0.1.0 release candidate — the broker is built and field-tested; the tag is pending the release gates.**
+The full requirement set ([PRD 00–23 + Appendix A](docs/prd/README.md)) and the build plan
 ([v0.1.0 WBS — 16 milestones, M0–M15](docs/wbs/v0.1.0/wbs-v0.1.0-index.md)) are public on purpose, so we can
-be held to them. Implemented: reference/issuance contracts, the store, keychain/file backends, egress
-injection (env/header/RFC 8693), stdio virtualization, `revoke`/`replay`, the hash-chained ledger with
-`export`/`verify-log`, `scan`/`migrate`, evasion/tamper detection, step-up approvals and harness recipes,
-the conformance kit, backup/restore, and `serve`. Not yet: `init`, `context-dump`, `scan-usable`, keychain
-migration, signed releases, and the M14 field test — see [honest gaps](docs/explanation/honest-gaps.md).
-No release has shipped; claims stay at their evidence label
+be held to them.
+
+The **M14 field test is complete and hand-verdict**: **71 PASS · 0 FAIL · 3 WARN · 0 NOT RUN** across 74
+cases, with all five blocking scenarios green (kill-time, context dump, tamper, evidence, scan/migrate) —
+see the [hand-maintained field report](docs/field-test/v0.1.0/FIELD_TEST_REPORT.md). Three WARNs remain, each
+with a named limitation, and one earlier WARN was upgraded only after a real enforcer was composed.
+
+Release readiness is in progress: the [security audit](docs/release/v0.1.0/SECURITY_AUDIT.md) found 0 verified
+secrets in the tree **and** the full history, the [claims ledger](docs/release/v0.1.0/CLAIMS.md) resolves
+every public claim to a committed case, and the [compatibility matrix](docs/release/v0.1.0/COMPATIBILITY.md)
+labels each harness honestly. **Nothing is *verified*** — that word means an independent third party
+reproduced the claim, and the published [benchmark](bench/README.md) is how someone can.
+
+Still **honest stubs** in the frozen command surface: `init`, `context-dump`, `scan-usable` — each exits
+non-zero and names its milestone rather than pretending. See [honest gaps](docs/explanation/honest-gaps.md)
+and the [release notes](docs/release/v0.1.0/RELEASE_NOTES.md). Claims stay at their evidence label
 ([evidence labels](docs/prd/20-standards-and-claims.md)).
 
 ## Install & run (v0.1.0 foundation)
