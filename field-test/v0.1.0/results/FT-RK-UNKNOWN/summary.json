@@ -26,23 +26,23 @@
   "evidence": {
     "files": {
       "assertions.json": "234616d97272ce43ffd72d186d0a2ad27bfa93d8e6ab77b6856b6dfa53668d1f",
-      "commands.log": "de49da83482819b41cdbd292e52337877dce7ea51e2d28558fc662653b1d3938",
-      "env.json": "03eab060703aec7f6a074385f25a1c234331d139f910ee169a48a5d26885d693"
+      "commands.log": "015ed5fc1b8a442f64c2f82dbb8ab15a1049a20f558722ba4ded4c964045cf3e",
+      "env.json": "d577bf7a669ed00cd09564f0f1b23013178629ea2db11d2f158bc7356ded599e"
     }
   },
   "fingerprint": {
     "docker": "Docker version 29.5.2, build 79eb04c7d8",
-    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "git_sha": "18e458895b99106eca5fa677c89f580a4eb27fb2",
     "machine": "arm64",
     "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
     "python": "3.14.5",
     "system": "darwin",
-    "utc": "2026-11-10T03:41:43Z"
+    "utc": "2026-11-10T04:06:36Z"
   },
   "limitations": [],
   "pack": "killtime",
   "passed": true,
   "scenario": "SC-27",
-  "started_at": "2026-11-10T03:41:43Z",
+  "started_at": "2026-11-10T04:06:36Z",
   "status": "pass"
 }

@@ -278,6 +278,48 @@ No open findings.
 
 No open findings.
 
+### 14.CR — Field-test harness + report (2026-11-09)
+
+The milestone review covers the field-test tooling (`src/agentkeys/fieldtest/`, `scripts/fieldtest/`,
+`field-test/v0.1.0/docker/`) and the sweep's findings. **Product defects: zero.** Every finding below was in
+the harness or the environment, found by the gates, fixed with a test or re-run.
+
+- **CR-062** · blocker · `src/agentkeys/fieldtest/runner.py` · `fingerprint()` ran `git`/`docker`
+  unconditionally and crashed inside containers where neither exists, killing the in-container packs ·
+  fixed: guarded `FileNotFoundError`/`OSError` → `"unavailable"` · `(14.1)` · RESOLVED
+- **CR-063** · blocker · `src/agentkeys/fieldtest/packs_docker.py` · the air-gap leg mounted a named volume
+  root-owned and the non-root broker user (UID 10001) could not create its results dir → FT-DK-AIRGAP
+  FAIL · fixed: root-user `mkdir`+`chown` prep step, then run as 10001 · re-run PASS · `(14.3)` · RESOLVED
+- **CR-064** · major · `src/agentkeys/fieldtest/packs_core.py` · FT-CL-HEADER stored
+  `Authorization: Bearer <token>` verbatim in the committed assertion → **a real secret shape in the
+  evidence** · fixed: assert booleans, never rendered header values; leak gate re-run clean · `(14.2)` · RESOLVED
+- **CR-065** · major · `src/agentkeys/fieldtest/packs_core.py` · FT-RK-INFLIGHT asserted
+  `list_live(0) == 0` after revoke — a wrong belief (revoke is an epoch CAS, not a status flip) · fixed:
+  assert the `revoked` event was recorded + next-hop refused · `(14.4)` · RESOLVED
+- **CR-066** · major · `src/agentkeys/fieldtest/packs_core.py` · FT-CL-FIRST's fresh-venv leg installed
+  into a home whose config pointed at the *original* store path → the fresh CLI read a stale store ·
+  fixed: `_quickstart_config(home, reference)` parameterizes the config · `(14.2)` · RESOLVED
+- **CR-067** · major · `src/agentkeys/fieldtest/packs_attack.py` · the live Claude Code leg used
+  `claude -p --mcp-config <file> <prompt>` (prompt parsed as the config path) and did not detect the
+  unauthenticated state · fixed: `--mcp-config <file> -p <prompt>`; detect "Not logged in" → honest WARN
+  with the named limitation · `(14.7)` · RESOLVED
+- **CR-068** · major · `src/agentkeys/fieldtest/gates.py` · deep validation enforced assertion minimums on
+  NOT-RUN cases (docker cases under `--no-docker` have zero assertions) → false findings · fixed: skip the
+  count rule for `not-run` (reason + limitation still required) · `(14.T)` · RESOLVED
+- **CR-069** · minor · `src/agentkeys/fieldtest/packs_docker.py` · `compose run --network none` is not a
+  compose v2 flag; the child image ENTRYPOINT swallowed the boundary probe · fixed: plain
+  `docker run --network none` and an explicit `--entrypoint sh` · `(14.3)` · RESOLVED
+- **CR-070** · minor · `src/agentkeys/fieldtest/packs_docker.py` · the scan service lacked
+  `AGENTKEYS_FIELD_ROOT` + the repo mount → `cases.yaml` not found · fixed in compose · `(14.3)` · RESOLVED
+- **CR-071** · minor · `src/agentkeys/fieldtest/packs_core.py` · `_FAKE_TOKEN`/`_FAKE_SECRET` constants
+  tripped S105 and could echo into artifacts · renamed `_PLANTED_VALUE`, never interpolated into assertions ·
+  `(14.2)` · RESOLVED
+- **CR-072** · minor · `scripts/fieldtest/*` · the gate self-test risked exercising destructive gates on the
+  real results · fixed: every gate self-test runs on a temp copy only · `(14.T)` · RESOLVED
+
+No open findings. The report-guard test proves the hand-maintained report cannot be written by any script;
+the sweep edited it by hand under the user's explicit instruction.
+
 <!--
 Template:
 

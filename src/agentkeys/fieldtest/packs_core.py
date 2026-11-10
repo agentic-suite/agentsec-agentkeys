@@ -232,9 +232,7 @@ def cl_first(env: RunEnv, tmp: Path) -> CaseOutcome:
             )
             fresh_home = tmp / "fresh-home"
             fresh_home.mkdir(mode=0o700, exist_ok=True)
-            (fresh_home / "config.toml").write_text(
-                _quickstart_config(fresh_home, reference)
-            )
+            (fresh_home / "config.toml").write_text(_quickstart_config(fresh_home, reference))
             fresh_env = {
                 **os.environ,
                 "AGENTKEYS_HOME": str(fresh_home),
@@ -891,6 +889,7 @@ def rk_killtime(env: RunEnv, tmp: Path) -> CaseOutcome:
     return emit(
         [
             ("iterations", "eq", env.iterations, report.iterations),
+            ("p50-ms", "gte", 0.0, round(report.p50_ms, 3)),
             ("p95-lte-1s", "lte", 1000.0, report.p95_ms),
             ("max-lte-1s", "lte", 1000.0, report.max_ms),
             ("every-replay-refused", "eq", env.iterations, report.replay_failures),

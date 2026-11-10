@@ -286,9 +286,7 @@ def ap_tamper(env: RunEnv, tmp: Path) -> CaseOutcome:
         guard.check(session_id="s1")
     except TamperError as exc:
         tampered = str(exc)
-    store.append_event(
-        build_event("issuance.created", occurred_at=1000, session_id="s1")
-    )
+    store.append_event(build_event("issuance.created", occurred_at=1000, session_id="s1"))
     rows = list(store.read_ledger())
     rows[0] = rows[0].__class__(
         seq=rows[0].seq,

@@ -219,6 +219,10 @@ leak gate (`scan_results.py`, findings=0 over the whole tree).
 - Invariants I1–I10: all true, each with a red-when-violated fixture.
 - Attack packs: 4/4 deterministic green.
 
+**Published benchmark (14.8).** `bench/README.md` + `bench/results/killtime-contextdump.json` — the two
+headline claims as machine-readable assertions a third party can diff; `tests/test_bench_pack.py` asserts the
+pack matches the committed results.
+
 **Spot-verified cases.** FT-RK-KILLTIME, FT-AP-CONTEXTDUMP, FT-AP-TAMPER, FT-AP-EVIDENCE,
 FT-MP-SCANMIGRATE, FT-DK-BOUNDARY, FT-FC-CRASH — all PASS, all grounded.
 
@@ -662,11 +666,12 @@ Next:
 9. [x] **FT-HC-CLAUDE live leg attempted** — claude v2.1.187 runs; **not logged in** headlessly on this
        box → honest WARN with the named limitation (wiring + smoke green).
 10. [ ] Log in to Claude Code on this box → re-run FT-HC-CLAUDE → WARN → PASS.
-11. [ ] Cut and publish `bench/` (14.8) from the committed results so a third party can re-run toward
-       *verified*.
-12. [ ] M15 hand-off — security audit (`trufflehog` + full git-history scan), claims lint, compatibility
-        matrix, SBOM + signing + Scorecard, tag `v0.1.0` — **the blocking five are green and the FAIL is
-        fixed; M15 may open** once the M14 gates (14.T/C/L/CR/D) are recorded.
+11. [x] `bench/` **cut and published** — `bench/README.md` (re-run commands, pinned environment, hardware
+       disclosure, divergent-result procedure) + `bench/results/killtime-contextdump.json`; `tests/test_bench_pack.py`
+       asserts the pack matches the committed results.
+12. [x] **M14 gates recorded** — `ruff` + `ruff format --check` clean · `mypy --strict` clean (177 files) ·
+        full suite **743 passed** · coverage **95.22% ≥ 95%** · `14.CR` logged 11 findings (CR-062…CR-072,
+        all resolved) · report + traceability + WBS updated. **M14 is closed; M15 may open.**
 13. [ ] Keep updating **this report by hand** with any re-run verdicts + learnings.
 
 ---

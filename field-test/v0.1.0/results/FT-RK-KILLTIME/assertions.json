@@ -7,14 +7,21 @@
     "passed": true
   },
   {
-    "actual": 0.014708,
+    "actual": 0.012,
+    "expected": 0.0,
+    "kind": "gte",
+    "name": "p50-ms",
+    "passed": true
+  },
+  {
+    "actual": 0.016833,
     "expected": 1000.0,
     "kind": "lte",
     "name": "p95-lte-1s",
     "passed": true
   },
   {
-    "actual": 0.02975,
+    "actual": 0.030667,
     "expected": 1000.0,
     "kind": "lte",
     "name": "max-lte-1s",

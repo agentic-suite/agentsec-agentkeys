@@ -1,7 +1,7 @@
 case=FT-RK-KILLTIME
 pack=killtime
 driver=bench
-started=2026-11-10T03:41:43Z
+started=2026-11-10T04:06:36Z
 duration_ms=6
 iterations=100
 fresh_box=False

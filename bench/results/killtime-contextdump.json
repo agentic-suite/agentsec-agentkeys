@@ -1,0 +1,176 @@
+{
+  "context_dump": {
+    "assertions": [
+      {
+        "actual": true,
+        "expected": true,
+        "kind": "true",
+        "name": "no-token-in-dump",
+        "passed": true
+      },
+      {
+        "actual": [],
+        "expected": [],
+        "kind": "eq",
+        "name": "no-secret-shapes",
+        "passed": true
+      },
+      {
+        "actual": "{\"event\":{\"agent_id\":\"a1\",\"binding_json\":\"{\\\"audience\\\":\\\"https://api.example.com\\\",\\\"tool\\\":\\\"call\\\"}\",\"event_id\":\"evt_b7069d333ea14dd488a4ef540d24f07f\",\"event_name\":\"reference-resolved\",\"event_version\":\"1.0\",\"issuance_id\":null,\"monotonic_ms\":0,\"occurred_at\":1000,\"principal\":\"op\",\"reason\":null,\"reference_id\":\"ref_1\",\"session_id\":\"s1\",\"severity\":\"info\",\"ttl_seconds\":null},\"hash\":\"7c91a34afa0e1b77347bb0d40f66ef7f9c1b41b03378ac4fc60f39906d5a64db\",\"prev_hash\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"seq\":1}\n{\"event\":{\"agent_id\":\"a1\",\"binding_json\":\"{\\\"audience\\\":\\\"https://api.example.com\\\",\\\"tool\\\":\\\"call\\\"}\",\"event_id\":\"evt_34e82b4500234e5289485f77bfa33e27\",\"event_name\":\"issuance.created\",\"event_version\":\"1.0\",\"issuance_id\":\"iss_274d0961cac044748e7fc77fd1e73c47\",\"monotonic_ms\":0,\"occurred_at\":1000,\"principal\":\"op\",\"reason\":null,\"reference_id\":\"ref_1\",\"session_id\":\"s1\",\"severity\":\"info\",\"ttl_seconds\":300},\"hash\":\"3c2a282b40de6aa0ab7029f3fa61b5142ffbae5a2ebb790114600125b46dc8bc\",\"prev_hash\":\"7c91a34afa0e1b77347bb0d40f66ef7f9c1b41b03378ac4fc60f39906d5a64db\",\"seq\":2}[{'akref': '1.0', 'reference_id': 'ref_1', 'backend': 'keychain', 'path': 'agentkeys/dev/token', 'class': 'dev', 'label': 'dev token'}]{'issuance': '1.0', 'issuance_id': 'iss_274d0961cac044748e7fc77fd1e73c47', 'reference_id': 'ref_1', 'session_id': 's1', 'agent_id': 'a1', 'binding': {'audience': 'https://api.example.com', 'tool': 'call'}, 'class': 'dev', 'ttl': 300, 'issued_at': 1000, 'expires_at': 1300}transcript: ref_1",
+        "expected": "ref_1",
+        "kind": "contains",
+        "name": "references-present",
+        "passed": true
+      },
+      {
+        "actual": 1,
+        "expected": 1,
+        "kind": "gte",
+        "name": "control-fires",
+        "passed": true
+      }
+    ],
+    "case": "FT-AP-CONTEXTDUMP",
+    "status": "pass"
+  },
+  "evidence": {
+    "assertions": [
+      {
+        "actual": true,
+        "expected": true,
+        "kind": "true",
+        "name": "clean-ok",
+        "passed": true
+      },
+      {
+        "actual": 2,
+        "expected": 2,
+        "kind": "gte",
+        "name": "clean-rows",
+        "passed": true
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "kind": "true",
+        "name": "seeded-fails",
+        "passed": true
+      },
+      {
+        "actual": "ledger:3",
+        "expected": "ledger:",
+        "kind": "contains",
+        "name": "seeded-location",
+        "passed": true
+      }
+    ],
+    "case": "FT-AP-EVIDENCE",
+    "status": "pass"
+  },
+  "format": "agentkeys-bench/1.0",
+  "generated_at": "2026-11-10T04:06:36Z",
+  "git_sha": "18e458895b99106eca5fa677c89f580a4eb27fb2",
+  "kill_time": {
+    "assertions": [
+      {
+        "actual": 100,
+        "expected": 100,
+        "kind": "eq",
+        "name": "iterations",
+        "passed": true
+      },
+      {
+        "actual": 0.012,
+        "expected": 0.0,
+        "kind": "gte",
+        "name": "p50-ms",
+        "passed": true
+      },
+      {
+        "actual": 0.016833,
+        "expected": 1000.0,
+        "kind": "lte",
+        "name": "p95-lte-1s",
+        "passed": true
+      },
+      {
+        "actual": 0.030667,
+        "expected": 1000.0,
+        "kind": "lte",
+        "name": "max-lte-1s",
+        "passed": true
+      },
+      {
+        "actual": 100,
+        "expected": 100,
+        "kind": "eq",
+        "name": "every-replay-refused",
+        "passed": true
+      }
+    ],
+    "budget_ms": 1000.0,
+    "case": "FT-RK-KILLTIME",
+    "iterations": 100,
+    "max_ms": 0.030667,
+    "p50_ms": 0.012,
+    "p95_ms": 0.016833,
+    "replay_failures": 100,
+    "status": "pass"
+  },
+  "machine": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin"
+  },
+  "release": "v0.1.0",
+  "scan_migrate": {
+    "assertions": [
+      {
+        "actual": 8,
+        "expected": 7,
+        "kind": "gte",
+        "name": "recall",
+        "passed": true
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "kind": "true",
+        "name": "value-gone-from-file",
+        "passed": true
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "kind": "true",
+        "name": "value-in-backend",
+        "passed": true
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "kind": "true",
+        "name": "finding-closed",
+        "passed": true
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "kind": "true",
+        "name": "zero-printed",
+        "passed": true
+      },
+      {
+        "actual": 3,
+        "expected": 1,
+        "kind": "gte",
+        "name": "broad-reuse-flagged",
+        "passed": true
+      }
+    ],
+    "case": "FT-MP-SCANMIGRATE",
+    "status": "pass"
+  }
+}

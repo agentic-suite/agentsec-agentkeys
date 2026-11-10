@@ -25,16 +25,16 @@
 | FT-CL-TWOHARNESS | SC-07 | E8 | F17 | CUJ-12 | pass | yes |
 | FT-CONF-BACKENDS | — | E9, E13 | F18 | CUJ-13 | pass | yes |
 | FT-CONF-STANDARDS | — | E13 | F18 | CUJ-14 | pass | yes |
-| FT-DK-AIRGAP | SC-39 | E4, E12 | F16 | CUJ-11 | not-run | yes |
-| FT-DK-BOUNDARY | — | R8, E10 | F12 | CUJ-4 | not-run | yes |
-| FT-DK-COMPOSE | — | E2, E4 | F15 | — | not-run | yes |
-| FT-DK-EVIDENCE | SC-43 | E5 | F19 | CUJ-3 | not-run | yes |
-| FT-DK-IMAGE | — | E2, E15 | F15 | — | not-run | yes |
-| FT-DK-QUICKSTART | SC-01 | R1, R17 | F1 | CUJ-1 | not-run | yes |
-| FT-DK-SINGLEWRITER | — | E2 | F15 | — | not-run | yes |
+| FT-DK-AIRGAP | SC-39 | E4, E12 | F16 | CUJ-11 | pass | yes |
+| FT-DK-BOUNDARY | — | R8, E10 | F12 | CUJ-4 | pass | yes |
+| FT-DK-COMPOSE | — | E2, E4 | F15 | — | pass | yes |
+| FT-DK-EVIDENCE | SC-43 | E5 | F19 | CUJ-3 | pass | yes |
+| FT-DK-IMAGE | — | E2, E15 | F15 | — | pass | yes |
+| FT-DK-QUICKSTART | SC-01 | R1, R17 | F1 | CUJ-1 | pass | yes |
+| FT-DK-SINGLEWRITER | — | E2 | F15 | — | pass | yes |
 | FT-EV-CLOUD | SC-15 | R7, E10 | F11 | CUJ-6 | pass | yes |
 | FT-EV-DOTENV | SC-14 | R7, E10 | F11 | CUJ-6 | pass | yes |
-| FT-EV-ENFORCE | SC-17 | R7, E10 | F11 | CUJ-6 | warn | yes |
+| FT-EV-ENFORCE | SC-17 | R7, E10 | F11 | CUJ-6 | pass | yes |
 | FT-EV-KEYCHAIN | SC-16 | R7, E10 | F11 | CUJ-6 | pass | yes |
 | FT-FC-ABSENT | SC-19 | R5, E4, E9 | F8 | CUJ-8 | pass | yes |
 | FT-FC-CONFIG | SC-20 | E4 | F16 | CUJ-8 | pass | yes |
@@ -42,7 +42,7 @@
 | FT-FC-LOCKED | SC-18 | R5, E4, E9 | F8 | CUJ-8 | pass | yes |
 | FT-FC-SINK | SC-22 | E4, E12 | F9 | CUJ-9 | pass | yes |
 | FT-FC-STORE | SC-21 | E2, E4 | F15 | CUJ-8 | pass | yes |
-| FT-HC-CLAUDE | SC-35 | E8 | F17 | CUJ-12 | pass | yes |
+| FT-HC-CLAUDE | SC-35 | E8 | F17 | CUJ-12 | warn | yes |
 | FT-HC-CURSOR | SC-36 | E8 | F17 | CUJ-12 | warn | yes |
 | FT-HC-GENERIC | SC-37 | E1, E8 | F20 | CUJ-13 | pass | yes |
 | FT-HC-NOTYET | SC-38 | E8 | F17 | CUJ-14 | pass | yes |

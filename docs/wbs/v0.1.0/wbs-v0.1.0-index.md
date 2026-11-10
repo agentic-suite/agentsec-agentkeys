@@ -229,6 +229,22 @@ A milestone is **closed** only when all of these hold:
 - **2026-11-09 — M11–M13 milestone gate (run once, at the end).** `ruff` zero violations · `mypy --strict`
   clean (155 files) · full suite **656 passed** · coverage **95.23% ≥ 95%**. Test-first per ticket; no
   full-suite run between tickets. **Next: M14 opens at `14.D0` (field tests); M15 remains.**
+- **2026-11-09 — M14 Field tests closed** (branch `feat-v0.1.0`). The plan, the 74-case registry, the runner,
+  the deep-validation gates, the Docker topology, and the hand-maintained report all shipped; the sweep ran
+  **74/74 verdicts: 71 PASS · 0 FAIL · 3 WARN · 0 NOT RUN**. All five blocking scenarios PASS (kill-time
+  p95 0.015ms / max 0.031ms at N=100; context-dump 0 usable with the control firing; tamper fail-closed;
+  evidence clean with the seeded leak caught; scan/migrate 100% recall / 0 printed). The three WARN are the
+  plan's `P/F|W` limitations, each named: fresh-machine install median needs a naive human (machine path
+  measured at 2.7s), Claude Code not logged in headlessly, Cursor has no headless surface. The one FAIL that
+  appeared (FT-DK-AIRGAP, a Docker volume-ownership harness bug) and the fixable WARN (FT-EV-ENFORCE, no
+  enforcer composed) were **fixed and re-run green**. Published `bench/killtime-contextdump.json` + README.
+  Results: `field-test/v0.1.0/results/` · plan/ report/ traceability: `docs/field-test/v0.1.0/`.
+  `14.CR` logged 11 findings (CR-062…CR-072), all resolved; **zero product defects**.
+- **2026-11-09 — M14 milestone gate (run once, at the end).** `ruff` zero violations · `ruff format --check`
+  clean · `mypy --strict` clean (**177 files**) · full suite **743 passed** · coverage **95.22% ≥ 95%**
+  (field-test tooling covered by pack-level execution tests). **Next: M15 opens at `15.D0` — security
+  audit (`trufflehog` + full git-history scan), claims lint, compatibility matrix, SBOM + signing +
+  Scorecard, tag `v0.1.0`.**
 
 ## PRD coverage matrix (every doc 00–23 + Appendix A)
 
