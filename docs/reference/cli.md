@@ -5,6 +5,8 @@
 > being documented here, and a flag may not be documented here without existing in the CLI. The contracts
 # and exit codes below are **stable within v0.x** (additive only, E11).
 
+`--version` prints the version (a top-level flag); every command accepts `--json` where documented.
+
 **BLUF:** One binary, `agentkeys`, fourteen commands at v0.1.0 (+1 at v0.1.x), four exit-code classes
 that scripts and CI can rely on forever — and a hard rule: **no command ever prints a secret value.**
 
@@ -34,13 +36,15 @@ that exit `1` and name the milestone that delivers them.
 | `agentkeys ref list` / `ref show <id>` | Inspect references (never values) | `--json` | R1, E1 |
 | `agentkeys run -- <command>` | Launch a child (stdio server/CLI) under the broker with a virtualized env | `--server` | R2, R8 |
 | `agentkeys revoke <target>` | Kill access: `--agent`/`--session`/`--all` | `--reason`, `--principal`, `--config` | R4 |
-| `agentkeys replay --last` | Re-issue the last pre-revoke attempt to prove it fails (the kill-time evidence) | — | R4, SC-24 |
+| `agentkeys replay --last` | Re-issue the last pre-revoke attempt to prove it fails (the kill-time evidence) | `--config` | R4, SC-24 |
 | `agentkeys context-dump --session <id>` | Emit the agent's full world (transcript/env/args/config/logs) for scanning | `--out` | R1, SC-40 |
 | `agentkeys scan-usable` | Score a context dump for **usable** credentials (0 = invariant holds) | `--json` | R1, SC-40 |
-| `agentkeys export` | Deterministic, secret-free lifecycle JSONL | `--session`, `--reference`, `--out` | R6, E12 |
-| `agentkeys verify-log` | Recompute the hash chain; report gaps/tamper | `--json` | R6, E12 |
+| `agentkeys export` | Deterministic, secret-free lifecycle JSONL | `--session`, `--reference`, `--out`, `--config` | R6, E12 |
+| `agentkeys verify-log` | Recompute the hash chain; report gaps/tamper | `--json`, `--config` | R6, E12 |
+| `agentkeys backup` | WAL-safe store backup with a verified chain head + manifest | `--out`, `--config`, `--json` | E12 |
+| `agentkeys restore` | Restore a verified backup; refuses a live broker or a broken chain | `--from`, `--config`, `--json` | E12 |
 | `agentkeys conformance` | Run the standards/backend suites (RFC 8693/8707/…; backend drivers) | `--suite` | E13, E9 |
-| `agentkeys serve` | Run the local broker process (daemonized by `init` recipes) | `--socket` | [PRD 02](../prd/02-architecture.md) |
+| `agentkeys serve` | Run the local broker process (foreground); user-scoped units helper | `--socket`, `--config`, `--write-units`, `--json` | [PRD 22](../prd/22-operations-and-governance.md) |
 | `agentkeys posture` *(v0.1.x)* | Residual-risk report: env-resident secrets, unbrokered servers, TTL drift, revoke counts | `--json` | R18 |
 
 ## Exit codes (stable contract)

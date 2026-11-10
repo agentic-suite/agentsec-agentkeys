@@ -201,6 +201,34 @@ A milestone is **closed** only when all of these hold:
 - **2026-11-09 — M6–M10 milestone gate (run once, at the end).** `ruff` zero violations · `mypy --strict`
   clean (127 files) · full suite **582 passed** · coverage **95.45% ≥ 95%**. Test-first per ticket; no
   full-suite run between tickets. **Next: M11 opens at `11.D0`; M12–M15 remain.**
+- **2026-11-09 — M11 Conformance kit + supply chain + security hardening closed** (branch `feat-v0.1.0`).
+  Items `11.D0`, `11.1`-`11.6` implemented test-first. `agentkeys conformance` runs the RFC 8693/8707/9700/
+  9728/9068/7636, backend, no-passthrough, and widening suites; DPoP is **not-supported**, never implied.
+  The evidence scanner finds 0 secrets in a clean store and fails on a seeded leak (SC-43), all ten
+  invariants have executable probes with red-when-violated fixtures, the four attack packs pass and go red
+  when a gate is broken, the in-repo supply-chain floor is checked (stdlib-only deps, `security.txt`, CI
+  gates, SBOM, fuzz targets), and core + revoke run with sockets disabled (SC-39). Docs:
+  [design](../../design/v0.1.0/conformance-supplychain.md). `11.CR` logged 3 findings, all resolved.
+  **Next: M12 opens at `12.D0`.**
+- **2026-11-09 — M12 Operations closed** (branch `feat-v0.1.0`). Items `12.D0`, `12.1`-`12.6` implemented
+  test-first. `serve` holds a `0600` lock, refuses a live holder, replaces a stale one, and removes the lock
+  on SIGTERM; user-scoped launchd/systemd units are written with `--write-units` (no root). `backup` is a
+  WAL-safe copy with a verified chain head + manifest; `restore` refuses a live broker, a broken chain, or a
+  newer schema, and preserves the chain. Downgrades refuse loudly; `doctor` gained `chain`, `serve-lock`,
+  and `config-integrity`; retention appends a marker and deletes nothing; the drill reports p50/p95/max.
+  Docs: [ops design](../../design/v0.1.0/ops.md) · [ops reference](../../reference/ops.md).
+  `12.CR` logged 3 findings, all resolved. **Next: M13 opens at `13.D0`.**
+- **2026-11-09 — M13 Docs completion closed** (branch `feat-v0.1.0`). Items `13.D0`, `13.1`-`13.6`
+  implemented test-first. CLI and config coverage tests fail on an undocumented flag/key and on a
+  documented-but-absent one; the quickstart (`tests/docs/test_quickstart.py`) replays scan → migrate → ref →
+  brokered call → revoke → replay (exit `4`) → export → verify-log; eight runbooks, the adapter recipes page,
+  the operator guide, the honest-gaps page, and a doc-link check are live. Docs:
+  [quickstart](../../tutorials/quickstart.md) · [config reference](../../reference/config.md) ·
+  [runbooks](../../runbooks/rb-1-locked-backend.md) · [honest gaps](../../explanation/honest-gaps.md).
+  `13.CR` logged 2 findings, both resolved.
+- **2026-11-09 — M11–M13 milestone gate (run once, at the end).** `ruff` zero violations · `mypy --strict`
+  clean (155 files) · full suite **656 passed** · coverage **95.23% ≥ 95%**. Test-first per ticket; no
+  full-suite run between tickets. **Next: M14 opens at `14.D0` (field tests); M15 remains.**
 
 ## PRD coverage matrix (every doc 00–23 + Appendix A)
 

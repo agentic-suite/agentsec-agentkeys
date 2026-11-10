@@ -1,8 +1,8 @@
 # stdio virtualization design — the flagship (M5)
 
 **Status:** design of record for M5 · **Issue:** #66 (`5.D0`) · **Written before implementation.**
-**Sources:** [PRD 02 §5](../prd/02-architecture.md), [PRD 06 §4](../prd/06-security-baseline.md),
-[PRD 16 §3](../prd/16-adapters-and-integration.md), [egress design](egress.md).
+**Sources:** [PRD 02 §5](../../prd/02-architecture.md), [PRD 06 §4](../../prd/06-security-baseline.md),
+[PRD 16 §3](../../prd/16-adapters-and-integration.md), [egress design](egress.md).
 
 **BLUF:** A stdio MCP server (or CLI) is launched **under the broker** with an environment that holds
 **references, not secrets**; the broker resolves each reference and substitutes a short-lived, scoped token at
@@ -86,4 +86,4 @@ the same `ResolutionCore` as every other path (no parallel minting); (4) the co-
 as a first-class property. Deferred: real harness recipes and the MCP ext-auth contribution (M10/M11), the
 live field test (M14).
 
-Findings land in [`codereview-log.md`](../wbs/v0.1.0/codereview-log.md) at `5.CR`.
+Findings land in [`codereview-log.md`](../../wbs/v0.1.0/codereview-log.md) at `5.CR`.

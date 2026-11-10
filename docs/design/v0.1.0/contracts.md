@@ -1,8 +1,8 @@
 # Contracts design — `akref/1.0`, `issuance/1.0`, resolution (M2)
 
 **Status:** design of record for M2 · **Issue:** #30 (`2.D0`) · **Written before implementation.**
-**Sources:** [PRD 15 §2-§4](../prd/15-data-model.md), [PRD 18 §1-§3](../prd/18-issuance-integrity.md),
-[PRD 02 §2](../prd/02-architecture.md), [store design](store.md).
+**Sources:** [PRD 15 §2-§4](../../prd/15-data-model.md), [PRD 18 §1-§3](../../prd/18-issuance-integrity.md),
+[PRD 02 §2](../../prd/02-architecture.md), [store design](store.md).
 
 **BLUF:** M2 fixes the two wire contracts — the **reference** (`akref/1.0`, opaque and loggable) and the
 **issuance** (`issuance/1.0`, bound and single-use) — and the **resolution pipeline** that connects them to
@@ -143,4 +143,4 @@ Settled here: (1) the issuance document never carries `secret_hash` or a token; 
 an exception; (5) the registry refuses unknown keys loudly. Deferred: step-up (M10), egress delivery
 (M4/M5), evasion probes (M9), receipts (M3).
 
-Findings land in [`codereview-log.md`](../wbs/v0.1.0/codereview-log.md) at `2.CR`.
+Findings land in [`codereview-log.md`](../../wbs/v0.1.0/codereview-log.md) at `2.CR`.

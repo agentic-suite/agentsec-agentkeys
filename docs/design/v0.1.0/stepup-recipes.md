@@ -1,9 +1,9 @@
 # Step-up & recipes design — an approval that is recorded, and Harness A/B (M10)
 
 **Status:** design of record for M10 · **Issue:** #124 (`10.D0`) · **Written before implementation.**
-**Sources:** [PRD 18 §5](../prd/18-issuance-integrity.md), [PRD 05 R9/E8](../prd/05-features.md),
-[PRD 16 §2](../prd/16-adapters-and-integration.md), [PRD 19](../prd/19-harness-compatibility.md),
-[PRD 17 SC-33–SC-38](../prd/17-scenarios.md), [egress design](egress.md).
+**Sources:** [PRD 18 §5](../../prd/18-issuance-integrity.md), [PRD 05 R9/E8](../../prd/05-features.md),
+[PRD 16 §2](../../prd/16-adapters-and-integration.md), [PRD 19](../../prd/19-harness-compatibility.md),
+[PRD 17 SC-33–SC-38](../../prd/17-scenarios.md), [egress design](egress.md).
 
 **BLUF:** A higher-class mint (prod by default) cannot happen without an approving decision the broker
 **records**: `provenance.decided_by`, `decision`, `authorization.source`. The broker asks agentpolicy
@@ -70,4 +70,4 @@ recipe table carries `supported=False` and the docs say "not yet" (PRD 19 labels
 | 10.4 | `tests/test_harness_recipe_cursor.py` | wiring valid; authenticated header call; same wrapper (no fork) |
 | 10.5/10.6 | `tests/test_recipe_acceptance.py` | generic recipes; a broken wiring fails; unsupported harness is "not yet" |
 
-Findings land in [`codereview-log.md`](../wbs/v0.1.0/codereview-log.md) at `10.CR`.
+Findings land in [`codereview-log.md`](../../wbs/v0.1.0/codereview-log.md) at `10.CR`.

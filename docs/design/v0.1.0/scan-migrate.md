@@ -1,8 +1,8 @@
 # Scan & migrate design — find what the agent can read, move it out (M8)
 
 **Status:** design of record for M8 · **Issue:** #101 (`8.D0`) · **Written before implementation.**
-**Sources:** [PRD 05 R17](../prd/05-features.md), [PRD 17 SC-51](../prd/17-scenarios.md),
-[PRD 04 CUJ-1](../prd/04-users-and-cujs.md), [backend design](backends.md), [PRD 15 §8](../prd/15-data-model.md).
+**Sources:** [PRD 05 R17](../../prd/05-features.md), [PRD 17 SC-51](../../prd/17-scenarios.md),
+[PRD 04 CUJ-1](../../prd/04-users-and-cujs.md), [backend design](backends.md), [PRD 15 §8](../../prd/15-data-model.md).
 
 **BLUF:** `agentkeys scan` reports **where** a candidate secret sits and **what shape** it is, never the
 value. `agentkeys migrate` moves one value into a backend and rewrites every use site to a reference,
@@ -72,4 +72,4 @@ unknown name, an unavailable backend, or a failed rewrite; `USAGE` for an unsupp
 | 8.3 | `tests/test_migrate_flow.py` | value moves to backend; every site rewritten; re-scan clean; failure leaves files untouched |
 | 8.5 | `tests/test_scan_cli.py` | `--json` stable; `--ci` refuses as "not yet" |
 
-Findings land in [`codereview-log.md`](../wbs/v0.1.0/codereview-log.md) at `8.CR`.
+Findings land in [`codereview-log.md`](../../wbs/v0.1.0/codereview-log.md) at `8.CR`.

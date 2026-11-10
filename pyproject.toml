@@ -75,6 +75,12 @@ ignore = ["N818"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "S105", "S106", "S107", "S603", "SIM105", "RUF043", "E501"]
+# Invariant probes are assertions by design; the client-token value is a test fixture, never a secret.
+"src/agentkeys/invariants.py" = ["S101", "S106"]
+# Conformance checks are assertions; the client token is a fixture, never a secret.
+"src/agentkeys/conformance.py" = ["S101", "S106"]
+# Attack packs assert that an attack fails; a violated assertion is the red pack.
+"src/agentkeys/attackpacks.py" = ["S101"]
 
 [tool.mypy]
 python_version = "3.11"

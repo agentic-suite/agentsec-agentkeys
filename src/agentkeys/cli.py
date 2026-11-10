@@ -14,6 +14,8 @@ from collections.abc import Callable, Sequence
 from typing import Any, NoReturn
 
 from agentkeys import __version__
+from agentkeys.commands.backup import run_backup, run_restore
+from agentkeys.commands.conformance import run_conformance_command
 from agentkeys.commands.export import run_export
 from agentkeys.commands.migrate import run_migrate
 from agentkeys.commands.ref import run_ref
@@ -21,6 +23,7 @@ from agentkeys.commands.replay import run_replay
 from agentkeys.commands.revoke import run_revoke
 from agentkeys.commands.run import run_run
 from agentkeys.commands.scan import run_scan
+from agentkeys.commands.serve import run_serve
 from agentkeys.commands.verify_log import run_verify_log
 from agentkeys.doctor import run_doctor
 from agentkeys.exit_codes import ExitCode, json_envelope
@@ -41,6 +44,8 @@ COMMANDS: tuple[str, ...] = (
     "scan-usable",
     "export",
     "verify-log",
+    "backup",
+    "restore",
     "conformance",
     "serve",
     "version",
@@ -122,6 +127,22 @@ def _scan_handler(args: argparse.Namespace) -> int:
 
 def _migrate_handler(args: argparse.Namespace) -> int:
     return run_migrate(args)
+
+
+def _conformance_handler(args: argparse.Namespace) -> int:
+    return run_conformance_command(args)
+
+
+def _serve_handler(args: argparse.Namespace) -> int:
+    return run_serve(args)
+
+
+def _backup_handler(args: argparse.Namespace) -> int:
+    return run_backup(args)
+
+
+def _restore_handler(args: argparse.Namespace) -> int:
+    return run_restore(args)
 
 
 def _doctor_handler(args: argparse.Namespace) -> int:
@@ -223,8 +244,22 @@ def _build_parser() -> _Parser:
     p.add_argument("--suite")
     _add_json_flag(p)
 
+    p = sub.add_parser("backup", help="WAL-safe store backup with a verified chain head")
+    p.add_argument("--out", help="backup file to write")
+    p.add_argument("--config", help="config path (default: $AGENTKEYS_HOME/config.toml)")
+    _add_json_flag(p)
+
+    p = sub.add_parser("restore", help="restore a verified backup (refuses a live broker)")
+    p.add_argument("--from", dest="from_path", help="backup file to restore")
+    p.add_argument("--config", help="config path (default: $AGENTKEYS_HOME/config.toml)")
+    _add_json_flag(p)
+
     p = sub.add_parser("serve", help="run the local broker process")
     p.add_argument("--socket")
+    p.add_argument("--config", help="config path (default: $AGENTKEYS_HOME/config.toml)")
+    p.add_argument(
+        "--write-units", action="store_true", help="write the launchd/systemd user units and exit"
+    )
     _add_json_flag(p)
 
     p = sub.add_parser("version", help="print the agentkeys version")
@@ -240,6 +275,10 @@ def _build_parser() -> _Parser:
     sub.choices["verify-log"].set_defaults(handler=_verify_log_handler)
     sub.choices["scan"].set_defaults(handler=_scan_handler)
     sub.choices["migrate"].set_defaults(handler=_migrate_handler)
+    sub.choices["conformance"].set_defaults(handler=_conformance_handler)
+    sub.choices["serve"].set_defaults(handler=_serve_handler)
+    sub.choices["backup"].set_defaults(handler=_backup_handler)
+    sub.choices["restore"].set_defaults(handler=_restore_handler)
 
     for name in COMMANDS:
         if name in {
@@ -253,6 +292,10 @@ def _build_parser() -> _Parser:
             "verify-log",
             "scan",
             "migrate",
+            "conformance",
+            "serve",
+            "backup",
+            "restore",
         }:
             continue
         sub.choices[name].set_defaults(handler=_stub(name))

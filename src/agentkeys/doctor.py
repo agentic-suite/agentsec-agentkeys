@@ -19,6 +19,9 @@ from typing import Any
 from agentkeys import __version__
 from agentkeys.config import Config, ConfigError, agentkeys_home, load_config
 from agentkeys.exit_codes import ExitCode, json_envelope
+from agentkeys.ledger import verify_chain
+from agentkeys.ops import inspect_lock
+from agentkeys.tamper import config_digest
 
 __all__ = ["CURRENT_SCHEMA_VERSION", "Check", "check_platform", "doctor_exit", "run_doctor"]
 
@@ -128,6 +131,73 @@ def _check_version() -> Check:
     return Check(id="version", status="ok", detail=__version__)
 
 
+def _check_chain(config: Config | None) -> Check:
+    """Recompute the ledger chain read-only; a break is tamper."""
+    if config is None:
+        return Check(id="chain", status="skip", detail="config invalid")
+    if not config.store_path.exists():
+        return Check(id="chain", status="ok", detail="no ledger yet")
+    try:
+        import sqlite3
+
+        from agentkeys.store.sqlite import _ledger_row
+
+        connection = sqlite3.connect(f"file:{config.store_path}?mode=ro", uri=True)
+        connection.row_factory = sqlite3.Row
+        try:
+            tables = {
+                row[0]
+                for row in connection.execute(
+                    "SELECT name FROM sqlite_master WHERE type = 'table'"
+                ).fetchall()
+            }
+            if "ledger" not in tables:
+                return Check(id="chain", status="ok", detail="no ledger table yet")
+            rows = tuple(
+                _ledger_row(row) for row in connection.execute("SELECT * FROM ledger ORDER BY seq")
+            )
+        finally:
+            connection.close()
+    except sqlite3.Error as exc:
+        return Check(id="chain", status="fail", detail=f"unreadable ledger: {exc}", tamper=True)
+    report = verify_chain(rows)
+    if not report.intact:
+        return Check(
+            id="chain",
+            status="fail",
+            detail=f"chain broken at seq {report.first_bad_seq}: {report.reason}",
+            tamper=True,
+        )
+    return Check(id="chain", status="ok", detail=f"{report.rows} rows, chain intact")
+
+
+def _check_lock(home: Path) -> Check:
+    """A stale serve lock is a denial; a live lock is fine."""
+    state = inspect_lock(home)
+    if state.state == "stale":
+        return Check(id="serve-lock", status="fail", detail=state.detail)
+    return Check(id="serve-lock", status="ok", detail=state.detail)
+
+
+def _check_config_integrity(config: Config | None) -> Check:
+    """If a pinned digest exists, the config must still match it."""
+    if config is None:
+        return Check(id="config-integrity", status="skip", detail="config invalid")
+    pinned = config.path.with_suffix(config.path.suffix + ".sha256")
+    if not pinned.is_file():
+        return Check(id="config-integrity", status="ok", detail="not pinned")
+    expected = pinned.read_text(encoding="utf-8").strip()
+    try:
+        actual = config_digest(config.path)
+    except OSError as exc:
+        return Check(id="config-integrity", status="fail", detail=str(exc), tamper=True)
+    if actual != expected:
+        return Check(
+            id="config-integrity", status="fail", detail="config digest mismatch", tamper=True
+        )
+    return Check(id="config-integrity", status="ok", detail="pinned digest matches")
+
+
 def doctor_exit(checks: Sequence[Check]) -> int:
     """Map checks to the reserved exit code: tamper > denied > ok."""
     if any(check.status == "fail" and check.tamper for check in checks):
@@ -170,8 +240,11 @@ def run_doctor(
     checks.extend(
         [
             _check_store(config),
+            _check_chain(config),
             _check_backends(config),
             _check_clock(config),
+            _check_lock(agentkeys_home(environ)),
+            _check_config_integrity(config),
             _check_version(),
         ]
     )

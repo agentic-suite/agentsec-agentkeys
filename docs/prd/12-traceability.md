@@ -120,7 +120,7 @@ passthrough) applied to the stdio case.
 
 ## 1. v0.1.0 — P0 product requirements (R1–R9 + R17)
 
-> **Implemented (M6–M10, 2026-11-09).** R4, R6, R7, R9, R17 and E6, E8, E10, E12 are implemented and
+> **Implemented (M6–M13, 2026-11-09).** R4, R6, R7, R9, R17 and E6, E8, E10, E12 are implemented and
 > covered by the test files listed below. A row is *green* only with the milestone gate recorded in the
 > [WBS Progress](../wbs/v0.1.0/wbs-v0.1.0-index.md#progress); the field-test verdicts remain M14's.
 

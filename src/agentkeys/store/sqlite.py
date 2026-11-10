@@ -561,6 +561,12 @@ class SqliteStore:
         ).fetchall()
         return tuple(_receipt(row) for row in rows)
 
+    def list_all_receipts(self) -> tuple[RedactionReceipt, ...]:
+        rows = self._execute(
+            "SELECT * FROM redaction_receipts ORDER BY created_at, receipt_id"
+        ).fetchall()
+        return tuple(_receipt(row) for row in rows)
+
 
 def _reference(row: sqlite3.Row) -> Reference:
     return Reference(

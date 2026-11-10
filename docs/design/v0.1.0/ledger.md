@@ -1,8 +1,8 @@
 # Ledger design — every transition is evidence (M7)
 
 **Status:** design of record for M7 · **Issue:** #89 (`7.D0`) · **Written before implementation.**
-**Sources:** [PRD 15 §4–§5](../prd/15-data-model.md), [PRD 05 R6/E12](../prd/05-features.md),
-[PRD 17 §9](../prd/17-scenarios.md), [store design](store.md), [revoke design](revoke.md).
+**Sources:** [PRD 15 §4–§5](../../prd/15-data-model.md), [PRD 05 R6/E12](../../prd/05-features.md),
+[PRD 17 §9](../../prd/17-scenarios.md), [store design](store.md), [revoke design](revoke.md).
 
 **BLUF:** Every issuance, use, upgrade, rejection, evasion, revocation, expiry, and sink gap is an
 **agentwatch-schema event** and an append-only row in a **hash-chained ledger**. The chain makes the
@@ -74,4 +74,4 @@ unsent `seq` and the failure class (never a payload). Nothing is lost and nothin
 | 7.5 | `tests/test_correlation.py` | join keys and ordered transitions per session |
 | 7.6 | `tests/test_sink.py` | sink offline → gap marker; local chain intact; buffer retained |
 
-Findings land in [`codereview-log.md`](../wbs/v0.1.0/codereview-log.md) at `7.CR`.
+Findings land in [`codereview-log.md`](../../wbs/v0.1.0/codereview-log.md) at `7.CR`.

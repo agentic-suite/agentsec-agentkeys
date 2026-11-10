@@ -1,8 +1,8 @@
 # Egress design — one injection interface, three drivers (M4)
 
 **Status:** design of record for M4 · **Issue:** #54 (`4.D0`) · **Written before implementation.**
-**Sources:** [PRD 02 §4](../prd/02-architecture.md), [PRD 16 §3](../prd/16-adapters-and-integration.md),
-[PRD 18 §3-§4](../prd/18-issuance-integrity.md), [contracts design](contracts.md).
+**Sources:** [PRD 02 §4](../../prd/02-architecture.md), [PRD 16 §3](../../prd/16-adapters-and-integration.md),
+[PRD 18 §3-§4](../../prd/18-issuance-integrity.md), [contracts design](contracts.md).
 
 **BLUF:** A minted issuance reaches a target through exactly one `Injector`: the child environment, an HTTP
 header, or an RFC 8693 token exchange. Four rules are normative for every driver — **cannot widen**, **never
@@ -93,4 +93,4 @@ second *different* agent is refused with `SessionConflict` and an event. Binding
   the tool's own authorization is the downstream's job and is documented, not claimed.
 - stdio delivery (the flagship) is M5; M4 proves the engine and the three drivers.
 
-Findings land in [`codereview-log.md`](../wbs/v0.1.0/codereview-log.md) at `4.CR`.
+Findings land in [`codereview-log.md`](../../wbs/v0.1.0/codereview-log.md) at `4.CR`.

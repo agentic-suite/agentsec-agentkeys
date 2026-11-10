@@ -318,3 +318,9 @@ class MemoryStore:
                 receipt for receipt in self._receipts.values() if receipt.subject_id == subject_id
             ]
         return tuple(sorted(matches, key=lambda r: (r.created_at, r.receipt_id)))
+
+    def list_all_receipts(self) -> tuple[RedactionReceipt, ...]:
+        with self._lock:
+            self._require_open()
+            matches = list(self._receipts.values())
+        return tuple(sorted(matches, key=lambda r: (r.created_at, r.receipt_id)))

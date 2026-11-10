@@ -194,7 +194,7 @@ each have a gating test.
   the key grammar is checked before substitution; a malformed placeholder is refused · `(5.3)` · RESOLVED
 
 No open findings. The co-located-runtime limit is documented as a first-class property
-([stdio virtualization](../reference/stdio-virtualization.md)), not a footnote.
+([stdio virtualization](../../reference/stdio-virtualization.md)), not a footnote.
 
 ### 6.CR — Revocation + kill-time + time correctness (2026-11-09)
 
@@ -240,6 +240,41 @@ No open findings. The co-located-runtime limit is documented as a first-class pr
 - **CR-053** · major · `src/agentkeys/core/resolution.py` · `step-up-granted` was written **before** the
   mint, so a failed mint could leave a grant with no issuance · fixed: the grant is emitted after the store
   transaction and carries the new `issuance_id` · `(10.2)` · RESOLVED
+
+No open findings.
+
+### 11.CR — Conformance kit + evidence + invariants + supply chain (2026-11-09)
+
+- **CR-054** · major · `src/agentkeys/invariants.py` · the I5 probe compared the token against
+  `event.reason`, which is `None` on most rows, raising `TypeError` and marking a **healthy** broker red ·
+  fixed: compare against `(reason or "")` · `(11.3)` · RESOLVED
+- **CR-055** · minor · `src/agentkeys/conformance.py` · the failure handler caught
+  `(AssertionError, InjectionDenied, Exception)` — redundant and misleading about what is caught · fixed:
+  a single `Exception` with the "assertions included" note · `(11.1)` · RESOLVED
+- **CR-056** · major · `src/agentkeys/evidence.py` · receipts were unreachable through the store contract
+  (`list_receipts` needs a subject), so "receipts present" could not be verified · fixed: additive
+  `list_all_receipts()` in both drivers · `(11.2)` · RESOLVED
+
+### 12.CR — Operations (2026-11-09)
+
+- **CR-057** · major · `src/agentkeys/ops.py` · restore compared the backup schema against
+  `SqliteStore(":memory:").schema_version()`, which is `None` before `open()` — every restore raised
+  `TypeError` · fixed: compare with `CURRENT_SCHEMA_VERSION` · `(12.2)` · RESOLVED
+- **CR-058** · major · `src/agentkeys/doctor.py` · the new chain check treated a store with no `ledger`
+  table as tamper, so a healthy fresh store failed `doctor` · fixed: an absent ledger is "no ledger yet" ·
+  `(12.4)` · RESOLVED
+- **CR-059** · minor · `src/agentkeys/ops.py` · nested `with` blocks made the backup/restore transaction
+  bounds hard to read · fixed: a single multi-context `with` · `(12.2)` · RESOLVED
+
+### 13.CR — Docs completion (2026-11-09)
+
+- **CR-060** · minor · `docs/design/v0.1.0/*.md`, `docs/prd/appendix-a-consolidated-prd.md` · the new
+  doc-link check found pre-existing broken relative links (design docs pointed at `../prd`, appendix at
+  sibling repositories) · fixed: links corrected to `../../prd`; unresolvable external source citations kept
+  as plain labels · `(13.T)` · RESOLVED
+- **CR-061** · major · `docs/tutorials/quickstart.md` · the brokered-call step implied a token was injected
+  without a placeholder, which the wrapper does not do · fixed: the documented `NAME=akref:…` placeholder
+  pattern, exercised by the step test · `(13.3)` · RESOLVED
 
 No open findings.
 

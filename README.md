@@ -12,12 +12,15 @@ for AI agents. Apache-2.0.
 
 ## Status
 
-**in progress — the v0.1.0 foundation (M0) is built; the broker surface is planned.** The full
-requirement set ([PRD 00–23 + Appendix A](docs/prd/README.md)) and the build plan
-([v0.1.0 WBS — 16 milestones, M0–M15](docs/wbs/v0.1.0/wbs-v0.1.0-index.md)) are written and published early
-on purpose, so we can be held to them. M0 ships the package, the frozen CLI surface, the reserved exit-code
-contract, the references-only config model, and `doctor`; every broker command is an honest stub. No release
-has shipped yet; every claim in this README is a *design* claim until the release gate proves it
+**in progress — the broker core is built through M13; field tests and release (M14/M15) are next.** The
+full requirement set ([PRD 00–23 + Appendix A](docs/prd/README.md)) and the build plan
+([v0.1.0 WBS — 16 milestones, M0–M15](docs/wbs/v0.1.0/wbs-v0.1.0-index.md)) are public on purpose, so we can
+be held to them. Implemented: reference/issuance contracts, the store, keychain/file backends, egress
+injection (env/header/RFC 8693), stdio virtualization, `revoke`/`replay`, the hash-chained ledger with
+`export`/`verify-log`, `scan`/`migrate`, evasion/tamper detection, step-up approvals and harness recipes,
+the conformance kit, backup/restore, and `serve`. Not yet: `init`, `context-dump`, `scan-usable`, keychain
+migration, signed releases, and the M14 field test — see [honest gaps](docs/explanation/honest-gaps.md).
+No release has shipped; claims stay at their evidence label
 ([evidence labels](docs/prd/20-standards-and-claims.md)).
 
 ## Install & run (v0.1.0 foundation)
@@ -43,9 +46,10 @@ Configuration lives under `AGENTKEYS_HOME` (default `~/.agentkeys`) in `config.t
 | `3` | **tamper detected** — integrity check failed |
 | `4` | **revoke verified** — the replay was refused |
 
-Every broker command (`scan`, `migrate`, `ref`, `run`, `revoke`, `replay`, `context-dump`, `scan-usable`,
-`export`, `verify-log`, `conformance`, `serve`) is an **honest stub** in the foundation: it exits non-zero
-and names the milestone that delivers it. Nothing brokers a credential yet.
+`scan`, `migrate`, `ref`, `run`, `revoke`, `replay`, `export`, `verify-log`, `conformance`, `serve`,
+`backup`, and `restore` are implemented; `init`, `context-dump`, and `scan-usable` remain honest stubs that
+exit non-zero and name the milestone. The [quickstart](docs/tutorials/quickstart.md) is replayed by a step
+test (`tests/docs/test_quickstart.py`).
 
 **Platforms:** macOS and Linux. **Windows is not supported** — the CLI says so rather than failing
 cryptically.

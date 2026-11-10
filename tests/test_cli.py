@@ -20,6 +20,8 @@ EXPECTED_COMMANDS = (
     "scan-usable",
     "export",
     "verify-log",
+    "backup",
+    "restore",
     "conformance",
     "serve",
     "version",
@@ -56,6 +58,10 @@ def test_top_level_help_lists_every_command(capsys: pytest.CaptureFixture[str]) 
             "verify-log",
             "scan",
             "migrate",
+            "conformance",
+            "serve",
+            "backup",
+            "restore",
         }
     ],
 )

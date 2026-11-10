@@ -274,4 +274,4 @@ so one transaction covers state + evidence; (3) `consume` returns a typed result
 (5) capability refusal is a hard deny with no degraded mode. Deferred: backend registry *population*
 (M3), redaction receipt *writing* (M3), full third-party conformance gating (M11).
 
-Code review findings are recorded in [`docs/wbs/v0.1.0/codereview-log.md`](../wbs/v0.1.0/codereview-log.md) at `1.CR`.
+Code review findings are recorded in [`docs/wbs/v0.1.0/codereview-log.md`](../../wbs/v0.1.0/codereview-log.md) at `1.CR`.

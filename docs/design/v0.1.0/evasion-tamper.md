@@ -1,8 +1,8 @@
 # Evasion & tamper design — catch the bypass, fail closed on tamper (M9)
 
 **Status:** design of record for M9 · **Issue:** #112 (`9.D0`) · **Written before implementation.**
-**Sources:** [PRD 06 §3–§4](../prd/06-security-baseline.md), [PRD 05 R7/E10](../prd/05-features.md),
-[PRD 17 SC-14–SC-17/SC-41](../prd/17-scenarios.md), [ledger design](ledger.md).
+**Sources:** [PRD 06 §3–§4](../../prd/06-security-baseline.md), [PRD 05 R7/E10](../../prd/05-features.md),
+[PRD 17 SC-14–SC-17/SC-41](../../prd/17-scenarios.md), [ledger design](ledger.md).
 
 **BLUF:** A raw-credential read outside the broker is a **high-severity event**, attributed and
 joined to the ledger. In `enforce` mode it is **blocked only where an enforcer composes**; where none
@@ -67,4 +67,4 @@ The design says that plainly rather than claiming blocks it cannot deliver.
 | 9.4 | `tests/test_tamper_config.py` | pin/verify; edit → fail closed + `tamper-detected` |
 | 9.5/9.6 | `tests/test_tamper_broker.py` | enumeration signal; spoofed reference denied; closed store denies |
 
-Findings land in [`codereview-log.md`](../wbs/v0.1.0/codereview-log.md) at `9.CR`.
+Findings land in [`codereview-log.md`](../../wbs/v0.1.0/codereview-log.md) at `9.CR`.

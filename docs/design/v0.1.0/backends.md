@@ -1,8 +1,8 @@
 # Backends design — contract, drivers, fail-closed engine, redactor (M3)
 
 **Status:** design of record for M3 · **Issue:** #42 (`3.D0`) · **Written before implementation.**
-**Sources:** [PRD 02 §6](../prd/02-architecture.md), [PRD 15 §7](../prd/15-data-model.md),
-[PRD 13 §4](../prd/13-non-functional-requirements.md), [store design](store.md).
+**Sources:** [PRD 02 §6](../../prd/02-architecture.md), [PRD 15 §7](../../prd/15-data-model.md),
+[PRD 13 §4](../../prd/13-non-functional-requirements.md), [store design](store.md).
 
 **BLUF:** One `Backend` contract, two drivers (OS keychain, credential file), one **fail-closed engine**
 whose fault matrix is 100% deny-or-pending, and one **redactor** that masks before storage/render/export and
@@ -133,4 +133,4 @@ gated by the same admission + conformance posture as store drivers; (3) ambiguit
 works (CUJ-10). Deferred: enterprise/cloud backends (R10, v0.1.x), backend conformance *gating at install*
 (M11), evasion detection (M9).
 
-Findings land in [`codereview-log.md`](../wbs/v0.1.0/codereview-log.md) at `3.CR`.
+Findings land in [`codereview-log.md`](../../wbs/v0.1.0/codereview-log.md) at `3.CR`.

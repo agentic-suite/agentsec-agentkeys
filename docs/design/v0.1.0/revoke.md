@@ -1,8 +1,8 @@
 # Revocation design — one CAS, a proven kill, and time that cannot be gamed (M6)
 
 **Status:** design of record for M6 · **Issue:** #77 (`6.D0`) · **Written before implementation.**
-**Sources:** [PRD 18 §7](../prd/18-issuance-integrity.md), [PRD 15 §5–§6](../prd/15-data-model.md),
-[PRD 05 R4/E6](../prd/05-features.md), [PRD 17 §8/§15](../prd/17-scenarios.md),
+**Sources:** [PRD 18 §7](../../prd/18-issuance-integrity.md), [PRD 15 §5–§6](../../prd/15-data-model.md),
+[PRD 05 R4/E6](../../prd/05-features.md), [PRD 17 §8/§15](../../prd/17-scenarios.md),
 [store design](store.md), [contracts design](contracts.md).
 
 **BLUF:** Revocation is a **compare-and-set on `sessions.revoke_epoch`**, not a walk of issued tokens.
@@ -104,4 +104,4 @@ Store additions (additive, E11): `list_sessions()`, `expire_due(now, event)`.
 - `agent` scope is a fan-out of session CAS writes (one per session). It is still unconditional and
   bounded by the agent's session count; a future server mode may make it a single fleet CAS (R11).
 
-Findings land in [`codereview-log.md`](../wbs/v0.1.0/codereview-log.md) at `6.CR`.
+Findings land in [`codereview-log.md`](../../wbs/v0.1.0/codereview-log.md) at `6.CR`.

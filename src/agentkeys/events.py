@@ -37,6 +37,7 @@ EVENT_NAMES: tuple[str, ...] = (
     "tamper-detected",
     "revoked",
     "expired",
+    "retention-pruned",
     "sink-gap",
 )
 

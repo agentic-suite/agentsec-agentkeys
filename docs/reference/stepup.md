@@ -1,6 +1,6 @@
 # Step-up reference — approvals recorded, not assumed
 
-> **Status: implemented (M10).** Design: [step-up & recipes design](../design/step-up-recipes.md).
+> **Status: implemented (M10).** Design: [step-up & recipes design](../design/v0.1.0/stepup-recipes.md).
 
 ## Configuration
 
