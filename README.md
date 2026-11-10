@@ -1,14 +1,26 @@
+<div align="center">
+
 # agentkeys
 
-> **Revoke the agent, not the quarter.** The never-in-context credential broker for AI agents: agents hold
-> only *references*, real secrets stay in your keychain / credential files / vault, short-lived
-> audience-bound tokens are injected **at egress** — and one command kills all of an agent's access in
-> **≤1 second**, replay-verified in CI.
-
+[![CI](https://github.com/agentic-suite/agentsec-agentkeys/actions/workflows/ci.yml/badge.svg)](https://github.com/agentic-suite/agentsec-agentkeys/actions/workflows/ci.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
+[![Status: release candidate](https://img.shields.io/badge/status-release%20candidate-yellow)](docs/release/v0.1.0/RELEASE_NOTES.md)
+[![Field-tested: 71 PASS · 0 FAIL · 3 WARN](https://img.shields.io/badge/field--tested-71%20PASS%20%C2%B7%200%20FAIL%20%C2%B7%203%20WARN-blue)](docs/field-test/v0.1.0/FIELD_TEST_REPORT.md)
+[![Release: unsigned](https://img.shields.io/badge/release-unsigned-orange)](docs/release/v0.1.0/RELEASE.md)
+[![Ruff](https://img.shields.io/badge/code%20style-ruff-000000)](https://github.com/astral-sh/ruff)
+[![Type checked](https://img.shields.io/badge/mypy-strict-blue)](https://github.com/python/mypy)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/agentic-suite/agentsec-agentkeys/badge)](https://scorecard.dev/viewer/?uri=github.com/agentic-suite/agentsec-agentkeys)
+
+**Revoke the agent, not the quarter.** The never-in-context credential broker for AI agents: agents hold
+only *references*, real secrets stay in your keychain / credential files / vault, short-lived
+audience-bound tokens are injected **at egress** — and one command kills all of an agent's access in
+**≤1 second**, replay-verified in CI.
 
 Part of the [agentic-suite](https://github.com/agentic-suite) — open-source, harness-agnostic security
 for AI agents. Apache-2.0.
+
+</div>
 
 ## Status
 
