@@ -1,0 +1,30 @@
+[
+  {
+    "actual": "30663e485af0c859582480eba3f14710",
+    "expected": true,
+    "kind": "present",
+    "name": "s1-authenticated",
+    "passed": true
+  },
+  {
+    "actual": "eab985b28848f32a2ec1063c3d550134",
+    "expected": true,
+    "kind": "present",
+    "name": "s2-authenticated",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "distinct-tokens",
+    "passed": true
+  },
+  {
+    "actual": 2,
+    "expected": 2,
+    "kind": "eq",
+    "name": "one-revoke-kills-both",
+    "passed": true
+  }
+]

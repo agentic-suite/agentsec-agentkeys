@@ -1,0 +1,76 @@
+{
+  "assertions": [
+    {
+      "actual": 8,
+      "expected": 7,
+      "kind": "gte",
+      "name": "recall",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "value-gone-from-file",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "value-in-backend",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "finding-closed",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "zero-printed",
+      "passed": true
+    },
+    {
+      "actual": 3,
+      "expected": 1,
+      "kind": "gte",
+      "name": "broad-reuse-flagged",
+      "passed": true
+    }
+  ],
+  "case": "FT-MP-SCANMIGRATE",
+  "class": "P/F",
+  "detail": "100% recall, 0 printed, finding closed, broad reuse flagged",
+  "driver": "scan-migrate",
+  "duration_ms": 4,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "051033e43bcc39ef9077b033e5d9ce32340f68d428f53636ec9fe770615722a0",
+      "commands.log": "019bc91fe7996ce59ffc3c2b58ac164a3d5adf2e5d49653dc4823681c94c8245",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "migrate",
+  "passed": true,
+  "scenario": "SC-51",
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

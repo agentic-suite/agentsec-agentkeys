@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": 0.01,
+      "expected": 2.0,
+      "kind": "lte",
+      "name": "ledger-append-under-2ms",
+      "passed": true
+    },
+    {
+      "actual": 200,
+      "expected": 200,
+      "kind": "eq",
+      "name": "appends",
+      "passed": true
+    }
+  ],
+  "case": "FT-NFR-LEDGER",
+  "class": "P/F",
+  "detail": "ledger append p99=0.010ms",
+  "driver": "timing",
+  "duration_ms": 1,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "c4d3d86688dbbda9573df2a7bedc9c94900d59c1b0f121066c736e1dbb5e0f70",
+      "commands.log": "8b251c71b7219231a544b03c96cdf4509aadd51e9307f8de2173925e87b2c120",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "nfr",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

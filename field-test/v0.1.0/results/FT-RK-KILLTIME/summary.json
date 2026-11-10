@@ -1,0 +1,72 @@
+{
+  "assertions": [
+    {
+      "actual": 100,
+      "expected": 100,
+      "kind": "eq",
+      "name": "iterations",
+      "passed": true
+    },
+    {
+      "actual": 0.012,
+      "expected": 0.0,
+      "kind": "gte",
+      "name": "p50-ms",
+      "passed": true
+    },
+    {
+      "actual": 0.016833,
+      "expected": 1000.0,
+      "kind": "lte",
+      "name": "p95-lte-1s",
+      "passed": true
+    },
+    {
+      "actual": 0.030667,
+      "expected": 1000.0,
+      "kind": "lte",
+      "name": "max-lte-1s",
+      "passed": true
+    },
+    {
+      "actual": 100,
+      "expected": 100,
+      "kind": "eq",
+      "name": "every-replay-refused",
+      "passed": true
+    }
+  ],
+  "case": "FT-RK-KILLTIME",
+  "class": "P/F",
+  "detail": "p50=0.01ms p95=0.02ms max=0.03ms",
+  "driver": "bench",
+  "duration_ms": 6,
+  "env": [
+    "ci",
+    "docker",
+    "mac",
+    "lin"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "67f1a27410d07f7f295e7a011e5cca726357ed834721c8035421f1a2b9291d2c",
+      "commands.log": "0c5746699b875426bac30d16a00c5e997d2726e5aa877c8add6ed7617b8a59d3",
+      "env.json": "d577bf7a669ed00cd09564f0f1b23013178629ea2db11d2f158bc7356ded599e"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "18e458895b99106eca5fa677c89f580a4eb27fb2",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T04:06:36Z"
+  },
+  "limitations": [],
+  "pack": "killtime",
+  "passed": true,
+  "scenario": "SC-24",
+  "started_at": "2026-11-10T04:06:36Z",
+  "status": "pass"
+}

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "alpha": {
+      "command": "npx",
+      "env": {
+        "ALPHA_TOKEN": "ghp_REUSED0000000000000000000000000000000000"
+      }
+    },
+    "beta": {
+      "command": "npx",
+      "env": {
+        "BETA_TOKEN": "ghp_REUSED0000000000000000000000000000000000"
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "actual": "cloud-credential",
+    "expected": "cloud-credential",
+    "kind": "eq",
+    "name": "class",
+    "passed": true
+  },
+  {
+    "actual": "high",
+    "expected": "high",
+    "kind": "eq",
+    "name": "severity",
+    "passed": true
+  },
+  {
+    "actual": "evasion-detected",
+    "expected": "evasion-detected",
+    "kind": "eq",
+    "name": "event",
+    "passed": true
+  },
+  {
+    "actual": "cloud-credential: /home/u/.aws/credentials; monitor-only: cloud-credential read outside the broker",
+    "expected": "/home/u/.aws/credentials",
+    "kind": "contains",
+    "name": "path-recorded",
+    "passed": true
+  }
+]

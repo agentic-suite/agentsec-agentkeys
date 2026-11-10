@@ -1,0 +1,16 @@
+[
+  {
+    "actual": 1,
+    "expected": 1,
+    "kind": "eq",
+    "name": "forward-migrate",
+    "passed": true
+  },
+  {
+    "actual": "store schema version 999 is newer than supported 1; downgrade is refused",
+    "expected": "newer than supported",
+    "kind": "contains",
+    "name": "downgrade-refused",
+    "passed": true
+  }
+]

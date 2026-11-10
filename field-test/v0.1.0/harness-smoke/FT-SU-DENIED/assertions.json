@@ -1,0 +1,16 @@
+[
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "denied",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "no-credential",
+    "passed": true
+  }
+]

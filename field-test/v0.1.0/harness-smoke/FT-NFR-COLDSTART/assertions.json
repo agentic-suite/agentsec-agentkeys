@@ -1,0 +1,16 @@
+[
+  {
+    "actual": 58.555,
+    "expected": 200.0,
+    "kind": "lte",
+    "name": "coldstart-under-200ms",
+    "passed": true
+  },
+  {
+    "actual": 5,
+    "expected": 5,
+    "kind": "eq",
+    "name": "samples",
+    "passed": true
+  }
+]

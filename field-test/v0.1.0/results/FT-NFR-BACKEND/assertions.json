@@ -1,0 +1,16 @@
+[
+  {
+    "actual": 0.017,
+    "expected": 1.0,
+    "kind": "lte",
+    "name": "file-p99-under-1ms",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "present",
+    "name": "resolved",
+    "passed": true
+  }
+]

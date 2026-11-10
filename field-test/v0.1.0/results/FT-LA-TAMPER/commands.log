@@ -1,0 +1,8 @@
+case=FT-LA-TAMPER
+pack=audit
+driver=verify-chain
+started=2026-11-10T03:41:44Z
+duration_ms=3
+iterations=100
+fresh_box=False
+results=/Users/deghosal/Desktop/code/github/agentic-suite/agentkeys/field-test/v0.1.0/results/FT-LA-TAMPER

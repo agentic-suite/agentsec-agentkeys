@@ -21,9 +21,9 @@ now lives. Two of its open questions are now **answered** (§7 → frozen decisi
 
 ## 1. Why (problem + evidence)
 
-1. Credential revocation is the weakest capability across the entire landscape: commercially only Aembit/Entra; in OSS only single-maintainer experiments ([coverage map](../../03-product-landscape/04-coverage-map-commercial-vs-oss.md) row #7).
+1. Credential revocation is the weakest capability across the entire landscape: commercially only Aembit/Entra; in OSS only single-maintainer experiments (coverage map row #7).
 2. STDIO MCP credential handling is covered by **nobody** (row #8): local servers read static secrets from env vars — no audience binding, no revocation — the vector behind multiple documented incidents.
-3. The only defense class every expert/skeptic universally endorses is capability-scoped, session-bound, short-lived credentials (contrarian research, [evidence file](../../02-threat-landscape/03-incidents-and-evidence.md)).
+3. The only defense class every expert/skeptic universally endorses is capability-scoped, session-bound, short-lived credentials (contrarian research, evidence file).
 4. "The agent leaked its key" currently costs a quarter of key rotation; it should cost one command.
 
 ## 2. What (requirements)
@@ -52,7 +52,7 @@ now lives. Two of its open questions are now **answered** (§7 → frozen decisi
 
 > **Non-negotiable:** this tool must be agentic-harness-agnostic or explicitly harness-compatible. It may never be built for a single harness — it either works across harnesses by construction (protocol/kernel/OTel/identity layers) or ships named adapters with a published compatibility table. agentdrill verifies compatibility with per-harness attack packs.
 
-**Compatibility targets — most popular agentic harnesses/ecosystems (ordered by user base; full matrix: [00-harness-compatibility.md](../00-harness-compatibility.md)):**
+**Compatibility targets — most popular agentic harnesses/ecosystems (ordered by user base; full matrix: 00-harness-compatibility.md):**
 
 | Tier | Harness / Ecosystem | Requirement |
 |---|---|---|
@@ -60,7 +60,7 @@ now lives. Two of its open questions are now **answered** (§7 → frozen decisi
 | 2 — Agent frameworks | **LangChain/LangGraph** · **CrewAI** · **OpenAI Agents SDK** · **AutoGen/AG2** · **LlamaIndex** · **PydanticAI** · **smolagents** | ≥3 framework adapters by v0.3.0 where the tool has an SDK surface (agentwatch, agentdrill, agentcomply) |
 | 3 — Protocol/enterprise | Generic **MCP clients** (incl. Claude Desktop) · enterprise platforms (Copilot Studio, Agentforce, Bedrock agents) | MCP-layer tools are harness-agnostic by construction; enterprise platforms via standards, v2.x |
 
-This tool's specific per-tier minimums: see the [per-tool compatibility table](../00-harness-compatibility.md#per-tool-compatibility-requirements).
+This tool's specific per-tier minimums: see the per-tool compatibility table.
 
 ## 3. Explicit non-requirements
 - No credential creation/rotation tooling (the org's IdP stays the source of truth; we broker, never mint long-lived secrets).

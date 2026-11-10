@@ -1,0 +1,16 @@
+[
+  {
+    "actual": 35.1,
+    "expected": 50.0,
+    "kind": "lte",
+    "name": "rss-under-50mb",
+    "passed": true
+  },
+  {
+    "actual": 35.1,
+    "expected": 0.0,
+    "kind": "gte",
+    "name": "rss-positive",
+    "passed": true
+  }
+]

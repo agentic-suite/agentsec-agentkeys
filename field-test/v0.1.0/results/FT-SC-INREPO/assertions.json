@@ -1,0 +1,23 @@
+[
+  {
+    "actual": [],
+    "expected": [],
+    "kind": "eq",
+    "name": "checks-pass",
+    "passed": true
+  },
+  {
+    "actual": "CycloneDX",
+    "expected": "CycloneDX",
+    "kind": "eq",
+    "name": "sbom-format",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "security-txt",
+    "passed": true
+  }
+]

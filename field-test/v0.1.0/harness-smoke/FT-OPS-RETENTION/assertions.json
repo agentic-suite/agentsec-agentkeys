@@ -1,0 +1,30 @@
+[
+  {
+    "actual": "retention-pruned",
+    "expected": "retention-pruned",
+    "kind": "eq",
+    "name": "marker",
+    "passed": true
+  },
+  {
+    "actual": "alice",
+    "expected": "alice",
+    "kind": "eq",
+    "name": "actor",
+    "passed": true
+  },
+  {
+    "actual": 3,
+    "expected": 3,
+    "kind": "eq",
+    "name": "nothing-deleted",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "chain-intact",
+    "passed": true
+  }
+]

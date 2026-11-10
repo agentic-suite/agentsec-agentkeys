@@ -1,0 +1,49 @@
+{
+  "assertions": [
+    {
+      "actual": 1.486,
+      "expected": 1000.0,
+      "kind": "lte",
+      "name": "restart-under-1s",
+      "passed": true
+    },
+    {
+      "actual": "absent",
+      "expected": "absent",
+      "kind": "eq",
+      "name": "clean-stop",
+      "passed": true
+    }
+  ],
+  "case": "FT-NFR-RESTART",
+  "class": "P/F",
+  "detail": "start-to-serving 1.486ms",
+  "driver": "timing",
+  "duration_ms": 2,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "5a7b931cc5fb9bb6bb572d25f13703acc58122e812416d51d265465b0251f876",
+      "commands.log": "ef18368c79729e9eea90cba0c936e029d2bafc5723b9b9f4d8b9df3d14a7cbda",
+      "env.json": "e42129977c24b24db5b4cb5efe53a2ca28e06a02c88d8674dc1d324e194fbe57"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:45Z"
+  },
+  "limitations": [],
+  "pack": "nfr",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:41:45Z",
+  "status": "pass"
+}

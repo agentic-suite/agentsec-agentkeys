@@ -1,0 +1,68 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "wiring-valid",
+      "passed": true
+    },
+    {
+      "actual": "{'mcpServers': {'agentkeys': {'command': 'agentkeys', 'args': ['run', '--server', 'akref:file/agentkeys/dev/token', '--', '<server-command>'], 'env': {}}}}",
+      "expected": "agentkeys",
+      "kind": "contains",
+      "name": "wiring-command-is-broker",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "smoke-authenticated",
+      "passed": true
+    },
+    {
+      "actual": [
+        "ref_1"
+      ],
+      "expected": [
+        "ref_1"
+      ],
+      "kind": "eq",
+      "name": "transcript-only-reference",
+      "passed": true
+    }
+  ],
+  "case": "FT-HC-CURSOR",
+  "class": "P/F|W",
+  "detail": "Cursor: wiring + smoke green; no headless CLI on this box",
+  "driver": "recipe",
+  "duration_ms": 0,
+  "env": [
+    "harness"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "ddc47eb35a4eecdc87de9f6dd37d01ebde1dc890b1ed6338265bbcd5c2a06900",
+      "commands.log": "8491615cdd0dba85ef52b7d01d5997d4a5b18cc9b378eb9d39752db5ca67ea9b",
+      "env.json": "e83844e7b24308964646d56e2873d8b536777bb5637632e6e46c6d86b5c2ff82"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T04:00:52Z"
+  },
+  "limitations": [
+    "Cursor is a GUI IDE (VS Code fork) with no headless/evidence-capturing CLI surface on this box; the wiring + smoke are verified and the live run is declared (plan \u00a78)"
+  ],
+  "pack": "harness",
+  "passed": false,
+  "scenario": "SC-36",
+  "started_at": "2026-11-10T04:00:52Z",
+  "status": "warn"
+}

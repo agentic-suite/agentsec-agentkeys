@@ -1,0 +1,23 @@
+[
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "healthy-exit",
+    "passed": true
+  },
+  {
+    "actual": 3,
+    "expected": 3,
+    "kind": "eq",
+    "name": "tamper-exit",
+    "passed": true
+  },
+  {
+    "actual": 0.001,
+    "expected": 2.0,
+    "kind": "lte",
+    "name": "under-2s",
+    "passed": true
+  }
+]

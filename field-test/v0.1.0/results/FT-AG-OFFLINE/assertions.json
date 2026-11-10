@@ -1,0 +1,30 @@
+[
+  {
+    "actual": "7c4dcae1df52eb78cb60244f650fd060",
+    "expected": true,
+    "kind": "present",
+    "name": "resolved-offline",
+    "passed": true
+  },
+  {
+    "actual": "consumed",
+    "expected": "consumed",
+    "kind": "eq",
+    "name": "used-offline",
+    "passed": true
+  },
+  {
+    "actual": 1,
+    "expected": 1,
+    "kind": "eq",
+    "name": "revoked-offline",
+    "passed": true
+  },
+  {
+    "actual": "unknown store driver: vault (known: memory, sqlite)",
+    "expected": "vault",
+    "kind": "contains",
+    "name": "cloud-backend-refused",
+    "passed": true
+  }
+]

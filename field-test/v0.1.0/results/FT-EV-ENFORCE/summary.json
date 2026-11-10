@@ -1,0 +1,62 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "gap-named-without-enforcer",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "never-claims-block",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "blocked-when-composed",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "composed-block-is-real",
+      "passed": true
+    }
+  ],
+  "case": "FT-EV-ENFORCE",
+  "class": "P/F|W",
+  "detail": "enforce mode: OS filesystem deny composed and the read is provably blocked; without an enforcer the gap is named",
+  "driver": "enforce-hook",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "20b7a10d1b949750861dcc18a5277d269a3015de896317af1c83dc80376567ac",
+      "commands.log": "b651bd4af88fab45dcbd8f24b2056866427c42179bf8433cbe6ddea4338be415",
+      "env.json": "918a4a679088c1a0fde38963899ba0eb8f7b089f239a8feae986f91e177907ed"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T04:00:51Z"
+  },
+  "limitations": [],
+  "pack": "evasion",
+  "passed": true,
+  "scenario": "SC-17",
+  "started_at": "2026-11-10T04:00:51Z",
+  "status": "pass"
+}

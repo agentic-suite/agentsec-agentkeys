@@ -27,7 +27,122 @@ requirement may be unmapped**, and no cell may claim a higher confidence than it
 
 ---
 
+## 0. v0.1.0 — foundation (M0, built 2026-11-09)
+
+M0 carries no R-scenario of its own; it lands the first slice of **E4** (fail-closed config) and **E15**
+(the CI quality gate) and freezes the contracts every later row depends on.
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `0.D0` design | Foundation design of record (CLI surface, exit codes, config, store sketch) | `docs/design/v0.1.0/foundation.md` |
+| `0.1` packaging | `agentsec-agentkeys` dist, `agentkeys` package + console script (`E15`) | `tests/test_packaging.py` |
+| `0.2` CLI surface | the frozen v0.1.0 command surface + honest stubs | `tests/test_cli.py` |
+| `0.3` exit codes | reserved exit-code contract `0/1/2/3/4` | `tests/test_exit_codes.py` |
+| `0.4` config | references-only TOML model, fail-closed (`E4`) + branch coverage | `tests/test_config.py`, `tests/test_config_gate.py` |
+| `0.5` CI | `ruff` + `mypy --strict` + tests + coverage ≥95% + DCO (`E15`) | `tests/test_ci_workflow.py` |
+| `0.6` `doctor` | read-only health checks, exit-coded | `tests/test_doctor.py` |
+| `0.7` identity | README/LICENSE/CODEOWNERS/SECURITY/AGENTS/CONTRIBUTING | `tests/test_identity_docs.py` |
+
+## 0.1 v0.1.0 — store (M1, built 2026-11-09)
+
+The BrokerStore contract and its two drivers. Lands the first real slice of **E2** (durable store) and
+**E11** (versioning), and the foundation **E12**'s ledger will build on.
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `1.D0` design | BrokerStore contract, six semantics, DDL, capability selection | `docs/design/v0.1.0/store.md` |
+| `1.1` contract | typed records, `CapabilityFlags`, chain hashing, errors | `tests/test_store_contract.py` |
+| `1.2` SQLite driver | WAL, fsync'd commits, `0700`/`0600`, indexes, atomic issue, CAS revoke | `tests/test_store_sqlite.py` |
+| `1.3` memory driver | identical semantics, ephemeral | `tests/test_store_memory.py` |
+| `1.4` conformance suite | S1-S6 as fixtures; four broken fakes must fail it | `tests/test_store_conformance.py`, `tests/store_conformance.py` |
+| `1.5` migrations | forward-only, loud downgrade refusal, corrupt-store refusal | `tests/test_store_migrations.py` |
+| `1.6` loader | `agentkeys.store` entry points, admission, capability refusal | `tests/test_store_loader.py` |
+| `1.T` recovery | crash mid-issue → all-or-none, retry exactly once | `tests/test_store_recovery.py` |
+
+## 0.2 v0.1.0 — contracts + resolution (M2, built 2026-11-09)
+
+Lands the first slice of **E1** (contract + idempotent resolution), **E3** (single-use issuance), and
+**R1/R3** (references only; audience/tool/session bindings).
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `2.D0` design | contracts design of record (identity chain, pipeline order) | `docs/design/v0.1.0/contracts.md` |
+| `2.1` `akref/1.0` | reference model + strict key grammar; opaque + loggable | `tests/test_reference_contract.py` |
+| `2.2` `issuance/1.0` | binding triple; TTL within class window; no plaintext field | `tests/test_issuance_contract.py` |
+| `2.3` registry | register/list; unknown key refused loudly | `tests/test_registry.py` |
+| `2.4` idempotent resolution | retry returns the same issuance, mints nothing (`E1`) | `tests/test_resolution.py` |
+| `2.5` single-use secret | hashed token, typed consume, replay rejected (`E3`) | `tests/test_resolution.py` |
+| `2.6` SDK / CLI | embedder surface + `ref list|show`; no `get_secret()` | `tests/test_sdk_cli_contract.py` |
+
+## 0.3 v0.1.0 — backends + fail-closed engine + redactor (M3, built 2026-11-09)
+
+Lands the first slice of **R5** (keychain + file backends), **E4** (fail closed), **E9** (pluggable
+backends), and **E5** (redaction by default + receipts).
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `3.D0` design | backend contract, drivers, fault matrix, redaction vocabulary | `docs/design/v0.1.0/backends.md` |
+| `3.1` contract | opaque `SecretValue`, capabilities, health, denial vocabulary | `tests/test_backend_contract.py` |
+| `3.2` keychain driver | unlock-per-resolve; no caching; no disk write | `tests/test_backend_keychain.py` |
+| `3.3` file driver | `0600` at open and resolve; rotation without restart | `tests/test_backend_file.py` |
+| `3.4` conformance suite | one suite for every backend; broken drivers must fail | `tests/test_backends_conformance.py` |
+| `3.5` fail-closed engine | every failure → a structured denial; no fallback | `tests/test_failclosed_matrix.py` |
+| `3.6` redactor + receipts | mask before persist/render/export; a receipt per field | `tests/test_redactor_receipts.py` |
+
+## 0.4 v0.1.0 — egress-injection engine (M4, built 2026-11-09)
+
+Lands the first slice of **R2/R3** (egress injection; bindings), **E7** (the injection engine),
+**E14** (no passthrough), and **E13** (RFC 8693 conformance at the driver level).
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `4.D0` design | one interface, three drivers, the four rules, denials | `docs/design/v0.1.0/egress.md` |
+| `4.1` interface + rules | binding is the ceiling; forget; typed denials; rejection events | `tests/test_inject_contract.py` |
+| `4.2` env driver | child environment only; parent untouched | `tests/test_inject_env.py` |
+| `4.3` header driver | overwrite client credential headers | `tests/test_inject_header.py` |
+| `4.4` RFC 8693 driver | narrow audience/scope; broker subject; `act` | `tests/test_inject_exchange.py` |
+| `4.5` audience enforcement | SC-08-SC-11 + SC-42 deny and log | `tests/test_binding_audience.py` |
+| `4.6` session binding | one agent per session (D-17) | `tests/test_binding_session.py` |
+
+## 0.5 v0.1.0 — stdio MCP credential virtualization (M5, built 2026-11-09)
+
+Lands the flagship: **R8** (stdio virtualization), with **E7** (the injection engine) and **E14** (no
+passthrough) applied to the stdio case.
+
+| Work item | What it lands | Test file |
+|---|---|---|
+| `5.D0` design | wrapper, proxy, substitution, the honest boundary limit | `docs/design/v0.1.0/stdio.md` |
+| `5.1` launch wrapper | `agentkeys run --server` builds the child env and proxies stdio | `tests/test_stdio_cli_run.py`, `tests/test_stdio_virtualization.py` |
+| `5.2` stdio proxy | byte-for-byte frames, stderr-only logging, frame cap | `tests/test_stdio_proxy.py` |
+| `5.3` substitution | placeholder → scoped token, with receipts | `tests/test_stdio_virtualization.py` |
+| `5.4` no passthrough | client credential stripped; server receives a broker token | `tests/test_stdio_no_token_passthrough.py` |
+| `5.5` pattern + ext-auth | the placeholder pattern documented; fixtures + appendix staged | `docs/reference/stdio-virtualization.md`, `docs/design/v0.1.0/stdio-ext-auth-appendix.md` |
+
+## 0.6 v0.1.0 — field test + release readiness (M14–M15, 2026-11-09)
+
+| Requirement | Where it is proven | Label |
+|---|---|---|
+| R1 (never-in-context) | FT-AP-CONTEXTDUMP — 0 usable across variants, seeded control fires | field-tested |
+| R4 (revoke ≤1s) | FT-RK-KILLTIME — p95 0.017ms / max 0.031ms at N=100, 100/100 replays refused | field-tested |
+| R8 (stdio virtualization) | FT-ST-NOSECRET, FT-ST-NOPASSTHRU, FT-DK-BOUNDARY | field-tested |
+| R17 (scan/migrate) | FT-MP-SCANMIGRATE — 100% recall, 0 printed values | field-tested |
+| E13 (standards conformance) | FT-CONF-STANDARDS, FT-CONF-BACKENDS (DPoP explicitly not supported) | conformance |
+| E15 (supply chain) | SBOM + supply checks + audit; **unsigned release by decision** (no Sigstore/SLSA); tag + publish await the maintainer | documented |
+| CUJ-1 (install → first call) | FT-CL-FIRST — scripted + fresh-venv green; **no naive-human fresh-box median** | documented (WARN) |
+| CUJ-12 (harness recipes) | FT-HC-CLAUDE / FT-HC-CURSOR — wiring + smoke green; **live legs blocked** | documented (WARN) |
+| PRD 20 §6 (no over-claim) | `python -m agentkeys.release claims` — 18 claims, 0 findings, 0 verified | enforced in CI-by-test |
+| PRD 06 §5 (no live secret anywhere) | `python -m agentkeys.release audit` — 0 verified in tree + full history, control fired | enforced in CI |
+
+Evidence: [field report](../field-test/v0.1.0/FIELD_TEST_REPORT.md) (hand-maintained) ·
+[benchmark](../../bench/README.md) · [audit](../release/v0.1.0/SECURITY_AUDIT.md) ·
+[claims](../release/v0.1.0/CLAIMS.md) · [compatibility](../release/v0.1.0/COMPATIBILITY.md) ·
+[release notes](../release/v0.1.0/RELEASE_NOTES.md).
+
 ## 1. v0.1.0 — P0 product requirements (R1–R9 + R17)
+
+> **Implemented (M6–M13, 2026-11-09).** R4, R6, R7, R9, R17 and E6, E8, E10, E12 are implemented and
+> covered by the test files listed below. A row is *green* only with the milestone gate recorded in the
+> [WBS Progress](../wbs/v0.1.0/wbs-v0.1.0-index.md#progress); the field-test verdicts remain M14's.
 
 | Req | Story | CUJ | Scenario | Test file |
 |---|---|---|---|---|
@@ -135,7 +250,8 @@ requirement may be unmapped**, and no cell may claim a higher confidence than it
 | `tests/test_contract.py`, `test_idempotency.py`, `test_contract_compat.py` | contract + idempotent ops | E1, E11 |
 | `tests/test_inject_env.py`, `test_inject_header.py`, `test_inject_exchange.py` | three egress drivers | R2, E7 |
 | `tests/test_binding_audience.py`, `test_binding_tool.py`, `test_binding_session.py`, `test_issuance_single_use.py` | bindings + single-use | R3, E3 |
-| `tests/test_revoke_killtime.py`, `test_revoke_scope.py` | kill-time + scoped kill | R4, E6 |
+| `tests/test_revoke_killtime.py`, `test_revoke_scope.py`, `test_revoke_cli.py` | kill-time + scoped kill + replay proof | R4, E6 |
+| `tests/test_events.py`, `test_correlation.py`, `test_sink.py` | event set, join keys, sink gap marker | R6, E12 |
 | `tests/test_backend_keychain.py`, `test_backend_file.py`, `test_backend_conformance.py`, `test_failclosed_matrix.py` | backends + fail-closed | R5, E4, E9 |
 | `tests/test_store_capabilities.py`, `test_store_recovery.py`, `test_schema_migration.py` | durable store + recovery | E2, E3, E11 |
 | `tests/test_ledger_chain.py`, `test_export.py` | ledger chain + export | R6, E12 |
@@ -143,12 +259,17 @@ requirement may be unmapped**, and no cell may claim a higher confidence than it
 | `tests/test_evasion_detect.py`, `test_evasion_enforce.py` | evasion detect + enforce | R7, E10 |
 | `tests/test_stdio_virtualization.py`, `test_stdio_no_token_passthrough.py` | stdio virtualization | R8, E14 |
 | `tests/test_stepup_approved.py`, `test_stepup_denied.py` | step-up gating | R9 |
-| `tests/test_harness_recipe_claude_code.py`, `test_harness_recipe_cursor.py` | ≥2 Tier-1 recipes | E8 |
+| `tests/test_harness_recipe_claude_code.py`, `test_harness_recipe_cursor.py`, `test_recipe_acceptance.py` | ≥2 Tier-1 recipes + acceptance harness | E8 |
 | `tests/test_tamper_config.py`, `test_tamper_broker.py` | tamper resistance | E10 |
 | `tests/test_no_token_passthrough.py` | no passthrough (unit) | E14 |
 | `tests/test_supply_chain.py` | release supply-chain gate | E15 |
-| `tests/test_scan_candidates.py`, `test_migrate_flow.py`, `test_posture_report.py` | migration + posture | R17, R18 |
+| `tests/test_scan_candidates.py`, `test_migrate_flow.py`, `test_scan_cli.py`, `test_posture_report.py` | migration + posture | R17, R18 |
 | `tests/conformance/test_rfc8693.py` … `test_otel_semconv.py` | standards conformance | E13, E14 |
+| `tests/test_release_audit.py` | secret-leakage audit + planted-fake control | E15, PRD 06 §5 |
+| `tests/test_release_claims.py` | claims lint vs the evidence ladder | PRD 20 §6 |
+| `tests/test_release_compat.py` | compatibility matrix derived from committed packs | PRD 19 §6 |
+| `tests/test_release_supply.py` | SBOM + release-artefact boundary | E15 |
+| `tests/test_release_notes.py`, `test_release_risk.py`, `test_release_docs.py` | release notes, risk re-grade, public docs | PRD 09 §3, PRD 08 |
 
 ## 9. Related documents
 

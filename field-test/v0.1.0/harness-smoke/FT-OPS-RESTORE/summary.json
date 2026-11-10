@@ -1,0 +1,55 @@
+{
+  "assertions": [
+    {
+      "actual": 3,
+      "expected": 3,
+      "kind": "eq",
+      "name": "rows-restored",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "chain-preserved",
+      "passed": true
+    },
+    {
+      "actual": "backup chain is broken at seq 2",
+      "expected": "broken at seq 2",
+      "kind": "contains",
+      "name": "tampered-refused",
+      "passed": true
+    }
+  ],
+  "case": "FT-OPS-RESTORE",
+  "class": "P/F",
+  "detail": "restore preserves the chain and refuses tamper",
+  "driver": "restore",
+  "duration_ms": 5,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "6597d7f05b997e2ed556046356816e5e08229bc83f6d5a773f03af4462e495bd",
+      "commands.log": "bc4a8423ae5015469b7d2812213eb6f0894afca9b1e4dc8cef6e8a9027c55329",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "ops",
+  "passed": true,
+  "scenario": "SC-30",
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

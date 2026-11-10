@@ -1,0 +1,62 @@
+{
+  "assertions": [
+    {
+      "actual": "ok",
+      "expected": "ok",
+      "kind": "eq",
+      "name": "json-envelope",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "stable-exit",
+      "passed": true
+    },
+    {
+      "actual": "{\"ok\": true, \"exit_class\": \"ok\", \"data\": {\"version\": \"0.1.0\"}, \"receipts\": []}\n",
+      "expected": "\u001b[",
+      "kind": "absent",
+      "name": "no-ansi",
+      "passed": true
+    },
+    {
+      "actual": "1",
+      "expected": "1",
+      "kind": "eq",
+      "name": "no-color-env",
+      "passed": true
+    }
+  ],
+  "case": "FT-NFR-A11Y",
+  "class": "P/F",
+  "detail": "machine-readable, linear, colour-free output",
+  "driver": "cli-output",
+  "duration_ms": 58,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "da37dca0ac475888abdfeaede0e268e8699cd387d8765ba4e03577f28d34af3a",
+      "commands.log": "c84481c7c1c04e7271b25e241cbe72b5248664f66ee5598f7d8e807a805a542b",
+      "env.json": "b214aaa68e87959b7cdd59fb0b6edb386e0134a540efeb6bdae179004a28d9e2"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:03Z"
+  },
+  "limitations": [],
+  "pack": "nfr",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

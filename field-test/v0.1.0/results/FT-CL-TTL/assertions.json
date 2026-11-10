@@ -1,0 +1,30 @@
+[
+  {
+    "actual": 1,
+    "expected": 1,
+    "kind": "eq",
+    "name": "first-sweep-expires",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "second-sweep-is-empty",
+    "passed": true
+  },
+  {
+    "actual": 1,
+    "expected": 1,
+    "kind": "eq",
+    "name": "one-expired-event",
+    "passed": true
+  },
+  {
+    "actual": "expired",
+    "expected": "expired",
+    "kind": "eq",
+    "name": "post-ttl-use-dead",
+    "passed": true
+  }
+]

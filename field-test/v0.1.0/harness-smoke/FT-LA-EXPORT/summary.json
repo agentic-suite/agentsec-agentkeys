@@ -1,0 +1,71 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "deterministic",
+      "passed": true
+    },
+    {
+      "actual": [
+        1,
+        2,
+        3
+      ],
+      "expected": [
+        1,
+        2,
+        3
+      ],
+      "kind": "eq",
+      "name": "ordered",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "chain-intact",
+      "passed": true
+    },
+    {
+      "actual": 3,
+      "expected": 3,
+      "kind": "eq",
+      "name": "joins-by-session",
+      "passed": true
+    }
+  ],
+  "case": "FT-LA-EXPORT",
+  "class": "P/F",
+  "detail": "export is deterministic, ordered, and chain-joined",
+  "driver": "export",
+  "duration_ms": 2,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "5ab4b7494fe238da8d176411ec36f5ba1f0dfcc510b00690c61e3b91a6b8165c",
+      "commands.log": "6b3275aad3925ff5416044ab6cfac00352e35a518e40f8e05be3b094103ee1d3",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "audit",
+  "passed": true,
+  "scenario": "SC-29",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

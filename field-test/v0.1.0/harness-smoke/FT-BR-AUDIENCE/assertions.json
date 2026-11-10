@@ -1,0 +1,23 @@
+[
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "refused",
+    "passed": true
+  },
+  {
+    "actual": "exchange-rejected",
+    "expected": "exchange-rejected",
+    "kind": "eq",
+    "name": "evidence-event",
+    "passed": true
+  },
+  {
+    "actual": "audience-mismatch",
+    "expected": "audience-mismatch",
+    "kind": "eq",
+    "name": "reason",
+    "passed": true
+  }
+]

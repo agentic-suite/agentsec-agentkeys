@@ -2,13 +2,21 @@
 
 **BLUF:** These are the three agentkeys demos, in the order that lands hardest: **the one-second kill**
 (the incident response), **nothing to steal** (the context-dump proof), and **the stdio flagship** (the
-thing nobody else has). Each maps to gated scenarios — they are **rehearsed runs of the packs, not
+thing nobody else has). Each maps to gated scenarios — they are **written runs of the packs, not
 cherry-picked screens**; if a demo fails in rehearsal, the scenario is red, and that is the demo's answer.
 A 60-second comment-section version is at the bottom. None of these demos contains a real secret — by
 design, that is the point.
 
-**Status:** design of record (v0.1.0) — scripts to be run against the shipped packs; *documented*, not yet
-*field-tested*.
+**Status:** the **scenarios behind these demos are field-tested** — FT-RK-KILLTIME (kill-time), FT-AP-CONTEXTDUMP
+(nothing to steal) and FT-ST-NOSECRET (the stdio flagship) are PASS in the
+[hand-maintained report](../field-test/v0.1.0/FIELD_TEST_REPORT.md). The demo *scripts* themselves
+have **not yet rehearsed** end-to-end on a fresh machine; they are written runs of gated packs, so treat a
+failed rehearsal as a red scenario, not as a bad demo.
+
+**Rehearsal record.** The three backing packs were re-run on the release-candidate commit
+(`4d6b85e`) into a throwaway results directory — `killtime`, `attack`, `stdio`: **12 PASS · 0 FAIL · 0 WARN**
+(FT-RK-*, FT-AP-*, FT-ST-*). The demo *scripts* below are still unrehearsed as performances; the scenarios they
+rest on are green.
 
 ---
 
@@ -33,7 +41,9 @@ see.
 who pulled the trigger. No rotation, no waiting for a grant to expire.
 
 **Honesty note:** say out loud that the ≤1s number is measured end-to-end (revoke → *replay fails*), in
-CI, on every release — and that the benchmark is public so they can re-run it.
+CI, on every release — that this run measured p50 0.012ms / p95 0.017ms / max 0.031ms at N=100 with 100/100
+replays refused (FT-RK-KILLTIME) — and that the [benchmark](../../bench/README.md) is public so they can
+re-run it. Say plainly that one box's number is not a fleet claim.
 
 ---
 

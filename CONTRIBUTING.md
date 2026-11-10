@@ -1,8 +1,8 @@
 # Contributing to agentkeys
 
 Thanks for helping. This repo is built to the published plan of record, not to improvisation:
-**PRD 04 — agentkeys** (`research/agent-security/ecosystem/prds/213-agentkeys.md` in the ecosystem
-research vault) defines the requirement set (P0 R1–R7, P1 R8–R10, P2 R11–R12), and the
+the **[PRD set 00–23 + Appendix A](docs/prd/README.md)** defines the requirement set (v0.1.0 is the P0
+features R1–R9 + R17 and E1–E15), and the
 **[v0.1.0 WBS](docs/wbs/v0.1.0/)** defines the milestone order and exit gates.
 
 ## Workflow (one ticket at a time)

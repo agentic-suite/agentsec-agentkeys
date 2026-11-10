@@ -1,0 +1,62 @@
+{
+  "assertions": [
+    {
+      "actual": "cloud-credential",
+      "expected": "cloud-credential",
+      "kind": "eq",
+      "name": "class",
+      "passed": true
+    },
+    {
+      "actual": "high",
+      "expected": "high",
+      "kind": "eq",
+      "name": "severity",
+      "passed": true
+    },
+    {
+      "actual": "evasion-detected",
+      "expected": "evasion-detected",
+      "kind": "eq",
+      "name": "event",
+      "passed": true
+    },
+    {
+      "actual": "cloud-credential: /home/u/.aws/credentials; monitor-only: cloud-credential read outside the broker",
+      "expected": "/home/u/.aws/credentials",
+      "kind": "contains",
+      "name": "path-recorded",
+      "passed": true
+    }
+  ],
+  "case": "FT-EV-CLOUD",
+  "class": "P/F",
+  "detail": "cloud-credential read caught as a high-severity event",
+  "driver": "detector",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "85414e625f459b69c361d053e1b9c612d0f7a8c2fc41c313d715cc50434c4f0a",
+      "commands.log": "7085e7779835c589a6011309b477f7d3386433563b95f85ae09ec4c9f3694d01",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "evasion",
+  "passed": true,
+  "scenario": "SC-15",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

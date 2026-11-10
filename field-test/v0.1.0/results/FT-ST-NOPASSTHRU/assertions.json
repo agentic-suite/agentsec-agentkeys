@@ -1,0 +1,36 @@
+[
+  {
+    "actual": [
+      "GITHUB_TOKEN"
+    ],
+    "expected": [
+      "GITHUB_TOKEN"
+    ],
+    "kind": "eq",
+    "name": "literal-client-credential-stripped",
+    "passed": true
+  },
+  {
+    "actual": {
+      "AGENTKEYS_SCOPED_TOKEN": "akref:file/x/y"
+    },
+    "expected": "AGENTKEYS_SCOPED_TOKEN",
+    "kind": "contains",
+    "name": "placeholder-kept",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "header-client-token-absent",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "child-token-is-broker-minted",
+    "passed": true
+  }
+]

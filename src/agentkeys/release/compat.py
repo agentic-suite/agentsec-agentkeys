@@ -1,0 +1,198 @@
+"""Compatibility matrix for v0.1.0 (M15, 15.3; [PRD 19]).
+
+**A harness is "compatible" only when its pack passes** ([PRD 19 §6]). So the label is not a
+judgement written into a table - it is *derived from the committed case status*:
+
+= ============================  ======================================  ==============
+  label                         earned when                             means
+= ============================  ======================================  ==============
+  ``first-class``               every required case is ``pass``          recipe + green pack
+  ``documented``                a case exists but is ``warn``            wired, not proven
+  ``lower-layer``               declared, no pack by design              hook closed; intercept
+  ``not yet``                   no case, or the case is ``fail``         a named, visible gap
+= ============================  ======================================  ==============
+
+Regenerate with ``python -m agentkeys.release compat --root . --write``. The test suite fails if
+the committed document drifts from the generator, so an optimistic hand edit cannot ship.
+"""
+
+from __future__ import annotations
+
+from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
+from pathlib import Path
+
+__all__ = ["LABELS", "ROWS", "Row", "derive", "render", "write_document"]
+
+LABELS = ("first-class", "lower-layer", "documented", "not yet")
+
+_FORBIDDEN_TARGETS = ("FIELD_TEST_REPORT.md",)
+
+
+@dataclass(frozen=True)
+class Row:
+    """One compatibility row: what we claim, and the packs that must back it."""
+
+    id: str
+    tier: int | str
+    surface: str
+    cases: tuple[str, ...]
+    note: str = ""
+    fallback: str = "documented"
+
+
+# The rows come from PRD 19's tiers and the M14 results - not from intent. `cases` is the *only*
+# thing that decides a strong label; `note` explains the row to a human.
+ROWS: tuple[Row, ...] = (
+    Row(
+        "claude-code",
+        1,
+        "stdio MCP env virtualization + HTTP header injection",
+        ("FT-HC-CLAUDE",),
+        "claude 2.1.187 installed; wiring and smoke green; live headless run blocked by login",
+    ),
+    Row(
+        "cursor",
+        1,
+        "MCP env virtualization + API header injection",
+        ("FT-HC-CURSOR",),
+        "recipe shipped; Cursor is a GUI IDE with no headless CLI surface on the test box",
+    ),
+    Row(
+        "copilot",
+        1,
+        "process/network interception (hook surface closed)",
+        (),
+        "closed hook surface - covered underneath, never a first-class hook recipe",
+        fallback="lower-layer",
+    ),
+    Row(
+        "codex-cli",
+        1,
+        "env virtualization + header injection",
+        (),
+        "recipe planned for v0.3.0",
+        fallback="not yet",
+    ),
+    Row(
+        "gemini-cli",
+        1,
+        "env virtualization + header injection",
+        (),
+        "recipe planned for v0.3.0",
+        fallback="not yet",
+    ),
+    Row(
+        "tier2-frameworks",
+        2,
+        "env virtualization + header injection",
+        (),
+        "brokered by construction (LangChain, CrewAI, OpenAI Agents SDK, AutoGen, LlamaIndex, "
+        "PydanticAI, smolagents) - documented, not individually pack-gated",
+    ),
+    Row("tier3-mcp-clients", 3, "stdio env virtualization / MCP auth", (), "documented"),
+    Row(
+        "tier3-enterprise",
+        3,
+        "HTTP egress header injection + RFC 8693 exchange",
+        (),
+        "design-aligned; not individually verified at v0.1.0",
+    ),
+    Row(
+        "platform-macos-linux",
+        "platform",
+        "macOS and Linux",
+        ("FT-CONF-BACKENDS", "FT-NFR-PORT"),
+        "field-tested on macOS arm64 and Linux containers",
+    ),
+    Row(
+        "platform-windows",
+        "platform",
+        "Windows",
+        (),
+        "not supported at v0.1.0 - the CLI says so",
+        fallback="not yet",
+    ),
+)
+
+
+def derive(row: Row, index: Mapping[str, str]) -> str:
+    """The strongest label this row's evidence actually supports."""
+    if not row.cases:
+        return row.fallback
+
+    statuses = [index.get(case) for case in row.cases]
+    if any(status is None for status in statuses):
+        return "not yet"
+    if any(status == "fail" for status in statuses):
+        return "not yet"
+    if all(status == "pass" for status in statuses):
+        return "first-class"
+    if any(status == "warn" for status in statuses):
+        return "documented"
+    return "not yet"
+
+
+def _tier_label(tier: int | str) -> str:
+    return f"Tier {tier}" if isinstance(tier, int) else "Platform"
+
+
+_HEADER = """# Compatibility matrix — v0.1.0
+
+**BLUF:** one broker, no per-harness fork. A harness is **compatible only when its pack passes**
+([PRD 19 §6](../../prd/19-harness-compatibility.md)) — so every label below is *derived from the
+committed M14 case status*, not from intent. **No row says "supported" without a green pack.**
+
+- **Generated by:** `python -m agentkeys.release compat --root . --write`
+- **Source of truth:** `field-test/v0.1.0/results/*/summary.json`
+- **Drift guard:** `tests/test_release_compat.py` fails if this table and the generator disagree.
+
+## How to read a label
+
+| Label | Earned when | Means |
+|---|---|---|
+| **first-class** | every required case is `pass` | recipe shipped **and** its pack is green in CI |
+| **documented** | a case exists but is `warn` | wired and smoke-tested; end-to-end not proven |
+| **lower-layer** | declared, no pack by design | hook surface closed; we intercept underneath |
+| **not yet** | no case, or a case is `fail` | a named, visible gap — not a quiet omission |
+
+A WARN is not a soft pass: it is a bounded truth, and this table labels it as one.
+
+## The matrix
+
+"""
+
+
+def render(rows: Sequence[Row], index: Mapping[str, str]) -> str:
+    """Render the matrix exactly as it ships: one row per surface, label derived, evidence named."""
+    lines = [
+        _HEADER.rstrip("\n"),
+        "",
+        "| Surface | Scope | Label | Evidence | Note |",
+        "|---|---|---|---|---|",
+    ]
+    for row in rows:
+        label = derive(row, index)
+        evidence = ", ".join(f"{case} ({index.get(case, 'not run')})" for case in row.cases)
+        note = row.note
+        if label == "documented" and row.cases:
+            note = f"{note} — wired and smoke-tested, not proven end to end"
+        lines.append(
+            f"| **{row.id}** ({_tier_label(row.tier)}) | {row.surface} | {label} "
+            f"| {evidence or '—'} | {note} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def write_document(path: str | Path, body: str) -> Path:
+    """Write the generated matrix.
+
+    Refuses the hand-maintained field report: the generator owns its own document and nothing else
+    ([AGENTS.md](../../../AGENTS.md)).
+    """
+    target = Path(path)
+    if target.name in _FORBIDDEN_TARGETS:
+        raise ValueError(f"refusing to write {target}: hand-maintained reports are never generated")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(body, encoding="utf-8")
+    return target

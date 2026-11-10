@@ -1,0 +1,93 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "all-exit-codes",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "replay-refused",
+      "passed": true
+    },
+    {
+      "actual": 5,
+      "expected": 5,
+      "kind": "eq",
+      "name": "five-runs",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "no-secret-printed",
+      "passed": true
+    },
+    {
+      "actual": 0.543,
+      "expected": 900.0,
+      "kind": "lte",
+      "name": "median-under-15min",
+      "passed": true
+    },
+    {
+      "actual": 0.55,
+      "expected": 900.0,
+      "kind": "lte",
+      "name": "max-under-15min",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "fresh-install-ok",
+      "passed": true
+    },
+    {
+      "actual": 0.468,
+      "expected": 900.0,
+      "kind": "lte",
+      "name": "fresh-first-call-under-15min",
+      "passed": true
+    }
+  ],
+  "case": "FT-CL-FIRST",
+  "class": "P/F|W",
+  "detail": "scripted quickstart green; median 0.54s over 5 runs; fresh-venv install\u2192first-call 2.7s",
+  "driver": "quickstart",
+  "duration_ms": 5496,
+  "env": [
+    "human",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "5b76902c996c0a675ce7f00c3a000347383bc14caa6ed662cff2a2945f585195",
+      "commands.log": "2253594a062fa655e5671fae31973e95579f8c33de4a02f34a41d98221c88e12",
+      "env.json": "63e25fe9d67e2263be5be5aa128ab7cde45dfc5a85ed4cc7d9bc9d05ecc55a87"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T04:01:43Z"
+  },
+  "limitations": [
+    "the timed path ran 5x on this machine plus a fresh-venv install median; not a naive-human fresh-machine median (plan \u00a78)"
+  ],
+  "pack": "core",
+  "passed": false,
+  "scenario": "SC-01",
+  "started_at": "2026-11-10T04:01:37Z",
+  "status": "warn"
+}

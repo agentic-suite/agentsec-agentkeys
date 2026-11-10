@@ -1,0 +1,62 @@
+{
+  "assertions": [
+    {
+      "actual": "dotenv",
+      "expected": "dotenv",
+      "kind": "eq",
+      "name": "class",
+      "passed": true
+    },
+    {
+      "actual": "high",
+      "expected": "high",
+      "kind": "eq",
+      "name": "severity",
+      "passed": true
+    },
+    {
+      "actual": "evasion-detected",
+      "expected": "evasion-detected",
+      "kind": "eq",
+      "name": "event",
+      "passed": true
+    },
+    {
+      "actual": "dotenv: .env; monitor-only: dotenv read outside the broker",
+      "expected": ".env",
+      "kind": "contains",
+      "name": "path-recorded",
+      "passed": true
+    }
+  ],
+  "case": "FT-EV-DOTENV",
+  "class": "P/F",
+  "detail": "dotenv read caught as a high-severity event",
+  "driver": "detector",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "27ce3c1dfe3a30e939756d63e3f1725af07aa433a18918abc1138ded1e7f2298",
+      "commands.log": "09a8a92f97137c60fb4717397a9a8ee3e7172e5c0a93e6218d9f3a9b06635fe2",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "evasion",
+  "passed": true,
+  "scenario": "SC-14",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

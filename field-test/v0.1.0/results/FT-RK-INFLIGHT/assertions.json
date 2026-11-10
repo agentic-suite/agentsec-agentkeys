@@ -1,0 +1,23 @@
+[
+  {
+    "actual": "rejected",
+    "expected": "rejected",
+    "kind": "eq",
+    "name": "next-hop-refused",
+    "passed": true
+  },
+  {
+    "actual": 1,
+    "expected": 1,
+    "kind": "eq",
+    "name": "revoke-epoch-set",
+    "passed": true
+  },
+  {
+    "actual": 1,
+    "expected": 1,
+    "kind": "eq",
+    "name": "revoke-recorded",
+    "passed": true
+  }
+]

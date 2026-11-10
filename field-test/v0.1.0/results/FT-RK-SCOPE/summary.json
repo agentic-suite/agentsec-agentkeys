@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "eq",
+      "name": "target-dead",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "non-target-alive",
+      "passed": true
+    }
+  ],
+  "case": "FT-RK-SCOPE",
+  "class": "P/F",
+  "detail": "scoped revoke kills only the target",
+  "driver": "revoke",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "74345ce8194eebaab9d6832d35b500e83d9b22527e89f447a7a789f62ec80cf0",
+      "commands.log": "1fa22e42c7b0bbcebd2ba52584e3a41aaf3349687ba2f278658747b3cb4a0ef2",
+      "env.json": "d577bf7a669ed00cd09564f0f1b23013178629ea2db11d2f158bc7356ded599e"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "18e458895b99106eca5fa677c89f580a4eb27fb2",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T04:06:36Z"
+  },
+  "limitations": [],
+  "pack": "killtime",
+  "passed": true,
+  "scenario": "SC-25",
+  "started_at": "2026-11-10T04:06:36Z",
+  "status": "pass"
+}

@@ -1,0 +1,55 @@
+{
+  "assertions": [
+    {
+      "actual": "c7eff442474d67610437fadbec5d5982",
+      "expected": true,
+      "kind": "present",
+      "name": "resolved",
+      "passed": true
+    },
+    {
+      "actual": "consumed",
+      "expected": "consumed",
+      "kind": "eq",
+      "name": "consumed",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "no-secret-read-out",
+      "passed": true
+    }
+  ],
+  "case": "FT-HC-GENERIC",
+  "class": "P/F",
+  "detail": "public SDK contract: resolve \u2192 use, no get_secret",
+  "driver": "sdk",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "b547996559251c84c17f9dbd9a85ecd4e1d9ffe355b006829c4673f0a3842afb",
+      "commands.log": "22bd1eb14b94dd8c349cfc35d3b22b88f805aeed44fb76301e4890d547ad183d",
+      "env.json": "e83844e7b24308964646d56e2873d8b536777bb5637632e6e46c6d86b5c2ff82"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T04:00:52Z"
+  },
+  "limitations": [],
+  "pack": "harness",
+  "passed": true,
+  "scenario": "SC-37",
+  "started_at": "2026-11-10T04:00:52Z",
+  "status": "pass"
+}

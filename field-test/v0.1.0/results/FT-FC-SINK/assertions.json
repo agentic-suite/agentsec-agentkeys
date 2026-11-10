@@ -1,0 +1,26 @@
+[
+  {
+    "actual": [
+      "issuance.created",
+      "sink-gap"
+    ],
+    "expected": "issuance.created",
+    "kind": "contains",
+    "name": "local-event-kept",
+    "passed": true
+  },
+  {
+    "actual": 1,
+    "expected": 1,
+    "kind": "eq",
+    "name": "one-gap-marker",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "chain-intact",
+    "passed": true
+  }
+]

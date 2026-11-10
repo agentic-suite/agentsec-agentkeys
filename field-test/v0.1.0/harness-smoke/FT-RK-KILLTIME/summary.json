@@ -1,0 +1,65 @@
+{
+  "assertions": [
+    {
+      "actual": 5,
+      "expected": 5,
+      "kind": "eq",
+      "name": "iterations",
+      "passed": true
+    },
+    {
+      "actual": 0.041042,
+      "expected": 1000.0,
+      "kind": "lte",
+      "name": "p95-lte-1s",
+      "passed": true
+    },
+    {
+      "actual": 0.041042,
+      "expected": 1000.0,
+      "kind": "lte",
+      "name": "max-lte-1s",
+      "passed": true
+    },
+    {
+      "actual": 5,
+      "expected": 5,
+      "kind": "eq",
+      "name": "every-replay-refused",
+      "passed": true
+    }
+  ],
+  "case": "FT-RK-KILLTIME",
+  "class": "P/F",
+  "detail": "p50=0.02ms p95=0.04ms max=0.04ms",
+  "driver": "bench",
+  "duration_ms": 0,
+  "env": [
+    "ci",
+    "docker",
+    "mac",
+    "lin"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "00d48e9e2cdf96d4a2d29a7c5e43de47d9830bd266b649be425eb0e78cbf75be",
+      "commands.log": "7c818069ba31d5d0f124a4967acfb4b1c8b7aa2f0e3bb25524dcf8ce60b9af24",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "killtime",
+  "passed": true,
+  "scenario": "SC-24",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

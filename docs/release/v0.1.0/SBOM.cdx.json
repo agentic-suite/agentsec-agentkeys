@@ -1,0 +1,26 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [],
+  "metadata": {
+    "component": {
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "name": "agentsec-agentkeys",
+      "type": "application",
+      "version": "0.1.0"
+    },
+    "properties": [
+      {
+        "name": "agentkeys:dependencies",
+        "value": "stdlib-only"
+      }
+    ]
+  },
+  "specVersion": "1.5",
+  "version": 1
+}
