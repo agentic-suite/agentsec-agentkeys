@@ -47,6 +47,19 @@ class SecretWriter(Protocol):
     def delete(self, slot: str) -> None: ...
 
 
+class _CandidateLike(Protocol):
+    """The shape `scan.iter_candidates` yields (kept structural to avoid a private import)."""
+
+    @property
+    def path(self) -> str: ...
+
+    @property
+    def field(self) -> str | None: ...
+
+    @property
+    def value(self) -> str: ...
+
+
 class MigrationError(Exception):
     """The requested candidate does not exist (loud, with the name and file)."""
 
@@ -191,17 +204,16 @@ class Migrator:
         digest = _digest(target.value)
         sites = tuple(
             sorted(
-                {
-                    candidate.path
-                    for candidate in candidates
-                    if _digest(candidate.value) == digest
-                }
+                {candidate.path for candidate in candidates if _digest(candidate.value) == digest}
             )
+        )
+        plan_class = (
+            target.class_ if target.class_ in ("public", "dev", "staging", "prod") else self._class
         )
         return MigrationPlan(
             source=relative_source,
             name=name,
-            class_=target.class_ if target.class_ in ("public", "dev", "staging", "prod") else self._class,
+            class_=plan_class,
             slot=f"agentkeys/{self._class}/{name.lower()}",
             reference_id=reference_id or f"ref_{uuid.uuid4().hex[:16]}",
             sites=sites,
@@ -246,13 +258,13 @@ class Migrator:
             updated[file] = updated.get(file, original).replace(candidate.value, akref)
 
         self._writer.write(plan.slot, target_value)
-        self._registry.register(reference, created_by=self._created_by)
 
         replaced: list[Path] = []
         try:
             for file, text in updated.items():
                 _atomic_write(file, text)
                 replaced.append(file)
+            self._registry.register(reference, created_by=self._created_by)
         except BaseException:
             for file in replaced:
                 _atomic_write(file, originals[file])
@@ -265,11 +277,8 @@ class Migrator:
         )
 
     @staticmethod
-    def _value_for(candidates: Iterable[object], plan: MigrationPlan) -> str:
+    def _value_for(candidates: Iterable[_CandidateLike], plan: MigrationPlan) -> str:
         for candidate in candidates:
-            if (
-                getattr(candidate, "path", None) == plan.source
-                and getattr(candidate, "field", None) == plan.name
-            ):
-                return str(getattr(candidate, "value"))
+            if candidate.path == plan.source and candidate.field == plan.name:
+                return candidate.value
         raise MigrationError(f"no candidate named {plan.name} in {plan.source}")

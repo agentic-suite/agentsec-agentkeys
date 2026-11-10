@@ -32,14 +32,13 @@ def run_migrate(args: argparse.Namespace) -> int:
     file_arg = getattr(args, "file", None)
     name = getattr(args, "name", None)
     if not file_arg or not name:
-        return _emit(
-            ExitCode.USAGE, "migrate requires FILE NAME", as_json=as_json, data={}
-        )
+        return _emit(ExitCode.USAGE, "migrate requires FILE NAME", as_json=as_json, data={})
     backend = getattr(args, "backend", None) or "file"
     if backend != "file":
         return _emit(
             ExitCode.USAGE,
-            f"backend {backend!r} is not yet available for migrate (v0.1.0 writes the file backend)",
+            f"backend {backend!r} is not yet available for migrate "
+            "(v0.1.0 writes the file backend)",
             as_json=as_json,
             data={},
         )

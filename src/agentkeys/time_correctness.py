@@ -90,9 +90,7 @@ class ExpirySweeper:
                     agent_id=issuance.agent_id,
                     reference_id=issuance.reference_id,
                     issuance_id=issuance.issuance_id,
-                    binding_json=(
-                        f'{{"audience":"{issuance.audience}","tool":"{issuance.tool}"}}'
-                    ),
+                    binding_json=(f'{{"audience":"{issuance.audience}","tool":"{issuance.tool}"}}'),
                     ttl_seconds=issuance.ttl_seconds,
                     principal=None,
                     reason=None,

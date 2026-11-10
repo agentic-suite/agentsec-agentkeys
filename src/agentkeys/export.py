@@ -6,6 +6,7 @@ output anyway. Ordering is by `seq`, so a third party diffing two exports sees r
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 from dataclasses import dataclass
@@ -63,6 +64,8 @@ def render_rows(rows: tuple[LedgerRow, ...]) -> str:
 
 def _write(text: str, out: Path) -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
+    with contextlib.suppress(OSError):  # best-effort; the export is secret-free
+        os.chmod(out.parent, 0o700)
     descriptor = os.open(out, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, _FILE_MODE)
     with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
         handle.write(text + ("\n" if text else ""))

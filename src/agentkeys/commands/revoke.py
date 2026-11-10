@@ -37,7 +37,9 @@ def _scope(args: argparse.Namespace) -> tuple[str, str | None] | None:
     session = getattr(args, "session", None)
     everything = bool(getattr(args, "all", False))
     target = getattr(args, "target", None)
-    chosen = [name for name, on in (("agent", agent), ("session", session), ("all", everything)) if on]
+    chosen = [
+        name for name, on in (("agent", agent), ("session", session), ("all", everything)) if on
+    ]
     if len(chosen) > 1:
         return None
     if target is not None:
@@ -89,28 +91,29 @@ def run_revoke(args: argparse.Namespace) -> int:
     finally:
         store.close()
 
-    data = {
+    revocations: list[dict[str, object]] = [
+        {
+            "revocation_id": result.revocation.revocation_id,
+            "session_id": result.revocation.target_id,
+            "winner": result.winner,
+            "epoch_before": result.epoch_before,
+            "epoch_after": result.epoch_after,
+            "effective_at": result.revocation.effective_at,
+        }
+        for result in outcome.revocations
+    ]
+    data: dict[str, object] = {
         "scope": outcome.scope,
         "target": outcome.target,
         "requested_at": outcome.requested_at,
-        "revocations": [
-            {
-                "revocation_id": result.revocation.revocation_id,
-                "session_id": result.revocation.target_id,
-                "winner": result.winner,
-                "epoch_before": result.epoch_before,
-                "epoch_after": result.epoch_after,
-                "effective_at": result.revocation.effective_at,
-            }
-            for result in outcome.revocations
-        ],
+        "revocations": revocations,
     }
     if as_json:
         print(json.dumps(json_envelope(ExitCode.OK, data=data)))
     else:
-        for item in data["revocations"]:
+        for item in revocations:
             print(
-                f"revoked {item['session_id']} ({data['scope']}): "
+                f"revoked {item['session_id']} ({outcome.scope}): "
                 f"epoch {item['epoch_before']} -> {item['epoch_after']}"
             )
     return int(ExitCode.OK)

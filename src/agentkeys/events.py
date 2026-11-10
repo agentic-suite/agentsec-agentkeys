@@ -9,7 +9,6 @@ from __future__ import annotations
 import time
 import uuid
 from collections.abc import Callable
-from dataclasses import replace
 
 from agentkeys.store.contract import BrokerStore, LedgerEvent, LedgerRow
 
@@ -35,6 +34,7 @@ EVENT_NAMES: tuple[str, ...] = (
     "step-up-granted",
     "step-up-denied",
     "evasion-detected",
+    "tamper-detected",
     "revoked",
     "expired",
     "sink-gap",
@@ -46,6 +46,7 @@ _DEFAULT_SEVERITY: dict[str, str] = {
     "exchange-rejected": "warn",
     "step-up-denied": "warn",
     "evasion-detected": "high",
+    "tamper-detected": "high",
     "revoked": "high",
     "sink-gap": "warn",
 }
@@ -124,13 +125,11 @@ class EventEmitter:
         self._monotonic_ms = monotonic_ms or (lambda: time.monotonic_ns() // 1_000_000)
 
     def build(self, event_name: str, **fields: object) -> LedgerEvent:
-        """Build an event stamped with this emitter's clock."""
-        return build_event(
-            event_name,
-            occurred_at=self._clock(),
-            monotonic_ms=self._monotonic_ms(),
-            **fields,  # type: ignore[arg-type]
-        )
+        """Build an event stamped with this emitter's clock (explicit stamps win)."""
+        payload: dict[str, object] = dict(fields)
+        payload.setdefault("occurred_at", self._clock())
+        payload.setdefault("monotonic_ms", self._monotonic_ms())
+        return build_event(event_name, **payload)  # type: ignore[arg-type]
 
     def emit(self, event_name: str, **fields: object) -> LedgerRow:
         """Build and append one event; an unknown name is refused before any write."""

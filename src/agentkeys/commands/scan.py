@@ -1,4 +1,4 @@
-"""`agentkeys scan` — masked secret-hygiene findings; `--ci` refuses honestly (M8, WBS 8.1/8.2/8.5)."""
+"""`agentkeys scan` — masked secret-hygiene findings; `--ci` refuses honestly (M8)."""
 
 from __future__ import annotations
 

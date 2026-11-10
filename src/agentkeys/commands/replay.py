@@ -22,7 +22,13 @@ from agentkeys.store.loader import load_driver
 __all__ = ["find_last_killed_attempt", "run_replay"]
 
 
-def _emit(code: ExitCode, reason: str, *, as_json: bool, data: dict[str, object] | None = None) -> int:
+def _emit(
+    code: ExitCode,
+    reason: str,
+    *,
+    as_json: bool,
+    data: dict[str, object] | None = None,
+) -> int:
     if as_json:
         print(json.dumps(json_envelope(code, reason=reason, data=data)))
     else:
@@ -71,7 +77,8 @@ def run_replay(args: argparse.Namespace) -> int:
                 ExitCode.DENIED, "no revoke + pre-revoke issuance recorded", as_json=as_json
             )
         issuance_id = attempt.event.issuance_id
-        assert issuance_id is not None  # narrowed by find_last_killed_attempt
+        if issuance_id is None:  # pragma: no cover - narrowed by find_last_killed_attempt
+            return _emit(ExitCode.DENIED, "no pre-revoke issuance", as_json=as_json)
         issuance = store.get_issuance(issuance_id)
         if issuance is None:
             return _emit(ExitCode.DENIED, f"unknown issuance: {issuance_id}", as_json=as_json)
@@ -91,7 +98,7 @@ def run_replay(args: argparse.Namespace) -> int:
             bindings=tuple(bindings),
             clock=lambda: int(time.time()),
         )
-        data = {
+        data: dict[str, object] = {
             "issuance_id": issuance_id,
             "session_id": issuance.session_id,
             "reference_id": issuance.reference_id,

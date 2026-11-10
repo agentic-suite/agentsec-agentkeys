@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import json
 import secrets
 import uuid
 from collections.abc import Callable, Mapping
@@ -13,14 +14,17 @@ from typing import Literal
 from agentkeys.config import TtlBound
 from agentkeys.contracts.issuance import Binding, IssuanceDoc, IssuanceError
 from agentkeys.contracts.reference import ReferenceDoc
-from agentkeys.contracts.registry import ReferenceRegistry
+from agentkeys.contracts.registry import ReferenceRegistry, UnknownReference
 from agentkeys.events import build_event
+from agentkeys.stepup import PolicyDecision, StepUpDenied, StepUpGate, StepUpRequest
 from agentkeys.store.contract import (
     BrokerStore,
     Issuance,
     LedgerEvent,
+    Session,
     require_capabilities,
 )
+from agentkeys.tamper import EnumerationSignal
 
 __all__ = ["ResolutionCore", "ResolutionDenied", "ResolvedIssuance", "UseResult", "UseStatus"]
 
@@ -76,6 +80,8 @@ class ResolutionCore:
         clock: Callable[[], int],
         window_seconds: int = _DEFAULT_WINDOW_SECONDS,
         ttl_seconds: int = _DEFAULT_TTL_SECONDS,
+        enumeration: EnumerationSignal | None = None,
+        step_up: StepUpGate | None = None,
     ) -> None:
         require_capabilities(store.capabilities(), ("atomic_issue",))
         self.store = store
@@ -86,6 +92,8 @@ class ResolutionCore:
         self._window_seconds = window_seconds
         self._ttl_seconds = ttl_seconds
         self._tokens: dict[str, str] = {}
+        self._enumeration = enumeration
+        self._step_up = step_up
 
     # ---------------------------------------------------------------- read-only
 
@@ -108,7 +116,11 @@ class ResolutionCore:
         if session.revoke_epoch > 0:
             raise ResolutionDenied(f"session-revoked: {session_id}")
 
-        doc = self.registry.get(reference_id=reference_id)
+        try:
+            doc = self.registry.get(reference_id=reference_id)
+        except UnknownReference:
+            self._note_unknown_reference(reference_id, session)
+            raise
         if (doc.reference_id, audience, tool) not in self._bindings:
             raise ResolutionDenied(f"binding-not-allowed: {reference_id}/{audience}/{tool}")
 
@@ -132,6 +144,10 @@ class ResolutionCore:
             return ResolvedIssuance(
                 issuance=_to_doc(existing), token=self._tokens.get(existing.issuance_id)
             )
+
+        provenance_json, step_up_decision = self._authorize_step_up(
+            doc.reference_id, doc.class_, session, now, audience, tool
+        )
 
         token = secrets.token_hex(16)  # 128 bits
         secret_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
@@ -163,14 +179,105 @@ class ResolutionCore:
             secret_hash=secret_hash,
             single_use=True,
             issued_at=now,
-            provenance_json="{}",
+            provenance_json=provenance_json,
             binding_hash=binding_hash,
             event=event,
         )
+        if step_up_decision is not None:
+            self.store.append_event(
+                build_event(
+                    "step-up-granted",
+                    occurred_at=self.clock(),
+                    session_id=session_id,
+                    agent_id=session.agent_id,
+                    reference_id=doc.reference_id,
+                    issuance_id=stored.issuance_id,
+                    binding=(audience, tool),
+                    principal=session.principal,
+                    reason=step_up_decision.decided_by,
+                )
+            )
         issuance = _to_doc(stored)
         issuance.validate_ttl(self._ttl)  # refuse a misconfigured window, never clamp
         self._tokens[stored.issuance_id] = token
         return ResolvedIssuance(issuance=issuance, token=token)
+
+    def _authorize_step_up(
+        self,
+        reference_id: str,
+        class_: str,
+        session: Session,
+        now: int,
+        audience: str,
+        tool: str,
+    ) -> tuple[str, PolicyDecision | None]:
+        """Gate a higher-class mint behind a recorded decision; denial mints nothing."""
+        if self._step_up is None or not self._step_up.is_gated(class_):
+            return ("{}", None)
+        request = StepUpRequest(
+            reference_id=reference_id,
+            class_=class_,
+            session_id=session.session_id,
+            agent_id=session.agent_id,
+            principal=session.principal,
+            audience=audience,
+            tool=tool,
+            requested_at=now,
+        )
+        self.store.append_event(
+            build_event(
+                "step-up-requested",
+                occurred_at=now,
+                session_id=session.session_id,
+                agent_id=session.agent_id,
+                reference_id=reference_id,
+                binding=(audience, tool),
+                principal=session.principal,
+            )
+        )
+        try:
+            decision = self._step_up.authorize(request)
+        except StepUpDenied as exc:
+            self.store.append_event(
+                build_event(
+                    "step-up-denied",
+                    occurred_at=self.clock(),
+                    session_id=session.session_id,
+                    agent_id=session.agent_id,
+                    reference_id=reference_id,
+                    binding=(audience, tool),
+                    principal=session.principal,
+                    reason=exc.reason,
+                    severity="warn",
+                )
+            )
+            raise ResolutionDenied(f"step-up-denied: {exc.reason}") from exc
+        provenance_json = json.dumps(
+            {
+                "decided_by": decision.decided_by,
+                "decision": "allow",
+                "source": decision.source,
+            },
+            sort_keys=True,
+        )
+        return (provenance_json, decision)
+
+    def _note_unknown_reference(self, reference_id: str, session: Session) -> None:
+        """Repeated unknown-reference probes are an evasion-class signal (M9, 9.6)."""
+        if self._enumeration is None:
+            return
+        if self._enumeration.observe(reference_id, session_id=session.session_id):
+            self.store.append_event(
+                build_event(
+                    "evasion-detected",
+                    occurred_at=self.clock(),
+                    session_id=session.session_id,
+                    agent_id=session.agent_id,
+                    principal=session.principal,
+                    reason="reference-enumeration",
+                    severity="high",
+                )
+            )
 
     def use(self, issuance_id: str, token: str, *, now: int | None = None) -> UseResult:
         """Verify the token by hash, then consume it exactly once (a revoked session refuses)."""
@@ -210,6 +317,14 @@ def _binding_hash(reference_id: str, audience: str, tool: str, session_id: str) 
 
 def _to_doc(stored: Issuance) -> IssuanceDoc:
     """Map a stored issuance to the wire document (no `secret_hash`, no token)."""
+    provenance: dict[str, str] | None = None
+    if stored.provenance_json and stored.provenance_json != "{}":
+        try:
+            raw = json.loads(stored.provenance_json)
+        except json.JSONDecodeError:  # pragma: no cover - a corrupt row is a store-integrity issue
+            raw = None
+        if isinstance(raw, dict):
+            provenance = {str(key): str(value) for key, value in raw.items()}
     try:
         return IssuanceDoc(
             issuance_id=stored.issuance_id,
@@ -221,7 +336,7 @@ def _to_doc(stored: Issuance) -> IssuanceDoc:
             ttl=stored.ttl_seconds,
             issued_at=stored.issued_at,
             expires_at=stored.expires_at,
-            provenance=None,
+            provenance=provenance,
         )
     except IssuanceError as exc:  # pragma: no cover - a corrupt row is a store-integrity issue
         raise ResolutionDenied(f"issued-row-malformed: {exc}") from exc

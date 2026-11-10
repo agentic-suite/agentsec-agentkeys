@@ -48,4 +48,4 @@ def test_envelope_carries_reason_when_denied() -> None:
 
 def test_commands_return_reserved_codes() -> None:
     assert main(["version"]) == ExitCode.OK
-    assert main(["scan"]) == ExitCode.USAGE
+    assert main(["context-dump"]) == ExitCode.USAGE

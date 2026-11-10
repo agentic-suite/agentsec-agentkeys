@@ -10,7 +10,7 @@ from agentkeys.__main__ import run
 
 def test_run_returns_the_reserved_code() -> None:
     assert run(["version"]) == 0
-    assert run(["scan"]) == 1
+    assert run(["context-dump"]) == 1
 
 
 def test_python_dash_m_smoke() -> None:

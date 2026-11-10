@@ -35,7 +35,7 @@ class RevokeOutcome:
 
 
 class Revoker:
-    """Revokes one session, one agent's sessions, or every session — recursively, never policy-gated."""
+    """Revokes one session, one agent's sessions, or every session (never policy-gated)."""
 
     def __init__(
         self,
@@ -58,24 +58,27 @@ class Revoker:
     ) -> RevokeOutcome:
         """Kill the target(s) for `scope`; unknown scoped targets raise `UnknownTarget`."""
         if scope not in _SCOPES:
-            raise ValueError(f"unknown revoke scope: {scope!r} (expected one of {', '.join(_SCOPES)})")
+            raise ValueError(
+                f"unknown revoke scope: {scope!r} (expected one of {', '.join(_SCOPES)})"
+            )
         requested_at = self._clock()
         sessions = self._sessions_for(scope, target)
         results: list[RevokeResult] = []
         events: list[LedgerEvent] = []
         for session in sessions:
             event = self._event(session, reason=reason, requested_by=requested_by, now=requested_at)
-            results.append(
-                self._store.cas_revoke(
-                    scope=scope,
-                    target_id=session.session_id,
-                    requested_by=requested_by,
-                    requested_at=requested_at,
-                    reason=reason,
-                    event=event,
-                )
+            result = self._store.cas_revoke(
+                scope=scope,
+                target_id=session.session_id,
+                requested_by=requested_by,
+                requested_at=requested_at,
+                reason=reason,
+                event=event,
             )
-            events.append(event)
+            results.append(result)
+            if result.winner:
+                # A losing CAS writes no row; do not report an event that was never recorded.
+                events.append(event)
         return RevokeOutcome(
             scope=scope,
             target=target,
@@ -106,9 +109,7 @@ class Revoker:
             raise UnknownTarget(f"unknown agent: {target}")
         return sessions
 
-    def _event(
-        self, session: Session, *, reason: str, requested_by: str, now: int
-    ) -> LedgerEvent:
+    def _event(self, session: Session, *, reason: str, requested_by: str, now: int) -> LedgerEvent:
         return LedgerEvent(
             event_id=f"evt_{uuid.uuid4().hex}",
             event_version="1.0",

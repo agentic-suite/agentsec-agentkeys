@@ -38,20 +38,17 @@ def run_export(args: argparse.Namespace) -> int:
 
     try:
         config: Config = load_config(getattr(args, "config", None))
-        store = load_driver(
-            "sqlite", path=config.store_path, required=("durable",), enforce=True
-        )
+        store = load_driver("sqlite", path=config.store_path, required=("durable",), enforce=True)
         store.open()
     except (ConfigError, DriverError, StoreError) as exc:
         return _emit(ExitCode.DENIED, str(exc), as_json=as_json, data={})
 
     try:
         out = getattr(args, "out", None)
-        result = (
-            export_session(store, session_id, out=out)
-            if session_id is not None
-            else export_reference(store, reference_id, out=out)
-        )
+        if session_id is not None:
+            result = export_session(store, session_id, out=out)
+        else:
+            result = export_reference(store, str(reference_id), out=out)
     finally:
         store.close()
 

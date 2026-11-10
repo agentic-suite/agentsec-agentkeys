@@ -99,9 +99,7 @@ def run_benchmark(
     for _ in range(iterations):
         session_id = f"bench-{uuid.uuid4().hex}"
         store.create_session(_session(session_id))
-        resolved = core.resolve(
-            reference_id, audience=audience, tool=tool, session_id=session_id
-        )
+        resolved = core.resolve(reference_id, audience=audience, tool=tool, session_id=session_id)
         t0 = clock_ns()
         killer.revoke("session", session_id, reason="benchmark", requested_by=principal)
         refused = False

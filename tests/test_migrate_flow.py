@@ -64,7 +64,9 @@ def test_migrate_moves_the_value_and_rewrites_the_site(repo: Path) -> None:
 
     resolved = writer.read(result.reference.path)
     assert resolved == PLANTED
-    assert ReferenceRegistry(store).get(reference_id=result.reference.reference_id) == result.reference
+    assert (
+        ReferenceRegistry(store).get(reference_id=result.reference.reference_id) == result.reference
+    )
     assert (repo.parent / "creds.json").stat().st_mode & 0o777 == 0o600
 
     # Re-scan: the finding is closed, the other candidates remain.
@@ -99,7 +101,7 @@ def test_a_failed_backend_write_leaves_files_untouched(repo: Path) -> None:
 
     before = (repo / ".env").read_bytes()
     with pytest.raises(BackendUnavailable):
-        Migrator(_store(), BrokenWriter()).migrate(repo, repo / ".env", name="GITHUB_TOKEN")  # type: ignore[arg-type]
+        Migrator(_store(), BrokenWriter()).migrate(repo, repo / ".env", name="GITHUB_TOKEN")
     assert (repo / ".env").read_bytes() == before
 
 

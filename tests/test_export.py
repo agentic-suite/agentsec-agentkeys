@@ -17,10 +17,18 @@ from agentkeys.store.sqlite import SqliteStore
 
 def _seed(store: MemoryStore | SqliteStore) -> None:
     store.append_event(
-        build_event("issuance.created", occurred_at=1000, session_id="s1", reference_id="ref_1", issuance_id="iss_1")
+        build_event(
+            "issuance.created",
+            occurred_at=1000,
+            session_id="s1",
+            reference_id="ref_1",
+            issuance_id="iss_1",
+        )
     )
     store.append_event(
-        build_event("use", occurred_at=1001, session_id="s1", reference_id="ref_1", issuance_id="iss_1")
+        build_event(
+            "use", occurred_at=1001, session_id="s1", reference_id="ref_1", issuance_id="iss_1"
+        )
     )
     store.append_event(
         build_event(
@@ -32,7 +40,13 @@ def _seed(store: MemoryStore | SqliteStore) -> None:
         )
     )
     store.append_event(
-        build_event("issuance.created", occurred_at=1003, session_id="s2", reference_id="ref_2", issuance_id="iss_2")
+        build_event(
+            "issuance.created",
+            occurred_at=1003,
+            session_id="s2",
+            reference_id="ref_2",
+            issuance_id="iss_2",
+        )
     )
 
 
@@ -136,9 +150,7 @@ def home(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     return home
 
 
-def test_verify_log_reports_an_intact_chain(
-    home: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
+def test_verify_log_reports_an_intact_chain(home: Path, capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["verify-log", "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload["ok"] is True
@@ -146,9 +158,7 @@ def test_verify_log_reports_an_intact_chain(
     assert payload["data"]["intact"] is True
 
 
-def test_verify_log_detects_a_tampered_row(
-    home: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
+def test_verify_log_detects_a_tampered_row(home: Path, capsys: pytest.CaptureFixture[str]) -> None:
     import sqlite3
 
     connection = sqlite3.connect(home / "agentkeys.db")

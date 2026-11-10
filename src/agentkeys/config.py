@@ -30,7 +30,7 @@ __all__ = [
 
 _ENFORCE_MODES = ("monitor", "enforce")
 _TTL_CLASSES = ("public", "dev", "staging", "prod")
-_TOP_LEVEL = {"enforce_mode", "sink", "store", "clock", "ttl", "backends", "bindings"}
+_TOP_LEVEL = {"enforce_mode", "sink", "store", "clock", "ttl", "backends", "bindings", "step_up"}
 
 
 class ConfigError(Exception):
@@ -74,6 +74,9 @@ class Config:
     backends: tuple[Backend, ...]
     ttl: Mapping[str, TtlBound]
     bindings: tuple[Binding, ...]
+    gated_classes: tuple[str, ...] = ("prod",)
+    step_up_timeout: int = 30
+    policy: str = ""
 
 
 def _agentkeys_home(env: Mapping[str, str]) -> Path:
@@ -204,6 +207,33 @@ def _parse_backends(raw: Any) -> tuple[Backend, ...]:
     return tuple(backends)
 
 
+def _parse_step_up(raw: Any) -> tuple[tuple[str, ...], int, str]:
+    """Parse the optional `[step_up]` table; absence keeps prod gated (R9)."""
+    if raw is None:
+        return (("prod",), 30, "")
+    if not isinstance(raw, dict):
+        raise ConfigError("invalid config: step_up must be a table")
+    _allowed_keys(raw, {"gated_classes", "timeout_seconds", "policy"}, "step_up")
+    classes = raw.get("gated_classes", ["prod"])
+    if not isinstance(classes, list) or not classes:
+        raise ConfigError("invalid config: step_up.gated_classes must be a non-empty array")
+    gated: list[str] = []
+    for index, value in enumerate(classes):
+        if not isinstance(value, str) or value not in _TTL_CLASSES:
+            raise ConfigError(
+                f"invalid config: step_up.gated_classes[{index}] must be one of "
+                f"{', '.join(_TTL_CLASSES)}"
+            )
+        gated.append(value)
+    timeout = raw.get("timeout_seconds", 30)
+    if isinstance(timeout, bool) or not isinstance(timeout, int) or timeout < 1:
+        raise ConfigError("invalid config: step_up.timeout_seconds must be an integer >= 1")
+    policy = raw.get("policy", "")
+    if not isinstance(policy, str):
+        raise ConfigError("invalid config: step_up.policy must be a string")
+    return (tuple(gated), timeout, policy)
+
+
 def _parse_bindings(raw: Any) -> tuple[Binding, ...]:
     if raw is None:
         raise ConfigError("missing required key: bindings")
@@ -276,6 +306,7 @@ def load_config(
     ttl = _parse_ttl(data.get("ttl") or {})
     backends = _parse_backends(data.get("backends"))
     bindings = _parse_bindings(data.get("bindings"))
+    gated_classes, step_up_timeout, policy = _parse_step_up(data.get("step_up"))
 
     return Config(
         path=resolved,
@@ -286,4 +317,7 @@ def load_config(
         backends=backends,
         ttl=ttl,
         bindings=bindings,
+        gated_classes=gated_classes,
+        step_up_timeout=step_up_timeout,
+        policy=policy,
     )

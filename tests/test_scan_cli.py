@@ -53,9 +53,7 @@ def repo(tmp_path: Path) -> Path:
     return target
 
 
-def test_scan_json_is_stable_and_masked(
-    repo: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
+def test_scan_json_is_stable_and_masked(repo: Path, capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["scan", "--root", str(repo), "--json"]) == 0
     out = capsys.readouterr().out
     payload = json.loads(out)
@@ -64,9 +62,7 @@ def test_scan_json_is_stable_and_masked(
     assert PLANTED not in out
 
 
-def test_scan_human_output_is_masked(
-    repo: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
+def test_scan_human_output_is_masked(repo: Path, capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["scan", "--root", str(repo)]) == 0
     out = capsys.readouterr().out
     assert "GITHUB_TOKEN" in out
@@ -74,9 +70,7 @@ def test_scan_human_output_is_masked(
     assert PLANTED not in out
 
 
-def test_scan_ci_mode_refuses_honestly(
-    repo: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
+def test_scan_ci_mode_refuses_honestly(repo: Path, capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["scan", "--root", str(repo), "--ci"]) == 1
     err = capsys.readouterr().err
     assert "not yet" in err.lower()
@@ -98,7 +92,9 @@ def test_migrate_dry_run_is_masked_and_writes_nothing(
     home: Path, repo: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     before = (repo / ".env").read_bytes()
-    assert main(["migrate", str(repo / ".env"), "GITHUB_TOKEN", "--root", str(repo), "--dry-run"]) == 0
+    assert (
+        main(["migrate", str(repo / ".env"), "GITHUB_TOKEN", "--root", str(repo), "--dry-run"]) == 0
+    )
     assert (repo / ".env").read_bytes() == before
     assert not (home / "credentials.json").exists()
     assert PLANTED not in capsys.readouterr().out

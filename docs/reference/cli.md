@@ -8,22 +8,20 @@
 **BLUF:** One binary, `agentkeys`, fourteen commands at v0.1.0 (+1 at v0.1.x), four exit-code classes
 that scripts and CI can rely on forever — and a hard rule: **no command ever prints a secret value.**
 
-## Implementation status (v0.1.0 foundation, M0 — 2026-11-09)
+## Implementation status (M10, 2026-11-09)
 
-The command surface and exit codes below are **implemented in M0**. `doctor` and `version` are functional;
-every broker command is an honest stub that exits `1` and names the milestone that delivers it. No command
-brokers, stores, or revokes a credential yet.
+`doctor`, `version`, `ref`, `run`, `revoke`, `replay`, `export`, `verify-log`, `scan`, and `migrate`
+are functional. `init`, `context-dump`, `scan-usable`, `conformance`, and `serve` remain honest stubs
+that exit `1` and name the milestone that delivers them.
 
-| Command | M0 | Delivered in |
+| Command | Status | Delivered in |
 |---|---|---|
-| `doctor`, `version` | implemented | M0 |
-| `init` | stub | M1 |
-| `ref`, `context-dump`, `scan-usable` | stub | M2 |
-| `run`, `serve` | stub | M4 |
-| `revoke`, `replay` | stub | M6 |
-| `export`, `verify-log` | stub | M7 |
-| `scan`, `migrate` | stub | M8 |
-| `conformance` | stub | M11 |
+| `doctor`, `version`, `ref`, `run` | implemented | M0–M4 |
+| `revoke`, `replay` | implemented | M6 |
+| `export`, `verify-log` | implemented | M7 |
+| `scan`, `migrate` | implemented | M8 |
+| `init`, `context-dump`, `scan-usable` | stub | M1/M2 |
+| `conformance`, `serve` | stub | M11/M4 |
 
 ## Commands
 
@@ -32,10 +30,10 @@ brokers, stores, or revokes a credential yet.
 | `agentkeys init` | Write the minimal config; refuse ambiguity | `--backend`, `--home` | R5, E4 |
 | `agentkeys doctor` | Explain effective config/backends/clock; read-only | `--json` | E4, F8 |
 | `agentkeys scan` | Find candidate secrets where agents read them (masked previews **only**) | `--root`, `--json`, `--ci` (v0.1.x) | R17 |
-| `agentkeys migrate <file> <name>` | Move one secret to a backend; rewrite use sites to references | `--backend`, `--dry-run` | R17 |
+| `agentkeys migrate <file> <name>` | Move one secret to a backend; rewrite use sites to references | `--backend`, `--root`, `--reference`, `--config`, `--dry-run` | R17 |
 | `agentkeys ref list` / `ref show <id>` | Inspect references (never values) | `--json` | R1, E1 |
 | `agentkeys run -- <command>` | Launch a child (stdio server/CLI) under the broker with a virtualized env | `--server` | R2, R8 |
-| `agentkeys revoke <target>` | Kill access: `--agent`/`--session`/`--all` | `--reason` | R4 |
+| `agentkeys revoke <target>` | Kill access: `--agent`/`--session`/`--all` | `--reason`, `--principal`, `--config` | R4 |
 | `agentkeys replay --last` | Re-issue the last pre-revoke attempt to prove it fails (the kill-time evidence) | — | R4, SC-24 |
 | `agentkeys context-dump --session <id>` | Emit the agent's full world (transcript/env/args/config/logs) for scanning | `--out` | R1, SC-40 |
 | `agentkeys scan-usable` | Score a context dump for **usable** credentials (0 = invariant holds) | `--json` | R1, SC-40 |

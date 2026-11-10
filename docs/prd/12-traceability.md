@@ -120,6 +120,10 @@ passthrough) applied to the stdio case.
 
 ## 1. v0.1.0 — P0 product requirements (R1–R9 + R17)
 
+> **Implemented (M6–M10, 2026-11-09).** R4, R6, R7, R9, R17 and E6, E8, E10, E12 are implemented and
+> covered by the test files listed below. A row is *green* only with the milestone gate recorded in the
+> [WBS Progress](../wbs/v0.1.0/wbs-v0.1.0-index.md#progress); the field-test verdicts remain M14's.
+
 | Req | Story | CUJ | Scenario | Test file |
 |---|---|---|---|---|
 | **R1** Reference-only context | US-01 | CUJ-1, CUJ-3, CUJ-10 | SC-01, SC-06, SC-40, SC-43 | `tests/test_reference_leak.py`, `tests/test_reference_grammar.py` |
@@ -226,7 +230,8 @@ passthrough) applied to the stdio case.
 | `tests/test_contract.py`, `test_idempotency.py`, `test_contract_compat.py` | contract + idempotent ops | E1, E11 |
 | `tests/test_inject_env.py`, `test_inject_header.py`, `test_inject_exchange.py` | three egress drivers | R2, E7 |
 | `tests/test_binding_audience.py`, `test_binding_tool.py`, `test_binding_session.py`, `test_issuance_single_use.py` | bindings + single-use | R3, E3 |
-| `tests/test_revoke_killtime.py`, `test_revoke_scope.py` | kill-time + scoped kill | R4, E6 |
+| `tests/test_revoke_killtime.py`, `test_revoke_scope.py`, `test_revoke_cli.py` | kill-time + scoped kill + replay proof | R4, E6 |
+| `tests/test_events.py`, `test_correlation.py`, `test_sink.py` | event set, join keys, sink gap marker | R6, E12 |
 | `tests/test_backend_keychain.py`, `test_backend_file.py`, `test_backend_conformance.py`, `test_failclosed_matrix.py` | backends + fail-closed | R5, E4, E9 |
 | `tests/test_store_capabilities.py`, `test_store_recovery.py`, `test_schema_migration.py` | durable store + recovery | E2, E3, E11 |
 | `tests/test_ledger_chain.py`, `test_export.py` | ledger chain + export | R6, E12 |
@@ -234,11 +239,11 @@ passthrough) applied to the stdio case.
 | `tests/test_evasion_detect.py`, `test_evasion_enforce.py` | evasion detect + enforce | R7, E10 |
 | `tests/test_stdio_virtualization.py`, `test_stdio_no_token_passthrough.py` | stdio virtualization | R8, E14 |
 | `tests/test_stepup_approved.py`, `test_stepup_denied.py` | step-up gating | R9 |
-| `tests/test_harness_recipe_claude_code.py`, `test_harness_recipe_cursor.py` | ≥2 Tier-1 recipes | E8 |
+| `tests/test_harness_recipe_claude_code.py`, `test_harness_recipe_cursor.py`, `test_recipe_acceptance.py` | ≥2 Tier-1 recipes + acceptance harness | E8 |
 | `tests/test_tamper_config.py`, `test_tamper_broker.py` | tamper resistance | E10 |
 | `tests/test_no_token_passthrough.py` | no passthrough (unit) | E14 |
 | `tests/test_supply_chain.py` | release supply-chain gate | E15 |
-| `tests/test_scan_candidates.py`, `test_migrate_flow.py`, `test_posture_report.py` | migration + posture | R17, R18 |
+| `tests/test_scan_candidates.py`, `test_migrate_flow.py`, `test_scan_cli.py`, `test_posture_report.py` | migration + posture | R17, R18 |
 | `tests/conformance/test_rfc8693.py` … `test_otel_semconv.py` | standards conformance | E13, E14 |
 
 ## 9. Related documents

@@ -34,7 +34,7 @@ PLANTED_SITES = {
 def test_scan_finds_every_planted_candidate() -> None:
     report = scan(FIXTURES)
     found = {(finding.path, finding.line) for finding in report.findings}
-    assert PLANTED_SITES <= found
+    assert found >= PLANTED_SITES
     assert report.files_scanned >= 4
 
 
@@ -79,6 +79,7 @@ def test_scan_ignores_unreadable_and_noise_files(tmp_path: Path) -> None:
 def test_report_summary_counts_by_class() -> None:
     report = scan(FIXTURES)
     summary = report.to_dict()["summary"]
+    assert isinstance(summary, dict)
     assert summary["private-key"] == 1
     assert summary["connection-string"] == 1
     assert report.to_dict()["broad_reuse"] == 3

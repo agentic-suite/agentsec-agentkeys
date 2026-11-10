@@ -1,7 +1,8 @@
 """Secret-hygiene scanner: find what the agent can read, never print it (M8, WBS 8.1/8.2).
 
-Detection reuses the single source of credential-shape knowledge (`agentkeys.redact.SECRET_CLASSES`).
-A finding carries location, class, field, and length — there is deliberately no rendering path for
+Detection reuses the single source of credential-shape knowledge
+(`agentkeys.redact.SECRET_CLASSES`). A finding carries location, class, field, and length — there is
+deliberately no rendering path for
 the matched value, so `scan` cannot leak by accident.
 """
 
@@ -111,10 +112,10 @@ def _field_for(line: str, start: int) -> str | None:
     return None if match is None else match.group(1)
 
 
-def _line_candidates(text: str) -> list[tuple[int, int, str, str]]:
+def _line_candidates(lines: list[str]) -> list[tuple[int, int, str, str]]:
     """Non-overlapping `(line, column, class, value)` hits; first matching pattern wins."""
     hits: list[tuple[int, int, str, str]] = []
-    for line_number, line in enumerate(text.splitlines(), start=1):
+    for line_number, line in enumerate(lines, start=1):
         spans: list[tuple[int, int]] = []
         for klass, pattern in SECRET_CLASSES:
             for match in pattern.finditer(line):
@@ -139,6 +140,7 @@ def iter_candidates(root: str | Path) -> tuple[list[_Candidate], int]:
         except (OSError, UnicodeDecodeError):
             continue
         relative = path.relative_to(root_path).as_posix()
+        lines = text.splitlines()
         private_key_lines: set[int] = set()
         for match in _PRIVATE_KEY.finditer(text):
             line = text.count("\n", 0, match.start()) + 1
@@ -153,7 +155,7 @@ def iter_candidates(root: str | Path) -> tuple[list[_Candidate], int]:
                     value=match.group(0),
                 )
             )
-        for line_number, column, klass, value in _line_candidates(text):
+        for line_number, column, klass, value in _line_candidates(lines):
             if line_number in private_key_lines:
                 continue
             if value.startswith(("akref:", "op://")):
@@ -163,7 +165,7 @@ def iter_candidates(root: str | Path) -> tuple[list[_Candidate], int]:
                 _key, _sep, assigned = value.partition("=")
                 if assigned.startswith(("akref:", "op://")):
                     continue
-            line_text = text.splitlines()[line_number - 1]
+            line_text = lines[line_number - 1]
             candidates.append(
                 _Candidate(
                     path=relative,
@@ -192,7 +194,7 @@ def scan(root: str | Path) -> ScanReport:
         by_digest.setdefault(_digest(candidate.value), []).append(index)
 
     findings: list[Finding] = []
-    for index, candidate in enumerate(candidates):
+    for candidate in candidates:
         group = by_digest[_digest(candidate.value)]
         sites = tuple(
             sorted({f"{candidates[item].path}:{candidates[item].line}" for item in group})
@@ -220,7 +222,6 @@ def render_report(report: ScanReport) -> str:
         field = finding.field or "-"
         flag = "  broad-reuse" if finding.broad_reuse else ""
         lines.append(
-            f"{finding.path}:{finding.line}  {finding.class_}  {field}  "
-            f"len={finding.length}{flag}"
+            f"{finding.path}:{finding.line}  {finding.class_}  {field}  len={finding.length}{flag}"
         )
     return "\n".join(lines)

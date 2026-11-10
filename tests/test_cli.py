@@ -44,7 +44,8 @@ def test_top_level_help_lists_every_command(capsys: pytest.CaptureFixture[str]) 
     [
         c
         for c in EXPECTED_COMMANDS
-        if c not in {
+        if c
+        not in {
             "version",
             "doctor",
             "ref",

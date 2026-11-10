@@ -196,6 +196,53 @@ each have a gating test.
 No open findings. The co-located-runtime limit is documented as a first-class property
 ([stdio virtualization](../reference/stdio-virtualization.md)), not a footnote.
 
+### 6.CR — Revocation + kill-time + time correctness (2026-11-09)
+
+- **CR-043** · major · `src/agentkeys/core/resolution.py` · `use()` never consulted the session epoch, so a
+  token minted before a revoke could still be consumed at its next hop · fixed: `use()` reads the session
+  and returns `rejected` when the epoch is set · `(6.1/6.5)` · RESOLVED
+- **CR-044** · major · `src/agentkeys/revoke.py` · `RevokeOutcome.events` included an event for a **losing**
+  CAS that the store never wrote — evidence for something that did not happen · fixed: only won revocations
+  contribute an event · `(6.6)` · RESOLVED
+- **CR-045** · minor · `src/agentkeys/commands/replay.py` · the narrowed issuance id relied on `assert`,
+  which vanishes under `-O` · fixed: an explicit `None` guard exits `DENIED` · `(6.3)` · RESOLVED
+
+### 7.CR — Ledger + events + export (2026-11-09)
+
+- **CR-046** · major · `src/agentkeys/events.py` · `EventEmitter.build` passed `occurred_at` twice when a
+  caller supplied a stamp, raising a `TypeError` on an otherwise valid event · fixed: explicit stamps win
+  (`setdefault`) · `(7.2)` · RESOLVED
+- **CR-047** · minor · `src/agentkeys/export.py` · an export parent directory was created with the default
+  mode · fixed: best-effort `0700` (the export is already secret-free) · `(7.3)` · RESOLVED
+
+### 8.CR — Scan + migrate (2026-11-09)
+
+- **CR-048** · major · `src/agentkeys/scan.py` · the scanner flagged the `KEY=akref:…` line it had just
+  written (the env-assignment shape), so a migrated finding never closed on re-scan · fixed: reference
+  values are excluded from findings · `(8.2/8.4)` · RESOLVED
+- **CR-049** · major · `src/agentkeys/migrate.py` · the reference was registered **before** the file
+  rewrite, leaving a dangling reference when a rewrite failed · fixed: register last; on failure restore
+  every file and delete the just-written backend slot · `(8.3)` · RESOLVED
+- **CR-050** · minor · `src/agentkeys/scan.py` · the file text was re-split for every candidate (quadratic
+  on large files) · fixed: split once per file · `(8.1)` · RESOLVED
+
+### 9.CR — Evasion + tamper (2026-11-09)
+
+- **CR-051** · major · `src/agentkeys/evasion.py` · an enforcer exception could have been read as a block
+  in `enforce` mode — a claimed block that never happened · fixed: any enforcer failure is a **named gap**
+  (`blocked=False`, `gap_named=True`) · `(9.3)` · RESOLVED
+- **CR-052** · minor · `src/agentkeys/tamper.py` · enumeration probes accumulate across sessions inside the
+  window · accepted: a global probe signal is the intended detection; the per-session attribution is on
+  every event · `(9.6)` · RESOLVED (documented)
+
+### 10.CR — Step-up + recipes (2026-11-09)
+
+- **CR-053** · major · `src/agentkeys/core/resolution.py` · `step-up-granted` was written **before** the
+  mint, so a failed mint could leave a grant with no issuance · fixed: the grant is emitted after the store
+  transaction and carries the new `issuance_id` · `(10.2)` · RESOLVED
+
+No open findings.
+
 <!--
 Template:
 

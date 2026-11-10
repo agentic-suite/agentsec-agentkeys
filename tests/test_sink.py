@@ -5,6 +5,7 @@ from __future__ import annotations
 from agentkeys.events import build_event
 from agentkeys.ledger import verify_chain
 from agentkeys.sink import SinkAdapter
+from agentkeys.store.contract import LedgerRow
 from agentkeys.store.memory import MemoryStore
 
 
@@ -13,10 +14,10 @@ class FlakySink:
         self.fail = True
         self.sent: list[str] = []
 
-    def __call__(self, row: object) -> None:
+    def __call__(self, row: LedgerRow) -> None:
         if self.fail:
             raise OSError("sink offline")
-        self.sent.append(getattr(row, "event").event_id)
+        self.sent.append(row.event.event_id)
 
 
 def test_a_failing_sink_leaves_the_local_ledger_authoritative() -> None:
