@@ -240,6 +240,24 @@ A milestone is **closed** only when all of these hold:
   enforcer composed) were **fixed and re-run green**. Published `bench/killtime-contextdump.json` + README.
   Results: `field-test/v0.1.0/results/` · plan/ report/ traceability: `docs/field-test/v0.1.0/`.
   `14.CR` logged 11 findings (CR-062…CR-072), all resolved; **zero product defects**.
+- **2026-11-10 — M15 closed. `main` carries the squashed v0.1.0 as an UNSIGNED release.**
+  `main` = `0662e40` (one commit, squashed from the 56-commit feature branch — the repo rule requires a PR on
+  `main`, DCO requires a `Signed-off-by` on every commit). Feature and release branches deleted. Delivered:
+  release plan, **security audit** (0 verified in tree + full history, two scanners, dual planted-fake control
+  that fired), **claims lint** (18 claims, 0 over-claims, **0 verified**), **compatibility matrix** generated
+  from committed packs, **SBOM**, release notes with the honest gap list, risk re-grade, README + honest-gaps
+  + demo scripts reconciled with the built core, corrected install docs (package **not on PyPI**, `init` is a
+  stub). Milestone gate (once, at the end): `ruff` + `ruff format` clean · `mypy --strict` clean (191 files) ·
+  **824 tests passed** · coverage **95.10% ≥ 95%** · `15.CR` logged CR-073…CR-078, all resolved, **zero
+  product defects**.
+
+  **Unsigned, by decision:** no Sigstore signature, no SLSA provenance — stated in the release notes, gap
+  list, claims ledger and risk register; never presented as signed.
+
+  **Still open, carried by #191:** the **PyPI upload**. Publishing needs a credential that is not in this
+  repository, not in a log, and not a token that has been pasted into a chat (a pasted token is a compromised
+  token). The command is prepared and documented; it runs from the maintainer's machine against `~/.pypirc`.
+
 - **2026-11-09 — M15 Release readiness (except the tag).** Release tooling built test-first:
   `python -m agentkeys.release {audit,claims,compat,sbom}`. **Security audit green** — trufflehog 0 verified in
   the tree and in the **full history** (58 commits, no `--since-commit`), gitleaks 0 after a by-value allowlist
