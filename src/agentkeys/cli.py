@@ -14,8 +14,14 @@ from collections.abc import Callable, Sequence
 from typing import Any, NoReturn
 
 from agentkeys import __version__
+from agentkeys.commands.export import run_export
+from agentkeys.commands.migrate import run_migrate
 from agentkeys.commands.ref import run_ref
+from agentkeys.commands.replay import run_replay
+from agentkeys.commands.revoke import run_revoke
 from agentkeys.commands.run import run_run
+from agentkeys.commands.scan import run_scan
+from agentkeys.commands.verify_log import run_verify_log
 from agentkeys.doctor import run_doctor
 from agentkeys.exit_codes import ExitCode, json_envelope
 
@@ -94,6 +100,30 @@ def _run_handler(args: argparse.Namespace) -> int:
     return run_run(args)
 
 
+def _revoke_handler(args: argparse.Namespace) -> int:
+    return run_revoke(args)
+
+
+def _replay_handler(args: argparse.Namespace) -> int:
+    return run_replay(args)
+
+
+def _export_handler(args: argparse.Namespace) -> int:
+    return run_export(args)
+
+
+def _verify_log_handler(args: argparse.Namespace) -> int:
+    return run_verify_log(args)
+
+
+def _scan_handler(args: argparse.Namespace) -> int:
+    return run_scan(args)
+
+
+def _migrate_handler(args: argparse.Namespace) -> int:
+    return run_migrate(args)
+
+
 def _doctor_handler(args: argparse.Namespace) -> int:
     return run_doctor(config_path=getattr(args, "config", None), as_json=args.json)
 
@@ -132,6 +162,9 @@ def _build_parser() -> _Parser:
     p.add_argument("file", nargs="?")
     p.add_argument("name", nargs="?")
     p.add_argument("--backend")
+    p.add_argument("--root")
+    p.add_argument("--reference", help="explicit reference_id for the migrated secret")
+    p.add_argument("--config", help="config path (default: $AGENTKEYS_HOME/config.toml)")
     p.add_argument("--dry-run", action="store_true")
     _add_json_flag(p)
 
@@ -158,10 +191,13 @@ def _build_parser() -> _Parser:
     scope.add_argument("--session")
     scope.add_argument("--all", action="store_true")
     p.add_argument("--reason")
+    p.add_argument("--principal", help="operator identity recorded on the revoked event")
+    p.add_argument("--config", help="config path (default: $AGENTKEYS_HOME/config.toml)")
     _add_json_flag(p)
 
     p = sub.add_parser("replay", help="re-issue the last pre-revoke attempt to prove it fails")
     p.add_argument("--last", action="store_true")
+    p.add_argument("--config", help="config path (default: $AGENTKEYS_HOME/config.toml)")
     _add_json_flag(p)
 
     p = sub.add_parser("context-dump", help="emit the agent's full world for scanning")
@@ -176,9 +212,11 @@ def _build_parser() -> _Parser:
     p.add_argument("--session")
     p.add_argument("--reference")
     p.add_argument("--out")
+    p.add_argument("--config", help="config path (default: $AGENTKEYS_HOME/config.toml)")
     _add_json_flag(p)
 
     p = sub.add_parser("verify-log", help="recompute the hash chain; report gaps/tamper")
+    p.add_argument("--config", help="config path (default: $AGENTKEYS_HOME/config.toml)")
     _add_json_flag(p)
 
     p = sub.add_parser("conformance", help="run the standards/backend suites")
@@ -196,9 +234,26 @@ def _build_parser() -> _Parser:
     sub.choices["doctor"].set_defaults(handler=_doctor_handler)
     sub.choices["ref"].set_defaults(handler=_ref_handler)
     sub.choices["run"].set_defaults(handler=_run_handler)
+    sub.choices["revoke"].set_defaults(handler=_revoke_handler)
+    sub.choices["replay"].set_defaults(handler=_replay_handler)
+    sub.choices["export"].set_defaults(handler=_export_handler)
+    sub.choices["verify-log"].set_defaults(handler=_verify_log_handler)
+    sub.choices["scan"].set_defaults(handler=_scan_handler)
+    sub.choices["migrate"].set_defaults(handler=_migrate_handler)
 
     for name in COMMANDS:
-        if name in {"version", "doctor", "ref", "run"}:
+        if name in {
+            "version",
+            "doctor",
+            "ref",
+            "run",
+            "revoke",
+            "replay",
+            "export",
+            "verify-log",
+            "scan",
+            "migrate",
+        }:
             continue
         sub.choices[name].set_defaults(handler=_stub(name))
 

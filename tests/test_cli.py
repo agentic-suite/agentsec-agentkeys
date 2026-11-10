@@ -41,7 +41,22 @@ def test_top_level_help_lists_every_command(capsys: pytest.CaptureFixture[str]) 
 
 @pytest.mark.parametrize(
     "command",
-    [c for c in EXPECTED_COMMANDS if c not in {"version", "doctor", "ref", "run"}],
+    [
+        c
+        for c in EXPECTED_COMMANDS
+        if c not in {
+            "version",
+            "doctor",
+            "ref",
+            "run",
+            "revoke",
+            "replay",
+            "export",
+            "verify-log",
+            "scan",
+            "migrate",
+        }
+    ],
 )
 def test_broker_commands_refuse_honestly(command: str, capsys: pytest.CaptureFixture[str]) -> None:
     code = main([command])
@@ -89,7 +104,7 @@ def test_version_flag(capsys: pytest.CaptureFixture[str]) -> None:
 def test_stub_json_mode_emits_stable_envelope(capsys: pytest.CaptureFixture[str]) -> None:
     import json
 
-    code = main(["scan", "--json"])
+    code = main(["context-dump", "--json"])
     payload = json.loads(capsys.readouterr().out)
     assert code == 1
     assert payload["ok"] is False

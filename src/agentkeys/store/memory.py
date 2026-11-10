@@ -97,6 +97,11 @@ class MemoryStore:
             self._require_open()
             return self._sessions.get(session_id)
 
+    def list_sessions(self) -> tuple[Session, ...]:
+        with self._lock:
+            self._require_open()
+            return tuple(self._sessions[key] for key in sorted(self._sessions))
+
     def get_binding(self, binding_hash: str) -> Binding | None:
         with self._lock:
             self._require_open()
@@ -204,6 +209,17 @@ class MemoryStore:
                 and issuance.expires_at > now
             ]
         return tuple(sorted(live, key=lambda i: (i.issued_at, i.issuance_id)))
+
+    def expire_due(self, now: int) -> tuple[Issuance, ...]:
+        with self._lock:
+            self._require_open()
+            expired: list[Issuance] = []
+            for issuance_id, issuance in list(self._issuances.items()):
+                if issuance.status == "live" and issuance.expires_at <= now:
+                    updated = replace(issuance, status="expired")
+                    self._issuances[issuance_id] = updated
+                    expired.append(updated)
+            return tuple(sorted(expired, key=lambda i: (i.issued_at, i.issuance_id)))
 
     # ------------------------------------------------------------------ revocation
 

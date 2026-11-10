@@ -205,6 +205,10 @@ class SqliteStore:
         row = self._execute("SELECT * FROM sessions WHERE session_id = ?", (session_id,)).fetchone()
         return None if row is None else _session(row)
 
+    def list_sessions(self) -> tuple[Session, ...]:
+        rows = self._execute("SELECT * FROM sessions ORDER BY session_id").fetchall()
+        return tuple(_session(row) for row in rows)
+
     def get_binding(self, binding_hash: str) -> Binding | None:
         row = self._execute(
             "SELECT * FROM bindings WHERE binding_hash = ?", (binding_hash,)
@@ -350,6 +354,31 @@ class SqliteStore:
             (now,),
         ).fetchall()
         return tuple(_issuance(row) for row in rows)
+
+    def expire_due(self, now: int) -> tuple[Issuance, ...]:
+        self.begin_immediate()
+        expired: list[Issuance] = []
+        try:
+            due = self._execute(
+                "SELECT issuance_id FROM issuances WHERE status = 'live' AND expires_at <= ?",
+                (now,),
+            ).fetchall()
+            for row in due:
+                cursor = self._execute(
+                    "UPDATE issuances SET status = 'expired'"
+                    " WHERE issuance_id = ? AND status = 'live'",
+                    (row["issuance_id"],),
+                )
+                if cursor.rowcount == 1:
+                    updated = self._execute(
+                        "SELECT * FROM issuances WHERE issuance_id = ?", (row["issuance_id"],)
+                    ).fetchone()
+                    expired.append(_issuance(updated))
+        except BaseException:
+            self.rollback()
+            raise
+        self.commit()
+        return tuple(expired)
 
     # ------------------------------------------------------------------ revocation
 

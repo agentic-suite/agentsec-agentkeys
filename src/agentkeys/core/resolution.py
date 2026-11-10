@@ -14,6 +14,7 @@ from agentkeys.config import TtlBound
 from agentkeys.contracts.issuance import Binding, IssuanceDoc, IssuanceError
 from agentkeys.contracts.reference import ReferenceDoc
 from agentkeys.contracts.registry import ReferenceRegistry
+from agentkeys.events import build_event
 from agentkeys.store.contract import (
     BrokerStore,
     Issuance,
@@ -112,6 +113,17 @@ class ResolutionCore:
             raise ResolutionDenied(f"binding-not-allowed: {reference_id}/{audience}/{tool}")
 
         now = self.clock()
+        self.store.append_event(
+            build_event(
+                "reference-resolved",
+                occurred_at=now,
+                session_id=session_id,
+                agent_id=session.agent_id,
+                reference_id=doc.reference_id,
+                binding=(audience, tool),
+                principal=session.principal,
+            )
+        )
         window = now // self._window_seconds
         binding_hash = _binding_hash(doc.reference_id, audience, tool, session_id)
 
@@ -161,10 +173,13 @@ class ResolutionCore:
         return ResolvedIssuance(issuance=issuance, token=token)
 
     def use(self, issuance_id: str, token: str, *, now: int | None = None) -> UseResult:
-        """Verify the token by hash, then consume it exactly once."""
+        """Verify the token by hash, then consume it exactly once (a revoked session refuses)."""
         stored = self.store.get_issuance(issuance_id)
         if stored is None:
             return UseResult(status="unknown")
+        session = self.store.get_session(stored.session_id)
+        if session is None or session.revoke_epoch > 0:
+            return UseResult(status="rejected")
         presented = hashlib.sha256(token.encode("utf-8")).hexdigest()
         if not hmac.compare_digest(presented, stored.secret_hash):
             return UseResult(status="rejected")
@@ -172,6 +187,19 @@ class ResolutionCore:
         status = _USE_STATUSES[result.status]
         if status == "consumed":
             self._tokens.pop(issuance_id, None)
+            self.store.append_event(
+                build_event(
+                    "use",
+                    occurred_at=self.clock() if now is None else now,
+                    session_id=stored.session_id,
+                    agent_id=stored.agent_id,
+                    reference_id=stored.reference_id,
+                    issuance_id=issuance_id,
+                    binding=(stored.audience, stored.tool),
+                    ttl_seconds=stored.ttl_seconds,
+                    principal=session.principal,
+                )
+            )
         return UseResult(status=status)
 
 
