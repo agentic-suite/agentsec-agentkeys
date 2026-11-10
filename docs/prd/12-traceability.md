@@ -127,7 +127,7 @@ passthrough) applied to the stdio case.
 | R8 (stdio virtualization) | FT-ST-NOSECRET, FT-ST-NOPASSTHRU, FT-DK-BOUNDARY | field-tested |
 | R17 (scan/migrate) | FT-MP-SCANMIGRATE — 100% recall, 0 printed values | field-tested |
 | E13 (standards conformance) | FT-CONF-STANDARDS, FT-CONF-BACKENDS (DPoP explicitly not supported) | conformance |
-| E15 (supply chain) | SBOM + supply checks + audit; **signing/tag/PyPI BLOCKED on credentials** | documented |
+| E15 (supply chain) | SBOM + supply checks + audit; **unsigned release by decision** (no Sigstore/SLSA); tag + publish await the maintainer | documented |
 | CUJ-1 (install → first call) | FT-CL-FIRST — scripted + fresh-venv green; **no naive-human fresh-box median** | documented (WARN) |
 | CUJ-12 (harness recipes) | FT-HC-CLAUDE / FT-HC-CURSOR — wiring + smoke green; **live legs blocked** | documented (WARN) |
 | PRD 20 §6 (no over-claim) | `python -m agentkeys.release claims` — 18 claims, 0 findings, 0 verified | enforced in CI-by-test |

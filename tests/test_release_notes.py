@@ -76,3 +76,10 @@ def test_the_notes_do_not_claim_verification() -> None:
     assert "nothing is verified" in text or "not yet verified" in text
     assert "soc 2 certified" not in text
     assert "production-ready" not in text
+
+
+def test_the_notes_state_that_the_release_is_unsigned() -> None:
+    text = _notes().lower()
+    assert "unsigned" in text
+    assert "sigstore" in text, "the thing we are not doing must be named"
+    assert "not signed" in text or "no signature" in text

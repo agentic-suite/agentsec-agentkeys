@@ -1,11 +1,14 @@
 # Release — v0.1.0 (`15.5`)
 
-**BLUF:** the artefacts are prepared and verified; **the irreversible steps are BLOCKED awaiting the
-maintainer's explicit go-ahead**. Nothing in this repository will tag or publish on its own.
+**BLUF:** this is an **unsigned release** — no Sigstore signature, no SLSA provenance, stated plainly and
+never presented as signed. The artefacts are prepared and verified; the **tag and the publish are
+irreversible** and wait for the maintainer's explicit go-ahead. Nothing here tags or publishes on its own.
 
 - **Prepared:** SBOM ([SBOM.cdx.json](SBOM.cdx.json)), sdist + wheel, the release-notes draft, the audit,
   the claims ledger, the compatibility matrix.
-- **Blocked:** Sigstore/SLSA signing, `v0.1.0` tag, PyPI upload — credentials + a human decision.
+- **Unsigned by decision:** no Sigstore/SLSA signing at v0.1.0; the limitation is stated in the notes,
+  the gap list and the claims ledger.
+- **Awaiting a human:** `v0.1.0` tag and PyPI upload (irreversible).
 - **Gate order:** audit green → claims green → compat green → notes green → **then** tag → **then** publish.
 
 ---
@@ -21,16 +24,32 @@ maintainer's explicit go-ahead**. Nothing in this repository will tag or publish
 | Release notes | — | [RELEASE_NOTES.md](RELEASE_NOTES.md) |
 | OpenSSF Scorecard | `.github/workflows/scorecard.yml` | workflow exists; the badge/result must be read from the default branch after merge |
 
-## 2. BLOCKED — signing, tag, publish
+## 2. Unsigned release — what that means (and what it forbids)
 
-| Step | Why it is blocked | What is required |
+| Step | Decision | Consequence |
 |---|---|---|
-| **Sigstore / SLSA signing** | needs a signing identity (OIDC or key) and network egress; cannot be produced truthfully here | run the signing job in CI with `id-token: write`, or provide a key |
-| **`v0.1.0` tag** | irreversible, and the milestone gates (`15.T/15.C/15.L/15.CR/15.D`) must be green on the release commit first | explicit maintainer go-ahead |
-| **PyPI publish** | irreversible and public; needs `PYPI_API_TOKEN` / trusted publishing | explicit maintainer go-ahead after the artifacts verify |
+| **Sigstore / SLSA signing** | **not done at v0.1.0** | no signature, no provenance attestation. `cosign verify` will fail — correctly. |
+| **Verification instead** | checksums + SBOM + re-runnable audit | a consumer pins a hash, diffs the SBOM, and can re-run `agentkeys.release audit` / `claims` |
+| **`v0.1.0` tag** | awaits the maintainer's explicit go-ahead | irreversible |
+| **PyPI publish** | awaits the maintainer's explicit go-ahead | irreversible and public |
 
-**If signing is unavailable, the tag must carry that stated limitation** — "signed release" is a claim, and a
-claim we cannot evidence must not be made ([PRD 20 §6](../../prd/20-standards-and-claims.md)).
+**Rule that does not bend:** "signed release" is a claim, and a claim we cannot evidence must not be made
+([PRD 20 §6](../../prd/20-standards-and-claims.md)). The RELEASE_NOTES, README, gap list and claims ledger
+all say *unsigned*, and the claims lint fails if any of them says otherwise.
+
+### Publishing without a pasted secret
+
+The publish step **must not** take a token through an agent or a shell log. Two supported paths:
+
+1. **Trusted publishing (preferred, no secret):** a `pypi-publish` job in CI with `id-token: write` and the
+   PyPI trusted publisher configured for this repository. There is nothing to leak.
+2. **A token in your own terminal only:**
+   ```sh
+   export TWINE_USERNAME=__token__
+   export TWINE_PASSWORD=...        # entered interactively, never in a command line
+   python -m twine upload dist/*
+   ```
+   A token pasted into a chat, an issue, or a command is a **compromised** token: rotate it first.
 
 ## 3. The exact commands (for the human who runs them)
 

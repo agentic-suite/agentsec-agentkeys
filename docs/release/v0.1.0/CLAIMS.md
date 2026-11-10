@@ -31,9 +31,11 @@ can move a claim up the ladder; until someone does, the label stays where the ev
 | Copilot (and any closed-hook harness) coverage | documented | — | no | **lower-layer coverage** only; never a first-class hook recipe |
 | Tier-2 / Tier-3 framework and platform support | documented | — | no | brokered by construction, **not** individually pack-gated |
 | Everything above, reproduced by a third party | documented | — | no | nothing is verified at v0.1.0 |
+| A signed release (Sigstore signature + SLSA provenance) | documented | — | no | **unsigned at v0.1.0 — deliberate.** No signature exists and none is claimed; verify by checksum, SBOM and a re-run of the audit |
 
 ## Non-claims (they must stay said)
 
+- **Not signed** — no Sigstore signature and no SLSA provenance at v0.1.0; never describe this release as signed.
 - **Not** a compliance certification — we map to SOC 2 / ISO 42001 / EU AI Act; we are not certified.
 - **Not** an injection detector — we mitigate architecturally and never claim a detection rate.
 - **Not** proof-of-possession — bearer tokens until DPoP (R14).

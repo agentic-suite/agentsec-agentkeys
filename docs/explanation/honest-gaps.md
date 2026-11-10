@@ -14,7 +14,7 @@
 | OS-level evasion enforcer | `enforce` blocks only where an enforcer composes; `FT-EV-ENFORCE` now **passes** because one was composed (`chmod 000` + a verifier that raises if the file is readable) | limitation |
 | RFC 9449 DPoP | deferred to v0.3.0 (R14) | not supported |
 | Enterprise backends (Vault/1Password/cloud SM) | v0.1.x (R10); an unknown driver refuses | not supported |
-| Sigstore/SLSA signing + provenance | **blocked** on release credentials — the SBOM is generated and the tag must carry this stated limitation rather than claiming a signed release | blocked |
+| Sigstore/SLSA signing + provenance | **unsigned release by decision** — the SBOM is generated, but there is no Sigstore signature and no SLSA provenance. Verify the artefacts by checksum and by re-running the audit; **no claim** that this release is signed | unsigned (stated) |
 | Live harness field runs | Claude Code is wired and smoke-tested but the headless run is blocked (`Not logged in · Please run /login`); Cursor has no headless surface | WARN (named) |
 | Install → first call, naive human on a fresh machine | the scripted median (0.54s) and a fresh-venv path (2.7s) are green; no naive-human fresh-machine median exists | WARN (named) |
 | Copilot / Codex CLI / Gemini CLI | Copilot is **lower-layer coverage** (closed hook surface); Codex and Gemini are **not yet** | lower-layer / not yet |

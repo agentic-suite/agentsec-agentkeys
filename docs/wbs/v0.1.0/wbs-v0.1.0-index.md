@@ -253,8 +253,9 @@ A milestone is **closed** only when all of these hold:
   `mypy --strict` clean (**191 files**) · full suite **824 passed** · coverage **95.10% ≥ 95%**. Commits:
   `f4266c8` (15.D0) · `0b57a01` (15.1) · `a25abfd` (15.2) · `290514e` (15.3) · `db9a5db` (15.4) ·
   `b928eaa` (15.5 prep) · `4d6b85e` (15.6) · `f783449` (15.7). `15.CR` logged CR-073…CR-078, all resolved;
-  **zero product defects**. **BLOCKED: `15.5` signing + `v0.1.0` tag + PyPI publish** — irreversible and
-  credential-bound; the `[0.1.0]` CHANGELOG entry stays unwritten until that gate passes.
+  **zero product defects**. **`15.5` is an unsigned release by decision** — no Sigstore signature, no SLSA
+  provenance, stated in the notes/gaps/claims and never claimed otherwise; the `v0.1.0` tag and the PyPI
+  publish await the maintainer's go-ahead (trusted publishing preferred: no token in any log).
 - **2026-11-09 — M14 milestone gate (run once, at the end).** `ruff` zero violations · `ruff format --check`
   clean · `mypy --strict` clean (**177 files**) · full suite **743 passed** · coverage **95.22% ≥ 95%**
   (field-test tooling covered by pack-level execution tests). **Next: M15 opens at `15.D0` — security

@@ -61,10 +61,11 @@ def test_the_gaps_doc_records_the_three_warns() -> None:
         assert case in GAPS, f"the gap list dropped {case}"
 
 
-def test_the_gaps_doc_names_the_blocked_signing_step() -> None:
+def test_the_gaps_doc_states_the_release_is_unsigned() -> None:
     text = GAPS.lower()
-    assert "signing" in text
-    assert "blocked" in text
+    assert "unsigned" in text
+    assert "sigstore" in text, "name the thing we are not doing"
+    assert "not claimed" in text or "no claim" in text
 
 
 def test_the_demo_scripts_are_marked_with_their_real_status() -> None:

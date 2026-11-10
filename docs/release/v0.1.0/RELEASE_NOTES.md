@@ -91,6 +91,20 @@ First release: there is no previous version to migrate from. If you have credent
 `agentkeys scan` (masked output) and `agentkeys migrate` to move one to a backend; the quickstart replays the
 full journey in a fresh virtualenv.
 
+## This release is **unsigned**
+
+There is **no Sigstore signature** and **no SLSA provenance** for `v0.1.0` — that is a decision, not an
+oversight. What you get instead:
+
+- a **CycloneDX SBOM** ([SBOM.cdx.json](SBOM.cdx.json)) you can diff against what you install;
+- a **reproducible check** you can run yourself: `python -m agentkeys.release audit --root .` and
+  `python -m agentkeys.release claims --root .`;
+- **checksums** of the built artefacts, published alongside them.
+
+Treat an unsigned artefact as **not signed**: pin a hash, install from source if you need provenance, and
+do not describe this release as "signed" anywhere. Signing is tracked as a follow-up; until it exists, no
+claim is made.
+
 ## Non-claims
 
 Not a compliance certification · not an injection detector · not proof-of-possession · not protection from a

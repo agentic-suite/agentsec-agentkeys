@@ -49,9 +49,26 @@ def test_the_committed_sbom_matches_the_generator() -> None:
     assert committed == supply.sbom()
 
 
-def test_the_release_doc_records_what_is_blocked_and_why() -> None:
+def test_the_release_doc_records_the_unsigned_decision() -> None:
     text = (REPO / "docs" / "release" / "v0.1.0" / "RELEASE.md").read_text(encoding="utf-8").lower()
-    assert "blocked" in text
+    assert "unsigned" in text
     assert "sigstore" in text or "cosign" in text
     assert "pypi" in text
-    assert "rotate" in text or "forward" in text, "the remediation policy must be stated"
+    policy = "rotate" in text or "forward" in text
+    assert policy, "the remediation policy must be stated"
+
+
+def test_the_publish_workflow_uses_trusted_publishing_and_no_token() -> None:
+    """A PyPI token pasted into a chat or a command is a compromised token — OIDC is the only path here."""
+    text = (REPO / ".github" / "workflows" / "publish.yml").read_text(encoding="utf-8")
+
+    assert "pypa/gh-action-pypi-publish" in text
+    assert "id-token: write" in text
+    assert "environment:" in text, "the pypi environment is the trusted-publisher binding"
+    # nothing that could carry a secret into a log
+    assert "TWINE_PASSWORD" not in text
+    assert "api-token" not in text.lower()
+    assert "pypi-AgEIcHlwaS5vcmc" not in text
+    # and the unsigned decision is explicit, not accidental
+    assert "attestations: false" in text
+    assert "UNSIGNED" in text
