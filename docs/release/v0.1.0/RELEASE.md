@@ -37,19 +37,24 @@ irreversible** and wait for the maintainer's explicit go-ahead. Nothing here tag
 ([PRD 20 §6](../../prd/20-standards-and-claims.md)). The RELEASE_NOTES, README, gap list and claims ledger
 all say *unsigned*, and the claims lint fails if any of them says otherwise.
 
-### Publishing without a pasted secret
+### Publishing from the maintainer's machine
 
-The publish step **must not** take a token through an agent or a shell log. Two supported paths:
+There is no CI publish workflow — the release is published locally. The token is **never** typed into a
+command, an issue, or a chat: it lives in `~/.pypirc` (mode `0600`) and `twine` reads it from there, so no
+secret ever appears in a shell history or a log.
 
-1. **Trusted publishing (preferred, no secret):** a `pypi-publish` job in CI with `id-token: write` and the
-   PyPI trusted publisher configured for this repository. There is nothing to leak.
-2. **A token in your own terminal only:**
-   ```sh
-   export TWINE_USERNAME=__token__
-   export TWINE_PASSWORD=...        # entered interactively, never in a command line
-   python -m twine upload dist/*
-   ```
-   A token pasted into a chat, an issue, or a command is a **compromised** token: rotate it first.
+```sh
+# one-off, on the maintainer's machine (mode 0600, never committed):
+#   [pypi]
+#   username = __token__
+#   password = pypi-...
+python -m build
+python -m twine check dist/*
+python -m twine upload dist/*
+```
+
+A token pasted into a chat or a command is a **compromised** token: rotate it at pypi.org first, then put the
+new one in `~/.pypirc`. Nothing in this repository can undo a leaked token — rotation is the only fix.
 
 ## 3. The exact commands (for the human who runs them)
 

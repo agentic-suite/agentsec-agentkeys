@@ -56,19 +56,3 @@ def test_the_release_doc_records_the_unsigned_decision() -> None:
     assert "pypi" in text
     policy = "rotate" in text or "forward" in text
     assert policy, "the remediation policy must be stated"
-
-
-def test_the_publish_workflow_uses_trusted_publishing_and_no_token() -> None:
-    """A PyPI token pasted into a chat or a command is a compromised token — OIDC is the only path here."""
-    text = (REPO / ".github" / "workflows" / "publish.yml").read_text(encoding="utf-8")
-
-    assert "pypa/gh-action-pypi-publish" in text
-    assert "id-token: write" in text
-    assert "environment:" in text, "the pypi environment is the trusted-publisher binding"
-    # nothing that could carry a secret into a log
-    assert "TWINE_PASSWORD" not in text
-    assert "api-token" not in text.lower()
-    assert "pypi-AgEIcHlwaS5vcmc" not in text
-    # and the unsigned decision is explicit, not accidental
-    assert "attestations: false" in text
-    assert "UNSIGNED" in text
