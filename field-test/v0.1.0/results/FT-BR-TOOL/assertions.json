@@ -1,0 +1,16 @@
+[
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "other-tool-refused",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "wider-scope-refused",
+    "passed": true
+  }
+]

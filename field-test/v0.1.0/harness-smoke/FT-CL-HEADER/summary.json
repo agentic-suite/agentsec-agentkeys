@@ -1,0 +1,62 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "authorization-set",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "broker-token-in-header",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "client-token-absent",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "overwrote-client",
+      "passed": true
+    }
+  ],
+  "case": "FT-CL-HEADER",
+  "class": "P/F",
+  "detail": "header injection sets only the broker-minted token",
+  "driver": "header-inject",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "a4a92244498c808b77555f3cd47aee8de3c188d77fcb1306524f990ef73aea97",
+      "commands.log": "e12530349bd22a17813bc1ea2e5809cee6ad01f187a226498077ec31f15236d0",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "core",
+  "passed": true,
+  "scenario": "SC-03",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

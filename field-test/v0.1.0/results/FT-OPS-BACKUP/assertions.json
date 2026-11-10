@@ -1,0 +1,30 @@
+[
+  {
+    "actual": 3,
+    "expected": 3,
+    "kind": "eq",
+    "name": "rows",
+    "passed": true
+  },
+  {
+    "actual": "02fde7a0ab6b57f2fcb7d20707c2c98878fcf8699169ca49a1a949f9653365a0",
+    "expected": true,
+    "kind": "present",
+    "name": "chain-head",
+    "passed": true
+  },
+  {
+    "actual": 384,
+    "expected": 384,
+    "kind": "eq",
+    "name": "manifest-0600",
+    "passed": true
+  },
+  {
+    "actual": "{\"chain_head\": \"02fde7a0ab6b57f2fcb7d20707c2c98878fcf8699169ca49a1a949f9653365a0\", \"contains_secrets\": false, \"contents\": \"references, bindings, issuance hashes, ledger, receipts\", \"created_at\": 1234, \"path\": \"/var/folders/1y/8cvcsmv53m7c2gzqb6gp09p40000gn/T/ak-FT-OPS-BACKUP-082sbii1/backup.db\", \"rows\": 3, \"schema_version\": 1}",
+    "expected": "\"contains_secrets\": false",
+    "kind": "contains",
+    "name": "secret-free-manifest",
+    "passed": true
+  }
+]

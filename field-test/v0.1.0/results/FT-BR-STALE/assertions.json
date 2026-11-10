@@ -1,0 +1,16 @@
+[
+  {
+    "actual": "expired",
+    "expected": "expired",
+    "kind": "eq",
+    "name": "stale-expired",
+    "passed": true
+  },
+  {
+    "actual": "rejected",
+    "expected": "rejected",
+    "kind": "eq",
+    "name": "forwarded-rejected",
+    "passed": true
+  }
+]

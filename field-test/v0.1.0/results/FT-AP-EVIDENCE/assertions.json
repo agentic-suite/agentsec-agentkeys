@@ -1,0 +1,30 @@
+[
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "clean-ok",
+    "passed": true
+  },
+  {
+    "actual": 2,
+    "expected": 2,
+    "kind": "gte",
+    "name": "clean-rows",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "seeded-fails",
+    "passed": true
+  },
+  {
+    "actual": "ledger:3",
+    "expected": "ledger:",
+    "kind": "contains",
+    "name": "seeded-location",
+    "passed": true
+  }
+]

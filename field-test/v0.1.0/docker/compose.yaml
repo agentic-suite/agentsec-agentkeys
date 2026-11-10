@@ -1,0 +1,76 @@
+# agentkeys field-test topology (M14). Non-root, no network by default, no secrets on disk.
+name: agentkeys-fieldtest
+
+services:
+  broker:
+    build:
+      context: ../../..
+      dockerfile: field-test/v0.1.0/docker/Dockerfile.broker
+    image: agentkeys-fieldtest:local
+    user: "10001:10001"
+    environment:
+      AGENTKEYS_HOME: /data
+      AGENTKEYS_FIELD_ROOT: /work
+    volumes:
+      - broker-data:/data
+      - ../../..:/work:ro
+      - ../results:/results
+    networks: [fieldtest]
+    command: ["sleep", "infinity"]
+
+  child:
+    build:
+      context: ../../..
+      dockerfile: field-test/v0.1.0/docker/Dockerfile.child
+    image: agentkeys-fieldtest-child:local
+    user: "10001:10001"
+    environment:
+      AGENTKEYS_SCOPED_TOKEN: ${AGENTKEYS_SCOPED_TOKEN:-}
+    networks: [fieldtest]
+
+  upstream:
+    image: python:3.12-slim
+    user: "10001:10001"
+    working_dir: /app
+    volumes:
+      - ./upstream.py:/app/upstream.py:ro
+      - upstream-data:/shared
+    environment:
+      UPSTREAM_LOG: /shared/upstream.jsonl
+    ports:
+      - "8080:8080"
+    networks: [fieldtest]
+    command: ["python", "/app/upstream.py"]
+
+  airgap:
+    image: agentkeys-fieldtest:local
+    user: "10001:10001"
+    environment:
+      AGENTKEYS_HOME: /data
+      AGENTKEYS_FIELD_ROOT: /work
+    volumes:
+      - airgap-data:/data
+      - ../../..:/work:ro
+      - ../results:/results
+    network_mode: none
+
+  scan:
+    image: agentkeys-fieldtest:local
+    user: "10001:10001"
+    environment:
+      AGENTKEYS_FIELD_ROOT: /work
+    volumes:
+      - broker-data:/data:ro
+      - ../../..:/work:ro
+      - ../results:/results
+    networks: [fieldtest]
+    command: ["python", "-m", "agentkeys.fieldtest", "scan", "--path", "/data"]
+
+volumes:
+  broker-data:
+  upstream-data:
+  airgap-data:
+
+networks:
+  fieldtest:
+    internal: true

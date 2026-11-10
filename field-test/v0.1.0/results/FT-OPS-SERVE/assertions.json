@@ -1,0 +1,30 @@
+[
+  {
+    "actual": "live",
+    "expected": "live",
+    "kind": "eq",
+    "name": "live-lock",
+    "passed": true
+  },
+  {
+    "actual": "broker already running: lock held by pid 16251",
+    "expected": "already running",
+    "kind": "contains",
+    "name": "second-serve-refused",
+    "passed": true
+  },
+  {
+    "actual": "absent",
+    "expected": "absent",
+    "kind": "eq",
+    "name": "sigterm-cleans-up",
+    "passed": true
+  },
+  {
+    "actual": "stale",
+    "expected": "stale",
+    "kind": "eq",
+    "name": "stale-detected",
+    "passed": true
+  }
+]

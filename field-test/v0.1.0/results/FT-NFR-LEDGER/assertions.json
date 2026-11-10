@@ -1,0 +1,16 @@
+[
+  {
+    "actual": 0.012,
+    "expected": 2.0,
+    "kind": "lte",
+    "name": "ledger-append-under-2ms",
+    "passed": true
+  },
+  {
+    "actual": 200,
+    "expected": 200,
+    "kind": "eq",
+    "name": "appends",
+    "passed": true
+  }
+]

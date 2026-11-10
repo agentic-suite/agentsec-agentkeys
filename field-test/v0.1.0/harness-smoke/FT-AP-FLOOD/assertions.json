@@ -1,0 +1,23 @@
+[
+  {
+    "actual": 1,
+    "expected": 1,
+    "kind": "eq",
+    "name": "exactly-once-under-flood",
+    "passed": true
+  },
+  {
+    "actual": 1,
+    "expected": 1,
+    "kind": "eq",
+    "name": "one-issuance-row",
+    "passed": true
+  },
+  {
+    "actual": 5,
+    "expected": 5,
+    "kind": "eq",
+    "name": "probes-still-refused",
+    "passed": true
+  }
+]

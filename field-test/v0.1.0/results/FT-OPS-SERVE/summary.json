@@ -1,0 +1,63 @@
+{
+  "assertions": [
+    {
+      "actual": "live",
+      "expected": "live",
+      "kind": "eq",
+      "name": "live-lock",
+      "passed": true
+    },
+    {
+      "actual": "broker already running: lock held by pid 16251",
+      "expected": "already running",
+      "kind": "contains",
+      "name": "second-serve-refused",
+      "passed": true
+    },
+    {
+      "actual": "absent",
+      "expected": "absent",
+      "kind": "eq",
+      "name": "sigterm-cleans-up",
+      "passed": true
+    },
+    {
+      "actual": "stale",
+      "expected": "stale",
+      "kind": "eq",
+      "name": "stale-detected",
+      "passed": true
+    }
+  ],
+  "case": "FT-OPS-SERVE",
+  "class": "P/F",
+  "detail": "serve lock lifecycle is honest",
+  "driver": "serve",
+  "duration_ms": 2,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "498ff1162f99eb0b9525f0b6f31a75c66ec1ffd1bd3888b10c8b3b51521ab5f5",
+      "commands.log": "b38ffa755b889372e15cb8e38b6c2d2b839fcd6073fc8d2367dd078b106a604b",
+      "env.json": "2b84aa3d66477695368f6d13c4c8e7c44beb33ae75fe3ce676e4435f2739d7ab"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:44Z"
+  },
+  "limitations": [],
+  "pack": "ops",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:41:44Z",
+  "status": "pass"
+}

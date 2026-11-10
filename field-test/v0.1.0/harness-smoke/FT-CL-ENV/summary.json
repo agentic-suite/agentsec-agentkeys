@@ -1,0 +1,70 @@
+{
+  "assertions": [
+    {
+      "actual": "present",
+      "expected": "present",
+      "kind": "eq",
+      "name": "child-sees-token",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "token-not-in-output",
+      "passed": true
+    },
+    {
+      "actual": "{'AGENTKEYS_SCOPED_TOKEN': 'c4138fdfb3870bf8c3137038c0cf1693', 'SAFE': 'x'}",
+      "expected": "akref:",
+      "kind": "absent",
+      "name": "reference-not-in-child-env",
+      "passed": true
+    },
+    {
+      "actual": "{'AGENTKEYS_SCOPED_TOKEN': 'c4138fdfb3870bf8c3137038c0cf1693', 'SAFE': 'x'}",
+      "expected": "SENTINEL-BACKEND-VALUE",
+      "kind": "absent",
+      "name": "backend-value-absent",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "kind": "eq",
+      "name": "no-secret-shapes",
+      "passed": true
+    }
+  ],
+  "case": "FT-CL-ENV",
+  "class": "P/F",
+  "detail": "placeholder substituted at egress; child authenticated",
+  "driver": "env-inject",
+  "duration_ms": 21,
+  "env": [
+    "ci",
+    "file"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "20a9ce8adfae4d4835e77f07dde39fff0459af40f70430d8469db130a546100f",
+      "commands.log": "2cd849b08e3c55fa82a7ee3259c57c6dd28b5f32af53487efe21448e71ca4fdd",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "core",
+  "passed": true,
+  "scenario": "SC-02",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

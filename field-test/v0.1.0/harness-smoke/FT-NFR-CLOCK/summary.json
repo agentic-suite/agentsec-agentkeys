@@ -1,0 +1,68 @@
+{
+  "assertions": [
+    {
+      "actual": 1000,
+      "expected": 1000,
+      "kind": "eq",
+      "name": "first-now",
+      "passed": true
+    },
+    {
+      "actual": "wall clock moved backwards by 100s (tolerance 0s)",
+      "expected": "moved backwards",
+      "kind": "contains",
+      "name": "backwards-fails-closed",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "forwards-expires",
+      "passed": true
+    },
+    {
+      "actual": [
+        1,
+        0
+      ],
+      "expected": [
+        1,
+        0
+      ],
+      "kind": "eq",
+      "name": "expiry-once",
+      "passed": true
+    }
+  ],
+  "case": "FT-NFR-CLOCK",
+  "class": "P/F",
+  "detail": "clock jumps cannot extend or resurrect",
+  "driver": "clock",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "66c4f4c5011aaf5c37d0fcd2e1e91228ec925e4b6cb6a0d7d10a3a9df6fa720c",
+      "commands.log": "4949036535c9c1f83aef4f876b85fa13ecdef0fadc38e74f051574161f6f1dce",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "nfr",
+  "passed": true,
+  "scenario": "SC-05",
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

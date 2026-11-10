@@ -41,6 +41,11 @@ change appends a **LifecycleEvent**; **RedactionReceipts** annotate any event/is
 - `Backend.capability_flags` ∈ `single_writer`, `durable`, `atomic_issue`, `cluster_safe`; a failing capability refuses to load (E2, E9).
 - `RedactionReceipt` records `field`, `class`, `count` for every masked secret-shaped value (E5).
 
+> **Implemented (M2, 2026-11-09).** The reference and issuance contracts below are built in
+> `src/agentkeys/contracts/` with the resolution pipeline in `src/agentkeys/core/resolution.py`; see the
+> [contracts reference](../reference/contracts.md). `secret_hash` (see §5) is the only secret-adjacent
+> column and is never on the wire.
+
 ## 2. The reference contract (`akref/1.0`)
 
 A **versioned JSON** document. It is **safe to print, serialize, and log**: no secret bytes, resolvable only
@@ -206,6 +211,10 @@ The chain makes the lifecycle record **tamper-evident**: a rewritten or reordere
 | **Chain integrity** | `hash` recomputes from canonical row + `prev_hash`; a mismatch stops issuance and raises `tamper`. | `verify-log` |
 | **No secrets stored** | No column holds secret material; only `secret_hash` and class labels. | redactor + schema review (E5) |
 | **Monotonic narrowing** | An issuance never has a wider audience/tool/class than its reference + binding allow. | mint path (E3, E14) |
+
+> **Implemented (M3, 2026-11-09).** The config keys below are validated by `src/agentkeys/config.py`;
+> the backend registry + failure semantics are implemented in `src/agentkeys/backends/`; see the
+> [backends reference](../reference/backends.md).
 
 ## 7. Config keys
 

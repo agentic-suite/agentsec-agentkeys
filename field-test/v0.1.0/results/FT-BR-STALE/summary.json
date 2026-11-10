@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": "expired",
+      "expected": "expired",
+      "kind": "eq",
+      "name": "stale-expired",
+      "passed": true
+    },
+    {
+      "actual": "rejected",
+      "expected": "rejected",
+      "kind": "eq",
+      "name": "forwarded-rejected",
+      "passed": true
+    }
+  ],
+  "case": "FT-BR-STALE",
+  "class": "P/F",
+  "detail": "stale and forwarded presentations refused",
+  "driver": "lifecycle",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "0965fcd34cf17ad16f1989225b28fd3db7fb82b66b7bfb240782949b138cc016",
+      "commands.log": "d095813d1f048c8b0522d61bfb2edd8d30ccb48cb0834279c4376e7059a131db",
+      "env.json": "03eab060703aec7f6a074385f25a1c234331d139f910ee169a48a5d26885d693"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:43Z"
+  },
+  "limitations": [],
+  "pack": "binding",
+  "passed": true,
+  "scenario": "SC-11",
+  "started_at": "2026-11-10T03:41:43Z",
+  "status": "pass"
+}

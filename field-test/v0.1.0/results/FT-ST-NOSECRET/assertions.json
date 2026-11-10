@@ -1,0 +1,37 @@
+[
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "child-exit",
+    "passed": true
+  },
+  {
+    "actual": "{'AGENTKEYS_SCOPED_TOKEN': '29a01348309c07e9af163bf8efc2de41'}",
+    "expected": "file/agentkeys",
+    "kind": "absent",
+    "name": "reference-in-child-env",
+    "passed": true
+  },
+  {
+    "actual": "{'AGENTKEYS_SCOPED_TOKEN': '29a01348309c07e9af163bf8efc2de41'}",
+    "expected": "SENTINEL-BACKEND-VALUE",
+    "kind": "absent",
+    "name": "backend-value-absent",
+    "passed": true
+  },
+  {
+    "actual": [],
+    "expected": [],
+    "kind": "eq",
+    "name": "no-secret-in-transcript",
+    "passed": true
+  },
+  {
+    "actual": 1,
+    "expected": 1,
+    "kind": "gte",
+    "name": "receipts-issued",
+    "passed": true
+  }
+]

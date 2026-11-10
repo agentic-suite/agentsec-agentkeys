@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "denied",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "no-credential",
+      "passed": true
+    }
+  ],
+  "case": "FT-SU-DENIED",
+  "class": "P/F",
+  "detail": "deny mints nothing",
+  "driver": "step-up-gate",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "ee89635fd79940594c3a71dc51278a48ec8f3e4cc26293b55de763efd324e6b5",
+      "commands.log": "f0c105a09a3bf5793966eebf30edd75389cf3460db03c2dcd61c663e7db238ee",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "stepup",
+  "passed": true,
+  "scenario": "SC-34",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

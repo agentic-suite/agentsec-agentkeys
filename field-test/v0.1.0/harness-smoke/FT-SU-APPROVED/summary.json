@@ -1,0 +1,62 @@
+{
+  "assertions": [
+    {
+      "actual": "agentpolicy",
+      "expected": "agentpolicy",
+      "kind": "eq",
+      "name": "provenance",
+      "passed": true
+    },
+    {
+      "actual": 120,
+      "expected": 120,
+      "kind": "eq",
+      "name": "tighter-ttl",
+      "passed": true
+    },
+    {
+      "actual": "{\"decided_by\": \"agentpolicy\", \"decision\": \"allow\", \"source\": \"human-once\"}",
+      "expected": "agentpolicy",
+      "kind": "contains",
+      "name": "provenance-persisted",
+      "passed": true
+    },
+    {
+      "actual": "iss_92a7a6921d904b269d8e5c76cbd545a9",
+      "expected": "iss_92a7a6921d904b269d8e5c76cbd545a9",
+      "kind": "eq",
+      "name": "granted-after-mint",
+      "passed": true
+    }
+  ],
+  "case": "FT-SU-APPROVED",
+  "class": "P/F",
+  "detail": "approval recorded, TTL tightened, grant tied to the issuance",
+  "driver": "step-up-gate",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "c111f66024f08cc8a6e687f46c31f49ab2848012b91655d03c9c6855da18b7f3",
+      "commands.log": "81cd2d031a563e8e0bdf0d5ff939199d081295264c2d2d45ae3d3cc83b2902dd",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "stepup",
+  "passed": true,
+  "scenario": "SC-33",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "actual": [],
+    "expected": [],
+    "kind": "eq",
+    "name": "no-failures",
+    "passed": true
+  },
+  {
+    "actual": [
+      "rfc9449"
+    ],
+    "expected": [
+      "rfc9449"
+    ],
+    "kind": "eq",
+    "name": "dpop-not-supported",
+    "passed": true
+  },
+  {
+    "actual": 9,
+    "expected": 9,
+    "kind": "gte",
+    "name": "has-passing-suites",
+    "passed": true
+  }
+]

@@ -1,0 +1,13 @@
+# Fixture stdio MCP server container (M14): receives only the scoped token.
+ARG PYTHON_IMAGE=python:3.12-slim
+FROM ${PYTHON_IMAGE}
+
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 TZ=UTC LC_ALL=C NO_COLOR=1
+
+RUN groupadd -g 10001 agentkeys \
+ && useradd -u 10001 -g 10001 --create-home --shell /usr/sbin/nologin agentkeys
+
+COPY field-test/v0.1.0/docker/child_server.py /app/child_server.py
+USER 10001:10001
+WORKDIR /app
+ENTRYPOINT ["python", "/app/child_server.py"]

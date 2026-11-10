@@ -1,0 +1,16 @@
+[
+  {
+    "actual": "backend-locked",
+    "expected": "backend-locked",
+    "kind": "eq",
+    "name": "denied",
+    "passed": true
+  },
+  {
+    "actual": "Denial(reason='backend-locked', detail='backend locked: locked/token')",
+    "expected": "SecretValue",
+    "kind": "absent",
+    "name": "no-value",
+    "passed": true
+  }
+]

@@ -12,11 +12,70 @@ for AI agents. Apache-2.0.
 
 ## Status
 
-**planned — PRD + WBS of record complete.** The full requirement set
-([PRD 00–23 + Appendix A](docs/prd/README.md)) and the build plan
-([v0.1.0 WBS — 16 milestones, M0–M15](docs/wbs/v0.1.0/wbs-v0.1.0-index.md)) are written and published early
-on purpose, so we can be held to them. No release has shipped yet; every claim in this README is a *design*
-claim until the release gate proves it ([evidence labels](docs/prd/20-standards-and-claims.md)).
+**v0.1.0 release candidate — the broker is built and field-tested; the tag is pending the release gates.**
+The full requirement set ([PRD 00–23 + Appendix A](docs/prd/README.md)) and the build plan
+([v0.1.0 WBS — 16 milestones, M0–M15](docs/wbs/v0.1.0/wbs-v0.1.0-index.md)) are public on purpose, so we can
+be held to them.
+
+The **M14 field test is complete and hand-verdict**: **71 PASS · 0 FAIL · 3 WARN · 0 NOT RUN** across 74
+cases, with all five blocking scenarios green (kill-time, context dump, tamper, evidence, scan/migrate) —
+see the [hand-maintained field report](docs/field-test/v0.1.0/FIELD_TEST_REPORT.md). Three WARNs remain, each
+with a named limitation, and one earlier WARN was upgraded only after a real enforcer was composed.
+
+Release readiness is in progress: the [security audit](docs/release/v0.1.0/SECURITY_AUDIT.md) found 0 verified
+secrets in the tree **and** the full history, the [claims ledger](docs/release/v0.1.0/CLAIMS.md) resolves
+every public claim to a committed case, and the [compatibility matrix](docs/release/v0.1.0/COMPATIBILITY.md)
+labels each harness honestly. **Nothing is *verified*** — that word means an independent third party
+reproduced the claim, and the published [benchmark](bench/README.md) is how someone can.
+
+Still **honest stubs** in the frozen command surface: `init`, `context-dump`, `scan-usable` — each exits
+non-zero and names its milestone rather than pretending. See [honest gaps](docs/explanation/honest-gaps.md)
+and the [release notes](docs/release/v0.1.0/RELEASE_NOTES.md). Claims stay at their evidence label
+([evidence labels](docs/prd/20-standards-and-claims.md)).
+
+## Install & run
+
+> **Not on PyPI yet.** The v0.1.0 upload is pending, so `pip install agentsec-agentkeys` does not resolve
+> today — install from source. Once the upload lands, that one-liner becomes the way in and this note is
+> removed.
+
+**From source (works today):**
+
+```sh
+git clone https://github.com/agentic-suite/agentsec-agentkeys
+cd agentsec-agentkeys
+python -m venv .venv && . .venv/bin/activate
+pip install .                   # stdlib-only, no runtime dependencies
+agentkeys --version             # agentkeys 0.1.0
+agentkeys --help                # the frozen v0.1.0 command surface
+agentkeys doctor                # read-only health check: 0 healthy · 2 denied · 3 tamper
+```
+
+`agentkeys init` is still an honest **stub** (it exits non-zero and names its milestone), so the quickest
+first run writes the config directly — the [quickstart](docs/tutorials/quickstart.md) does exactly that and
+is replayed by a test on every commit.
+
+Configuration lives under `AGENTKEYS_HOME` (default `~/.agentkeys`) in `config.toml`. It carries
+**references only** — a literal secret in config is an error, never stored and never printed. See the
+[foundation design](docs/design/v0.1.0/foundation.md) and the [CLI reference](docs/reference/cli.md).
+
+### Reserved exit codes (stable within v0.x)
+
+| Code | Meaning |
+|---|---|
+| `0` | success (and for `scan-usable`: **0 usable credentials** — the invariant holds) |
+| `1` | usage or internal error |
+| `2` | **denied** — fail-closed denial with a reason |
+| `3` | **tamper detected** — integrity check failed |
+| `4` | **revoke verified** — the replay was refused |
+
+`scan`, `migrate`, `ref`, `run`, `revoke`, `replay`, `export`, `verify-log`, `conformance`, `serve`,
+`backup`, and `restore` are implemented; `init`, `context-dump`, and `scan-usable` remain honest stubs that
+exit non-zero and name the milestone. The [quickstart](docs/tutorials/quickstart.md) is replayed by a step
+test (`tests/docs/test_quickstart.py`).
+
+**Platforms:** macOS and Linux. **Windows is not supported** — the CLI says so rather than failing
+cryptically.
 
 ## The problem
 

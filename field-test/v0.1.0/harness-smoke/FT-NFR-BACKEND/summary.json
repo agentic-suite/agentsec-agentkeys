@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": 0.017,
+      "expected": 1.0,
+      "kind": "lte",
+      "name": "file-p99-under-1ms",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "present",
+      "name": "resolved",
+      "passed": true
+    }
+  ],
+  "case": "FT-NFR-BACKEND",
+  "class": "P/F",
+  "detail": "file backend p99=0.017ms",
+  "driver": "timing",
+  "duration_ms": 4,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "7877e27ecb5863f5b285e1e402cba753515cfd2269312b370ce7bc6d589996e8",
+      "commands.log": "c368de20ab4ac821245f8023bab18e85c260cd0ca907201c8c708e4bf894de7e",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "nfr",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

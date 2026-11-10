@@ -1,0 +1,30 @@
+[
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "gaps-doc",
+    "passed": true
+  },
+  {
+    "actual": "# Honest gaps \u2014 what v0.1.0 does not do\n\n> **Status: documented (M13).** Claims follow the PRD 20 vocabulary; nothing here is field-tested until\n> the hand-maintained M14 report says so.\n\n## Not implemented in v0.1.0\n\n| Area | Gap | Status |\n|---|---|---|\n| `agentkeys init`, `context-dump`, `scan-usable` | not yet implemented (quickstart writes the config directly) | not yet |\n| `migrate --backend keychain` | only the `0600` file backend is implemented; keychain migration refuses honestly | not yet |\n| `scan --ci` | scheduled for v0.1.x; refuses as not-yet | not yet |\n| OS-level evasion enforcer | `enforce` blocks only where an enforcer (agentkernel/agentseatbelt) composes; otherwise a named gap | limitation |\n| RFC 9449 DPoP | deferred to v0.3.0 (R14) | not supported |\n| Enterprise backends (Vault/1Password/cloud SM) | v0.1.x (R10); an unknown driver refuses | not supported |\n| Signed release / SLSA / Sigstore attestation | M15 owns signing and the security audit; M11 ships the in-repo floor only | not claimed |\n| Live harness field runs | M14 field test; tests prove the wiring, not a customer environment | not field-tested |\n| Cloud/HA server mode | R11 (v0.1.x) | not supported |\n\n## What v0.1.0 does claim (with evidence)\n\n- References in context, secrets only at egress \u2014 tested (R1/R2, `tests/test_reference_contract.py`, injectors).\n- Audience/tool/session bindings and single use \u2014 tested (`tests/test_binding_*`, `test_resolution.py`).\n- Revoke \u22641s, replay-verified \u2014 tested (`tests/test_revoke_killtime.py`); field re-run at M14.\n- Hash-chained ledger, export, verify-log \u2014 tested (`tests/test_ledger_chain.py`, `test_export.py`).\n- Scan/migrate with 100% recall on the seeded corpus and zero printed values \u2014 tested (SC-51 fixture).\n- Step-up approval with recorded provenance \u2014 tested (`tests/test_stepup_*`).\n\n## Field-test labels\n\nA scenario is *field-tested* only when a human records its verdict in\n`docs/field-test/<version>/FIELD_TEST_REPORT.md`. No automation writes that report.\n",
+    "expected": "Not implemented",
+    "kind": "contains",
+    "name": "gaps-named",
+    "passed": true
+  },
+  {
+    "actual": "# honest gaps \u2014 what v0.1.0 does not do\n\n> **status: documented (m13).** claims follow the prd 20 vocabulary; nothing here is field-tested until\n> the hand-maintained m14 report says so.\n\n## not implemented in v0.1.0\n\n| area | gap | status |\n|---|---|---|\n| `agentkeys init`, `context-dump`, `scan-usable` | not yet implemented (quickstart writes the config directly) | not yet |\n| `migrate --backend keychain` | only the `0600` file backend is implemented; keychain migration refuses honestly | not yet |\n| `scan --ci` | scheduled for v0.1.x; refuses as not-yet | not yet |\n| os-level evasion enforcer | `enforce` blocks only where an enforcer (agentkernel/agentseatbelt) composes; otherwise a named gap | limitation |\n| rfc 9449 dpop | deferred to v0.3.0 (r14) | not supported |\n| enterprise backends (vault/1password/cloud sm) | v0.1.x (r10); an unknown driver refuses | not supported |\n| signed release / slsa / sigstore attestation | m15 owns signing and the security audit; m11 ships the in-repo floor only | not claimed |\n| live harness field runs | m14 field test; tests prove the wiring, not a customer environment | not field-tested |\n| cloud/ha server mode | r11 (v0.1.x) | not supported |\n\n## what v0.1.0 does claim (with evidence)\n\n- references in context, secrets only at egress \u2014 tested (r1/r2, `tests/test_reference_contract.py`, injectors).\n- audience/tool/session bindings and single use \u2014 tested (`tests/test_binding_*`, `test_resolution.py`).\n- revoke \u22641s, replay-verified \u2014 tested (`tests/test_revoke_killtime.py`); field re-run at m14.\n- hash-chained ledger, export, verify-log \u2014 tested (`tests/test_ledger_chain.py`, `test_export.py`).\n- scan/migrate with 100% recall on the seeded corpus and zero printed values \u2014 tested (sc-51 fixture).\n- step-up approval with recorded provenance \u2014 tested (`tests/test_stepup_*`).\n\n## field-test labels\n\na scenario is *field-tested* only when a human records its verdict in\n`docs/field-test/<version>/field_test_report.md`. no automation writes that report.\n",
+    "expected": "fully supported",
+    "kind": "absent",
+    "name": "no-unsupported-claim",
+    "passed": true
+  },
+  {
+    "actual": "JetBrains IDE MCP: not yet (no interception point documented)",
+    "expected": "not yet",
+    "kind": "contains",
+    "name": "jetbrains-not-yet",
+    "passed": true
+  }
+]

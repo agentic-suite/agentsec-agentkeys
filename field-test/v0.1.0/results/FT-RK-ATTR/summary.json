@@ -1,0 +1,62 @@
+{
+  "assertions": [
+    {
+      "actual": "alice",
+      "expected": "alice",
+      "kind": "eq",
+      "name": "principal",
+      "passed": true
+    },
+    {
+      "actual": "s1",
+      "expected": "s1",
+      "kind": "eq",
+      "name": "session",
+      "passed": true
+    },
+    {
+      "actual": 1234,
+      "expected": 1234,
+      "kind": "eq",
+      "name": "timestamp",
+      "passed": true
+    },
+    {
+      "actual": "high",
+      "expected": "high",
+      "kind": "eq",
+      "name": "severity",
+      "passed": true
+    }
+  ],
+  "case": "FT-RK-ATTR",
+  "class": "P/F",
+  "detail": "revoked event carries the operator and target",
+  "driver": "revoke",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "1aaaf975299028d0bb8a49a05ed0b8ead98133c006b208c48df2e90b8c66e07d",
+      "commands.log": "08f57fd54fb8f23e126cc4ddd6aac84461e46c0ed87a31bc2289d9cf94004786",
+      "env.json": "d577bf7a669ed00cd09564f0f1b23013178629ea2db11d2f158bc7356ded599e"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "18e458895b99106eca5fa677c89f580a4eb27fb2",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T04:06:36Z"
+  },
+  "limitations": [],
+  "pack": "killtime",
+  "passed": true,
+  "scenario": "SC-28",
+  "started_at": "2026-11-10T04:06:36Z",
+  "status": "pass"
+}

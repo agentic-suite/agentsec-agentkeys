@@ -1,0 +1,16 @@
+[
+  {
+    "actual": "absent",
+    "expected": "absent",
+    "kind": "eq",
+    "name": "absent-refused",
+    "passed": true
+  },
+  {
+    "actual": "denied",
+    "expected": "fallback",
+    "kind": "absent",
+    "name": "no-fallback",
+    "passed": true
+  }
+]

@@ -1,0 +1,56 @@
+{
+  "assertions": [
+    {
+      "actual": [],
+      "expected": [],
+      "kind": "eq",
+      "name": "checks-pass",
+      "passed": true
+    },
+    {
+      "actual": "CycloneDX",
+      "expected": "CycloneDX",
+      "kind": "eq",
+      "name": "sbom-format",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "security-txt",
+      "passed": true
+    }
+  ],
+  "case": "FT-SC-INREPO",
+  "class": "P/F",
+  "detail": "stdlib-only, security.txt, CI gate, SBOM, fuzz targets",
+  "driver": "supply-chain",
+  "duration_ms": 1,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "c6b49fec68b6533110781cdfff2e199418b9483d8ed5ecc1983c1a222d02ab36",
+      "commands.log": "ad57f352766aa13caeae73846ae11b04cb29884ffc470323e121a2e2c0e71c6a",
+      "env.json": "e42129977c24b24db5b4cb5efe53a2ca28e06a02c88d8674dc1d324e194fbe57"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:45Z"
+  },
+  "limitations": [],
+  "pack": "conformance",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:41:45Z",
+  "status": "pass"
+}

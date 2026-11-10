@@ -1,0 +1,58 @@
+{
+  "assertions": [
+    {
+      "actual": [
+        "issuance.created",
+        "sink-gap"
+      ],
+      "expected": "issuance.created",
+      "kind": "contains",
+      "name": "local-event-kept",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "eq",
+      "name": "one-gap-marker",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "chain-intact",
+      "passed": true
+    }
+  ],
+  "case": "FT-FC-SINK",
+  "class": "P/F",
+  "detail": "sink offline leaves the local ledger authoritative with a gap marker",
+  "driver": "sink",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "82db377b842c2de2b5536c02f4c36fa7f6134486f262272ef2e3f97a68a58e2a",
+      "commands.log": "b300937112de58b28804c61b9ac0b757eba3aa4db38900c2ce8a94fc0d8e2c21",
+      "env.json": "03eab060703aec7f6a074385f25a1c234331d139f910ee169a48a5d26885d693"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:43Z"
+  },
+  "limitations": [],
+  "pack": "failclosed",
+  "passed": true,
+  "scenario": "SC-22",
+  "started_at": "2026-11-10T03:41:43Z",
+  "status": "pass"
+}

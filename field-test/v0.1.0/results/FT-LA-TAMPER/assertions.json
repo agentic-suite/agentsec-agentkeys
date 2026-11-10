@@ -1,0 +1,16 @@
+[
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "detected",
+    "passed": true
+  },
+  {
+    "actual": 2,
+    "expected": 2,
+    "kind": "eq",
+    "name": "names-seq",
+    "passed": true
+  }
+]

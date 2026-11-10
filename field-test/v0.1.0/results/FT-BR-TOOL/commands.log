@@ -1,0 +1,8 @@
+case=FT-BR-TOOL
+pack=binding
+driver=injector
+started=2026-11-10T03:41:43Z
+duration_ms=0
+iterations=100
+fresh_box=False
+results=/Users/deghosal/Desktop/code/github/agentic-suite/agentkeys/field-test/v0.1.0/results/FT-BR-TOOL

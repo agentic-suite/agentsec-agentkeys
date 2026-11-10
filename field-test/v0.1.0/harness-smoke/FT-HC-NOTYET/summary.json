@@ -1,0 +1,55 @@
+{
+  "assertions": [
+    {
+      "actual": "JetBrains IDE MCP: not yet (no interception point documented)",
+      "expected": "not yet",
+      "kind": "contains",
+      "name": "labelled-not-yet",
+      "passed": true
+    },
+    {
+      "actual": "JetBrains IDE MCP: not yet (no interception point documented)",
+      "expected": "not yet",
+      "kind": "contains",
+      "name": "wiring-refused",
+      "passed": true
+    },
+    {
+      "actual": "JetBrains IDE MCP: not yet (no interception point documented)",
+      "expected": "supported",
+      "kind": "absent",
+      "name": "never-supported",
+      "passed": true
+    }
+  ],
+  "case": "FT-HC-NOTYET",
+  "class": "P/F",
+  "detail": "uncovered harness is labelled not-yet",
+  "driver": "label",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "8a00064751033e63aa839583e3727c3a9ef84ad26bf224e9c62d2d1dadf407fe",
+      "commands.log": "6d81041c57ce5b47f8c313134a23b90d6ef000dcbb64cb8b9f59176aecc66d65",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "harness",
+  "passed": true,
+  "scenario": "SC-38",
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

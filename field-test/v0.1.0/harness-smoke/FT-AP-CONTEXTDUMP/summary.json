@@ -1,0 +1,64 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "no-token-in-dump",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "kind": "eq",
+      "name": "no-secret-shapes",
+      "passed": true
+    },
+    {
+      "actual": "{\"event\":{\"agent_id\":\"a1\",\"binding_json\":\"{\\\"audience\\\":\\\"https://api.example.com\\\",\\\"tool\\\":\\\"call\\\"}\",\"event_id\":\"evt_5407ceee539b40c994d4e47df43188cc\",\"event_name\":\"reference-resolved\",\"event_version\":\"1.0\",\"issuance_id\":null,\"monotonic_ms\":0,\"occurred_at\":1000,\"principal\":\"op\",\"reason\":null,\"reference_id\":\"ref_1\",\"session_id\":\"s1\",\"severity\":\"info\",\"ttl_seconds\":null},\"hash\":\"ddb44e62a38e5f57f32bd2937293e2092ca9b44dc769b1f43c6f30370687f07c\",\"prev_hash\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"seq\":1}\n{\"event\":{\"agent_id\":\"a1\",\"binding_json\":\"{\\\"audience\\\":\\\"https://api.example.com\\\",\\\"tool\\\":\\\"call\\\"}\",\"event_id\":\"evt_19316646f8d046a29f9395c7060650b8\",\"event_name\":\"issuance.created\",\"event_version\":\"1.0\",\"issuance_id\":\"iss_5a756848e9904bdc81f223c30219dd4a\",\"monotonic_ms\":0,\"occurred_at\":1000,\"principal\":\"op\",\"reason\":null,\"reference_id\":\"ref_1\",\"session_id\":\"s1\",\"severity\":\"info\",\"ttl_seconds\":300},\"hash\":\"e48102387fe20ed0bb9a877131229c83008c7f527e58269d6d5c5dafee2559d4\",\"prev_hash\":\"ddb44e62a38e5f57f32bd2937293e2092ca9b44dc769b1f43c6f30370687f07c\",\"seq\":2}[{'akref': '1.0', 'reference_id': 'ref_1', 'backend': 'keychain', 'path': 'agentkeys/dev/token', 'class': 'dev', 'label': 'dev token'}]{'issuance': '1.0', 'issuance_id': 'iss_5a756848e9904bdc81f223c30219dd4a', 'reference_id': 'ref_1', 'session_id': 's1', 'agent_id': 'a1', 'binding': {'audience': 'https://api.example.com', 'tool': 'call'}, 'class': 'dev', 'ttl': 300, 'issued_at': 1000, 'expires_at': 1300}transcript: ref_1",
+      "expected": "ref_1",
+      "kind": "contains",
+      "name": "references-present",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "gte",
+      "name": "control-fires",
+      "passed": true
+    }
+  ],
+  "case": "FT-AP-CONTEXTDUMP",
+  "class": "P/F",
+  "detail": "dump holds references only; the seeded control is caught",
+  "driver": "dump-scan",
+  "duration_ms": 0,
+  "env": [
+    "ci",
+    "docker",
+    "human"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "0899fa085b7987fc111698be7f0f3ed419ca1a9cb5923f74f2e3d7650839c432",
+      "commands.log": "ee8d7805ef6740865fce52fe8660fac827533f275adc3c454ba2adde2cc703a8",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "attack",
+  "passed": true,
+  "scenario": "SC-40",
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

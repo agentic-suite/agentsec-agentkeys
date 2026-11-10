@@ -1,0 +1,63 @@
+{
+  "assertions": [
+    {
+      "actual": "7c4dcae1df52eb78cb60244f650fd060",
+      "expected": true,
+      "kind": "present",
+      "name": "resolved-offline",
+      "passed": true
+    },
+    {
+      "actual": "consumed",
+      "expected": "consumed",
+      "kind": "eq",
+      "name": "used-offline",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "eq",
+      "name": "revoked-offline",
+      "passed": true
+    },
+    {
+      "actual": "unknown store driver: vault (known: memory, sqlite)",
+      "expected": "vault",
+      "kind": "contains",
+      "name": "cloud-backend-refused",
+      "passed": true
+    }
+  ],
+  "case": "FT-AG-OFFLINE",
+  "class": "P/F",
+  "detail": "core + revoke work with sockets disabled; unknown backend refuses",
+  "driver": "sockets-off",
+  "duration_ms": 12,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "294fef54d9b3287b1d81199ba8e66fb75512e2282ba95892bcdb27d62ea26589",
+      "commands.log": "6c0a7a991782091f6b3d46afc36a63673d7dd85befebca153259cf8b26e404fc",
+      "env.json": "2b84aa3d66477695368f6d13c4c8e7c44beb33ae75fe3ce676e4435f2739d7ab"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:44Z"
+  },
+  "limitations": [],
+  "pack": "offline",
+  "passed": true,
+  "scenario": "SC-39",
+  "started_at": "2026-11-10T03:41:44Z",
+  "status": "pass"
+}

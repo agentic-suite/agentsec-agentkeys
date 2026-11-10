@@ -1,0 +1,56 @@
+{
+  "assertions": [
+    {
+      "actual": 70,
+      "expected": 70,
+      "kind": "eq",
+      "name": "crashed",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "no-partial-ledger",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "no-orphan-issuance",
+      "passed": true
+    }
+  ],
+  "case": "FT-FC-CRASH",
+  "class": "P/F",
+  "detail": "kill -9 mid-issue recovers with no partial or orphan state",
+  "driver": "subprocess-crash",
+  "duration_ms": 30,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "c9b6eb8b4c4b3cce039d6f241deb152c62c28fbe2cb0e82cb395aa5bad391af1",
+      "commands.log": "b53a4cd0b50493c8876181f55e3c32e31d99daada7b6c1f8b90bc6869e5b457b",
+      "env.json": "03eab060703aec7f6a074385f25a1c234331d139f910ee169a48a5d26885d693"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:43Z"
+  },
+  "limitations": [],
+  "pack": "failclosed",
+  "passed": true,
+  "scenario": "SC-23",
+  "started_at": "2026-11-10T03:41:43Z",
+  "status": "pass"
+}

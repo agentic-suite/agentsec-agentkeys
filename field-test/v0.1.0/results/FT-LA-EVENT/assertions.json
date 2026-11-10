@@ -1,0 +1,49 @@
+[
+  {
+    "actual": [
+      "issuance.created",
+      "reference-resolved",
+      "revoked",
+      "use"
+    ],
+    "expected": "issuance.created",
+    "kind": "contains",
+    "name": "issuance-event",
+    "passed": true
+  },
+  {
+    "actual": [
+      "issuance.created",
+      "reference-resolved",
+      "revoked",
+      "use"
+    ],
+    "expected": "use",
+    "kind": "contains",
+    "name": "use-event",
+    "passed": true
+  },
+  {
+    "actual": [
+      "issuance.created",
+      "reference-resolved",
+      "revoked",
+      "use"
+    ],
+    "expected": "revoked",
+    "kind": "contains",
+    "name": "revoked-event",
+    "passed": true
+  },
+  {
+    "actual": [
+      "1.0"
+    ],
+    "expected": [
+      "1.0"
+    ],
+    "kind": "eq",
+    "name": "event-version",
+    "passed": true
+  }
+]

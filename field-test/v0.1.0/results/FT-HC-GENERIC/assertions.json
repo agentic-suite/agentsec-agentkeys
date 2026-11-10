@@ -1,0 +1,23 @@
+[
+  {
+    "actual": "c7eff442474d67610437fadbec5d5982",
+    "expected": true,
+    "kind": "present",
+    "name": "resolved",
+    "passed": true
+  },
+  {
+    "actual": "consumed",
+    "expected": "consumed",
+    "kind": "eq",
+    "name": "consumed",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "no-secret-read-out",
+    "passed": true
+  }
+]
