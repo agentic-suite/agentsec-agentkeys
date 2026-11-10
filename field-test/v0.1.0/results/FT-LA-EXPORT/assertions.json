@@ -1,0 +1,38 @@
+[
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "deterministic",
+    "passed": true
+  },
+  {
+    "actual": [
+      1,
+      2,
+      3
+    ],
+    "expected": [
+      1,
+      2,
+      3
+    ],
+    "kind": "eq",
+    "name": "ordered",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "chain-intact",
+    "passed": true
+  },
+  {
+    "actual": 3,
+    "expected": 3,
+    "kind": "eq",
+    "name": "joins-by-session",
+    "passed": true
+  }
+]

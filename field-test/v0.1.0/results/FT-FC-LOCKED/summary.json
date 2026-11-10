@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": "backend-locked",
+      "expected": "backend-locked",
+      "kind": "eq",
+      "name": "denied",
+      "passed": true
+    },
+    {
+      "actual": "Denial(reason='backend-locked', detail='backend locked: locked/token')",
+      "expected": "SecretValue",
+      "kind": "absent",
+      "name": "no-value",
+      "passed": true
+    }
+  ],
+  "case": "FT-FC-LOCKED",
+  "class": "P/F",
+  "detail": "locked backend denies with a reason",
+  "driver": "backend",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "06f5335fe639901da94069b87eb3713bcdbfe919d2283d1fdf435eeddfa2aa91",
+      "commands.log": "e2911727d01a2c9c9f9c2beeb7f6f3b0ef661e232a6467db5cbe32a73e000f87",
+      "env.json": "03eab060703aec7f6a074385f25a1c234331d139f910ee169a48a5d26885d693"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:43Z"
+  },
+  "limitations": [],
+  "pack": "failclosed",
+  "passed": true,
+  "scenario": "SC-18",
+  "started_at": "2026-11-10T03:41:43Z",
+  "status": "pass"
+}

@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "container-run",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "kind": "eq",
+      "name": "no-secret",
+      "passed": true
+    }
+  ],
+  "case": "FT-DK-QUICKSTART",
+  "class": "P/F",
+  "detail": "quickstart broker step runs inside the broker container",
+  "driver": "compose-run",
+  "duration_ms": 504,
+  "env": [
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "b1390ceeef888465aa26c2264228d5a936827c4bf15f3cefa1c5492fbffffa40",
+      "commands.log": "48f7333b5eded24dba15551b6fe7903945b1577f80dcbce343823ff859f11f78",
+      "env.json": "b723b929732188974ae4087f61214f6b2da5a031c9cef8c2471808edf9e85c92"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:42:31Z"
+  },
+  "limitations": [],
+  "pack": "docker",
+  "passed": true,
+  "scenario": "SC-01",
+  "started_at": "2026-11-10T03:42:30Z",
+  "status": "pass"
+}

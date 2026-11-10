@@ -1,0 +1,16 @@
+[
+  {
+    "actual": "store-error",
+    "expected": "store-error",
+    "kind": "eq",
+    "name": "closed-store-denies",
+    "passed": true
+  },
+  {
+    "actual": "denied",
+    "expected": "denied",
+    "kind": "eq",
+    "name": "ledger-denied",
+    "passed": true
+  }
+]

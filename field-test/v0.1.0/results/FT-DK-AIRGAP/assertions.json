@@ -1,0 +1,16 @@
+[
+  {
+    "actual": 1,
+    "expected": 0,
+    "kind": "eq",
+    "name": "airgap-run",
+    "passed": false
+  },
+  {
+    "actual": [],
+    "expected": [],
+    "kind": "eq",
+    "name": "no-secret",
+    "passed": true
+  }
+]

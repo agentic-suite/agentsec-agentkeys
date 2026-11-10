@@ -1,0 +1,16 @@
+[
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "second-writer-refused",
+    "passed": true
+  },
+  {
+    "actual": [],
+    "expected": [],
+    "kind": "eq",
+    "name": "no-secret",
+    "passed": true
+  }
+]

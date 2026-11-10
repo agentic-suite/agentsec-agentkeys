@@ -1,0 +1,23 @@
+[
+  {
+    "actual": 70,
+    "expected": 70,
+    "kind": "eq",
+    "name": "crashed",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "no-partial-ledger",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "no-orphan-issuance",
+    "passed": true
+  }
+]

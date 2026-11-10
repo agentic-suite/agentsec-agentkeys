@@ -1,0 +1,81 @@
+{
+  "assertions": [
+    {
+      "actual": [
+        "issuance.created",
+        "reference-resolved",
+        "revoked",
+        "use"
+      ],
+      "expected": "issuance.created",
+      "kind": "contains",
+      "name": "issuance-event",
+      "passed": true
+    },
+    {
+      "actual": [
+        "issuance.created",
+        "reference-resolved",
+        "revoked",
+        "use"
+      ],
+      "expected": "use",
+      "kind": "contains",
+      "name": "use-event",
+      "passed": true
+    },
+    {
+      "actual": [
+        "issuance.created",
+        "reference-resolved",
+        "revoked",
+        "use"
+      ],
+      "expected": "revoked",
+      "kind": "contains",
+      "name": "revoked-event",
+      "passed": true
+    },
+    {
+      "actual": [
+        "1.0"
+      ],
+      "expected": [
+        "1.0"
+      ],
+      "kind": "eq",
+      "name": "event-version",
+      "passed": true
+    }
+  ],
+  "case": "FT-LA-EVENT",
+  "class": "P/F",
+  "detail": "one versioned event per transition",
+  "driver": "events",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "5139fa6cf346e01b50bb9620e0c0b0341b39a543e7728879d5b5fb27ff07a8f7",
+      "commands.log": "e3d6622fec09b0d72b51251d0427d6899ed7d7b4b9e8e3dbbd23fcdf51aca196",
+      "env.json": "2b84aa3d66477695368f6d13c4c8e7c44beb33ae75fe3ce676e4435f2739d7ab"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:44Z"
+  },
+  "limitations": [],
+  "pack": "audit",
+  "passed": true,
+  "scenario": "SC-32",
+  "started_at": "2026-11-10T03:41:44Z",
+  "status": "pass"
+}

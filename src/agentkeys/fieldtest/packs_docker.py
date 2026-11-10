@@ -117,8 +117,9 @@ def dk_boundary(env: RunEnv, tmp: Path) -> CaseOutcome:
         env,
         "run",
         "--rm",
-        "child",
+        "--entrypoint",
         "sh",
+        "child",
         "-c",
         "test ! -e /data && test ! -e /credentials && echo isolated",
     )
@@ -132,30 +133,65 @@ def dk_boundary(env: RunEnv, tmp: Path) -> CaseOutcome:
 
 
 def dk_airgap(env: RunEnv, tmp: Path) -> CaseOutcome:
+    """A `--network none` container: the offline pack passes with no network at all."""
     if not _available(env):
         return _not_run("docker unavailable: FT-DK-AIRGAP requires the field topology")
-    result = _compose(
+    # Named volumes mount root-owned; chown once (as root) so the 10001 broker user can write.
+    _run(
         env,
-        "run",
-        "--rm",
-        "--network",
-        "none",
-        "airgap",
-        "python",
-        "/work/scripts/fieldtest/run_pack.py",
-        "--pack",
-        "offline",
-        "--case",
-        "FT-AG-OFFLINE",
-        "--results",
-        "/results",
+        [
+            "docker",
+            "run",
+            "--rm",
+            "-v",
+            "agentkeys-fieldtest_airgap-data:/data",
+            "--user",
+            "root",
+            "--entrypoint",
+            "sh",
+            "agentkeys-fieldtest:local",
+            "-c",
+            "mkdir -p /data/results-airgap && chown -R 10001:10001 /data",
+        ],
+    )
+    result = _run(
+        env,
+        [
+            "docker",
+            "run",
+            "--rm",
+            "--network",
+            "none",
+            "-v",
+            f"{env.repo_root}:/work:ro",
+            "-v",
+            "agentkeys-fieldtest_airgap-data:/data",
+            "-e",
+            "AGENTKEYS_HOME=/data",
+            "-e",
+            "AGENTKEYS_FIELD_ROOT=/work",
+            "-w",
+            "/work",
+            "--user",
+            "10001:10001",
+            "--entrypoint",
+            "python",
+            "agentkeys-fieldtest:local",
+            "/work/scripts/fieldtest/run_pack.py",
+            "--pack",
+            "offline",
+            "--case",
+            "FT-AG-OFFLINE",
+            "--results",
+            "/data/results-airgap",
+        ],
     )
     return emit(
         [
             ("airgap-run", "eq", 0, result.returncode),
             ("no-secret", "eq", (), scan_text(result.stdout + result.stderr)),
         ],
-        detail="offline pack passes with no network",
+        detail="offline pack passes in a --network none container",
     )
 
 

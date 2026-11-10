@@ -48,7 +48,7 @@ def _warn(detail: str, limitation: str, assertions: Sequence[Any]) -> CaseOutcom
     )
 
 
-def _recipe_case(name: str, *, harness_binaries: tuple[str, ...]) -> CaseOutcome:
+def _recipe_case(name: str) -> CaseOutcome:
     recipe = get_recipe(name)
     wiring = render_mcp_wiring(recipe, reference="akref:file/agentkeys/dev/token")
     validate_wiring(recipe, wiring)
@@ -84,25 +84,23 @@ def _recipe_case(name: str, *, harness_binaries: tuple[str, ...]) -> CaseOutcome
         ("transcript-only-reference", "eq", ("ref_1",), smoke.transcript),
         ("no-token-in-transcript", "true", True, expected not in str(smoke.transcript)),
     ]
-    if not any(shutil.which(binary) for binary in harness_binaries):
-        return _warn(
-            f"{recipe.harness} not installed; wiring + smoke green",
-            f"no {recipe.harness} on the box; the smoke is mandatory and the live "
-            "run is declared (plan §8)",
-            [
-                __import__("agentkeys.fieldtest.models", fromlist=["Assertion"]).Assertion(*a)
-                for a in assertions
-            ],
-        )
-    return emit(assertions, detail=f"{recipe.harness} recipe wiring + smoke authenticated")
+    return _warn(
+        f"{recipe.harness}: wiring + smoke green",
+        f"the live {recipe.harness} run is not automated in the runner; the mandatory "
+        "wiring + smoke are verified and the live run is declared (plan §8)",
+        [
+            __import__("agentkeys.fieldtest.models", fromlist=["Assertion"]).Assertion(*a)
+            for a in assertions
+        ],
+    )
 
 
 def hc_claude(env: RunEnv, tmp: Path) -> CaseOutcome:
-    return _recipe_case("claude-code", harness_binaries=("claude",))
+    return _recipe_case("claude-code")
 
 
 def hc_cursor(env: RunEnv, tmp: Path) -> CaseOutcome:
-    return _recipe_case("cursor", harness_binaries=("cursor", "cursor-agent"))
+    return _recipe_case("cursor")
 
 
 def hc_generic(env: RunEnv, tmp: Path) -> CaseOutcome:

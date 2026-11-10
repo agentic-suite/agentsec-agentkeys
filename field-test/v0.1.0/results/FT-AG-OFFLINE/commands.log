@@ -1,0 +1,8 @@
+case=FT-AG-OFFLINE
+pack=offline
+driver=sockets-off
+started=2026-11-10T03:41:44Z
+duration_ms=12
+iterations=100
+fresh_box=False
+results=/Users/deghosal/Desktop/code/github/agentic-suite/agentkeys/field-test/v0.1.0/results/FT-AG-OFFLINE

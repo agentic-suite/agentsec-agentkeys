@@ -27,22 +27,35 @@ __all__ = ["fingerprint", "run_all", "run_case", "run_pack"]
 
 
 def _git_sha(repo_root: Path) -> str:
-    completed = subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=repo_root, capture_output=True, text=True, check=False
-    )
+    try:
+        completed = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except (FileNotFoundError, OSError):
+        return "unavailable"
     return completed.stdout.strip() or "unknown"
 
 
 def fingerprint(repo_root: Path) -> dict[str, object]:
     """Machine + repo metadata recorded with every result (never a secret)."""
-    docker = subprocess.run(["docker", "--version"], capture_output=True, text=True, check=False)
+    try:
+        docker = subprocess.run(
+            ["docker", "--version"], capture_output=True, text=True, check=False
+        )
+        docker_version = docker.stdout.strip() or "unavailable"
+    except (FileNotFoundError, OSError):
+        docker_version = "unavailable"
     return {
         "platform": platform.platform(),
         "system": sys.platform,
         "machine": platform.machine(),
         "python": platform.python_version(),
         "git_sha": _git_sha(repo_root),
-        "docker": docker.stdout.strip() or "unavailable",
+        "docker": docker_version,
         "utc": now_iso(),
     }
 

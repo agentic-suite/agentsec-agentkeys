@@ -1,0 +1,23 @@
+[
+  {
+    "actual": 3,
+    "expected": 3,
+    "kind": "eq",
+    "name": "rows-restored",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "chain-preserved",
+    "passed": true
+  },
+  {
+    "actual": "backup chain is broken at seq 2",
+    "expected": "broken at seq 2",
+    "kind": "contains",
+    "name": "tampered-refused",
+    "passed": true
+  }
+]

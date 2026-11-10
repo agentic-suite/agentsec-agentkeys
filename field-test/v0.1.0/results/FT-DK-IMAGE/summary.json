@@ -1,0 +1,55 @@
+{
+  "assertions": [
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "build-exit",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "non-root-user",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "kind": "eq",
+      "name": "no-secret-in-dockerfile",
+      "passed": true
+    }
+  ],
+  "case": "FT-DK-IMAGE",
+  "class": "P/F",
+  "detail": "image built; user=10001:10001",
+  "driver": "compose-inspect",
+  "duration_ms": 3308,
+  "env": [
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "bf4ab9bbc49141a6f2238f4b89b7b09459c5f4731a09cf29d89e8a48f3d35d0c",
+      "commands.log": "95fd3e4e6ea8e359d57893928c2a9e5a35f245c2f9e25ceee28eb5eaa268ce37",
+      "env.json": "4ca8e505946dbcec4066b0dadef8e4bc6f4ca52df7333d538e21987e300cc06a"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:42:27Z"
+  },
+  "limitations": [],
+  "pack": "docker",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:42:23Z",
+  "status": "pass"
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "actual": "keychain",
+    "expected": "keychain",
+    "kind": "eq",
+    "name": "class",
+    "passed": true
+  },
+  {
+    "actual": "high",
+    "expected": "high",
+    "kind": "eq",
+    "name": "severity",
+    "passed": true
+  },
+  {
+    "actual": "evasion-detected",
+    "expected": "evasion-detected",
+    "kind": "eq",
+    "name": "event",
+    "passed": true
+  },
+  {
+    "actual": "keychain: /Users/u/Library/Keychains/login.keychain-db; monitor-only: keychain read outside the broker",
+    "expected": "/Users/u/Library/Keychains/login.keychain-db",
+    "kind": "contains",
+    "name": "path-recorded",
+    "passed": true
+  }
+]

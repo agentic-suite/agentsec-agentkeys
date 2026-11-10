@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "up-exit",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "broker-running",
+      "passed": true
+    }
+  ],
+  "case": "FT-DK-COMPOSE",
+  "class": "P/F",
+  "detail": "topology boots and reports healthy services",
+  "driver": "compose-up",
+  "duration_ms": 3554,
+  "env": [
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "732196ab3e2db9534bf5d5012877fefc5b066bc522a4b1839764f969993dbfef",
+      "commands.log": "b5ec96f93cc4574f2df65ba714cb53be7d3416362e1842ad6895b4cbe5d4a2e1",
+      "env.json": "71bc21c53d6e320991ac0d4ce135541147b59d178bc93a823527b4c300ce9e20"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:42:30Z"
+  },
+  "limitations": [],
+  "pack": "docker",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:42:27Z",
+  "status": "pass"
+}

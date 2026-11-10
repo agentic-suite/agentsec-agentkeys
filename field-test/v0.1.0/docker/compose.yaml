@@ -57,8 +57,11 @@ services:
   scan:
     image: agentkeys-fieldtest:local
     user: "10001:10001"
+    environment:
+      AGENTKEYS_FIELD_ROOT: /work
     volumes:
       - broker-data:/data:ro
+      - ../../..:/work:ro
       - ../results:/results
     networks: [fieldtest]
     command: ["python", "-m", "agentkeys.fieldtest", "scan", "--path", "/data"]

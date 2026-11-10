@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "detected",
+      "passed": true
+    },
+    {
+      "actual": 2,
+      "expected": 2,
+      "kind": "eq",
+      "name": "names-seq",
+      "passed": true
+    }
+  ],
+  "case": "FT-LA-TAMPER",
+  "class": "P/F",
+  "detail": "a rewritten ledger row is detected at its seq",
+  "driver": "verify-chain",
+  "duration_ms": 3,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "b1bbbb19ae064c03e5c918f55c282ef9eb4a26aedb66cf01021e82849c7ac052",
+      "commands.log": "a2adc7807757e11998011c31c0ebd2a99424443840786240977e573d39498ace",
+      "env.json": "2b84aa3d66477695368f6d13c4c8e7c44beb33ae75fe3ce676e4435f2739d7ab"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:44Z"
+  },
+  "limitations": [],
+  "pack": "audit",
+  "passed": true,
+  "scenario": "SC-30",
+  "started_at": "2026-11-10T03:41:44Z",
+  "status": "pass"
+}

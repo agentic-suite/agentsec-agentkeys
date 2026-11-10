@@ -1,0 +1,56 @@
+{
+  "assertions": [
+    {
+      "actual": "config-tampered: 6afe68c3c686 != dd5686bccb08",
+      "expected": "config-tampered",
+      "kind": "contains",
+      "name": "config-tamper",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "ledger-tamper",
+      "passed": true
+    },
+    {
+      "actual": "unknown reference_id: ref_invented",
+      "expected": "ref_invented",
+      "kind": "contains",
+      "name": "spoof-refused",
+      "passed": true
+    }
+  ],
+  "case": "FT-AP-TAMPER",
+  "class": "P/F",
+  "detail": "config, ledger, and spoof tamper all fail closed",
+  "driver": "tamper",
+  "duration_ms": 0,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "2a90cb18a4fbc8b759449d4d67e2d5b104db0268e61a896ee5552c663daa6da9",
+      "commands.log": "703b5273564c2d8e94de82b728d6dab09ff52afcd0afbd5a32f82823d1bb75f8",
+      "env.json": "2b84aa3d66477695368f6d13c4c8e7c44beb33ae75fe3ce676e4435f2739d7ab"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:44Z"
+  },
+  "limitations": [],
+  "pack": "attack",
+  "passed": true,
+  "scenario": "SC-41",
+  "started_at": "2026-11-10T03:41:44Z",
+  "status": "pass"
+}

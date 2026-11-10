@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "evidence-clean",
+      "passed": true
+    },
+    {
+      "actual": "{\"scanned\": \"/data\", \"findings\": 0}\n",
+      "expected": "scanned",
+      "kind": "contains",
+      "name": "scan-ran",
+      "passed": true
+    }
+  ],
+  "case": "FT-DK-EVIDENCE",
+  "class": "P/F",
+  "detail": "evidence scan over broker volumes is clean",
+  "driver": "compose-run",
+  "duration_ms": 487,
+  "env": [
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "75ccfe7cf8069967ea18093563699bcba48b96f6d6a8928c72e6316da7c5fce0",
+      "commands.log": "54fd2a3f9aebac19f01f02d395e2b1a5ee9e9d1fd371fb9e483a69e37b05dfbf",
+      "env.json": "3c02350c5b685370ed7e8487d37777966cd68a4c7541dd63937f0ffacd905463"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:42:32Z"
+  },
+  "limitations": [],
+  "pack": "docker",
+  "passed": true,
+  "scenario": "SC-43",
+  "started_at": "2026-11-10T03:42:32Z",
+  "status": "pass"
+}

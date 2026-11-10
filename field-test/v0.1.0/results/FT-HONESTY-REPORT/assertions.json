@@ -1,0 +1,23 @@
+[
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "marker-present",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "guard-test",
+    "passed": true
+  },
+  {
+    "actual": "HAND-MAINTAINED",
+    "expected": "HAND-MAINTAINED",
+    "kind": "eq",
+    "name": "refusal-text",
+    "passed": true
+  }
+]

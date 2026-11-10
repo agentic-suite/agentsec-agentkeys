@@ -1,0 +1,70 @@
+{
+  "assertions": [
+    {
+      "actual": "present",
+      "expected": "present",
+      "kind": "eq",
+      "name": "child-sees-token",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "token-not-in-output",
+      "passed": true
+    },
+    {
+      "actual": "{'AGENTKEYS_SCOPED_TOKEN': '3f6e5d6c7631532515a447a0ffc8d63d', 'SAFE': 'x'}",
+      "expected": "akref:",
+      "kind": "absent",
+      "name": "reference-not-in-child-env",
+      "passed": true
+    },
+    {
+      "actual": "{'AGENTKEYS_SCOPED_TOKEN': '3f6e5d6c7631532515a447a0ffc8d63d', 'SAFE': 'x'}",
+      "expected": "SENTINEL-BACKEND-VALUE",
+      "kind": "absent",
+      "name": "backend-value-absent",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "kind": "eq",
+      "name": "no-secret-shapes",
+      "passed": true
+    }
+  ],
+  "case": "FT-CL-ENV",
+  "class": "P/F",
+  "detail": "placeholder substituted at egress; child authenticated",
+  "driver": "env-inject",
+  "duration_ms": 6,
+  "env": [
+    "ci",
+    "file"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "258e0f086ae84d1006451fe6b36eb1f1d6554f5b306891fcd6599991e0ce7030",
+      "commands.log": "a4fd502b08e56ca62e567266c8507248aa68cdc91c0340301b0a9bdfa6cb364d",
+      "env.json": "f7521b155df7caf49789bd84cde51040b587a29ba6b49f6cec6fb54d8f43c2f4"
+    }
+  },
+  "fingerprint": {
+    "docker": "unavailable",
+    "git_sha": "unavailable",
+    "machine": "aarch64",
+    "platform": "Linux-7.0.14-linuxkit-aarch64-with-glibc2.41",
+    "python": "3.12.16",
+    "system": "linux",
+    "utc": "2026-11-10T03:42:31Z"
+  },
+  "limitations": [],
+  "pack": "core",
+  "passed": true,
+  "scenario": "SC-02",
+  "started_at": "2026-11-10T03:42:31Z",
+  "status": "pass"
+}

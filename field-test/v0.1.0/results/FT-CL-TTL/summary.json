@@ -1,0 +1,62 @@
+{
+  "assertions": [
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "eq",
+      "name": "first-sweep-expires",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "second-sweep-is-empty",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "eq",
+      "name": "one-expired-event",
+      "passed": true
+    },
+    {
+      "actual": "expired",
+      "expected": "expired",
+      "kind": "eq",
+      "name": "post-ttl-use-dead",
+      "passed": true
+    }
+  ],
+  "case": "FT-CL-TTL",
+  "class": "P/F",
+  "detail": "expiry fires once; no resurrection",
+  "driver": "expiry",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "8d220fd59fa916d04da380218677a44101bcb25afac1f0429870f16eb45ff3fb",
+      "commands.log": "cda07063ccc03c6d31d8790db9037f321c40a741325a545019cb8e3d26ea6e8a",
+      "env.json": "03eab060703aec7f6a074385f25a1c234331d139f910ee169a48a5d26885d693"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:43Z"
+  },
+  "limitations": [],
+  "pack": "core",
+  "passed": true,
+  "scenario": "SC-05",
+  "started_at": "2026-11-10T03:41:43Z",
+  "status": "pass"
+}

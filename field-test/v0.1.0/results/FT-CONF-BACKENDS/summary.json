@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": "pass",
+      "expected": "pass",
+      "kind": "eq",
+      "name": "backends-pass",
+      "passed": true
+    },
+    {
+      "actual": "backend broken is not conformant: missing capabilities, close, health, list, open, resolve",
+      "expected": "not conformant",
+      "kind": "contains",
+      "name": "broken-refused",
+      "passed": true
+    }
+  ],
+  "case": "FT-CONF-BACKENDS",
+  "class": "P/F",
+  "detail": "drivers admitted only through conformance",
+  "driver": "conformance",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "51d35c6c2b8f653c68ed648eb2fd4805cb1f78ce755799281405eb6c475a2b5e",
+      "commands.log": "c6edd05324c7e7f28500af829515a6dfb9e1ded86a0a6fdf4d4176d948892b74",
+      "env.json": "e42129977c24b24db5b4cb5efe53a2ca28e06a02c88d8674dc1d324e194fbe57"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:45Z"
+  },
+  "limitations": [],
+  "pack": "conformance",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:41:45Z",
+  "status": "pass"
+}

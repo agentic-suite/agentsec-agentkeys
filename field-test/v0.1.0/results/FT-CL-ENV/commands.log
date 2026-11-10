@@ -1,0 +1,8 @@
+case=FT-CL-ENV
+pack=core
+driver=env-inject
+started=2026-11-10T03:42:31Z
+duration_ms=6
+iterations=100
+fresh_box=False
+results=/results/FT-CL-ENV

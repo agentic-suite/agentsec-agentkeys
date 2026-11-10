@@ -1,0 +1,30 @@
+[
+  {
+    "actual": "agentpolicy",
+    "expected": "agentpolicy",
+    "kind": "eq",
+    "name": "provenance",
+    "passed": true
+  },
+  {
+    "actual": 120,
+    "expected": 120,
+    "kind": "eq",
+    "name": "tighter-ttl",
+    "passed": true
+  },
+  {
+    "actual": "{\"decided_by\": \"agentpolicy\", \"decision\": \"allow\", \"source\": \"human-once\"}",
+    "expected": "agentpolicy",
+    "kind": "contains",
+    "name": "provenance-persisted",
+    "passed": true
+  },
+  {
+    "actual": "iss_3fc2519d60a8487a8f3058adb8c57b01",
+    "expected": "iss_3fc2519d60a8487a8f3058adb8c57b01",
+    "kind": "eq",
+    "name": "granted-after-mint",
+    "passed": true
+  }
+]

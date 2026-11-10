@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "second-writer-refused",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "kind": "eq",
+      "name": "no-secret",
+      "passed": true
+    }
+  ],
+  "case": "FT-DK-SINGLEWRITER",
+  "class": "P/F",
+  "detail": "a second broker on the same home is refused",
+  "driver": "compose-run",
+  "duration_ms": 2515,
+  "env": [
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "59ec4d93e470be1dec023425a5eff8e44b74809c94010e901ae4c99e06f8949b",
+      "commands.log": "3c923aaca2ff56526bb8c61f7d493ea33aa4a20da3b78787485b2c4f7719af7f",
+      "env.json": "6cdae98bfdac14ce1fcbdfe93aea3ead03b2d381f30b71790af117b7d4de0636"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:42:35Z"
+  },
+  "limitations": [],
+  "pack": "docker",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:42:32Z",
+  "status": "pass"
+}

@@ -1,0 +1,55 @@
+{
+  "assertions": [
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "healthy-exit",
+      "passed": true
+    },
+    {
+      "actual": 3,
+      "expected": 3,
+      "kind": "eq",
+      "name": "tamper-exit",
+      "passed": true
+    },
+    {
+      "actual": 0.001,
+      "expected": 2.0,
+      "kind": "lte",
+      "name": "under-2s",
+      "passed": true
+    }
+  ],
+  "case": "FT-OPS-DOCTOR",
+  "class": "P/F",
+  "detail": "doctor checks chain/lock/config and exits by precedence",
+  "driver": "doctor",
+  "duration_ms": 4,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "ed3d835090e39f5dce94b62ed935058819c695ba4f93d6b62c43206198e023fa",
+      "commands.log": "e7540447a39ac7f417ab190d223efa78044b09622faf74a9c328f3a9eef21b29",
+      "env.json": "e42129977c24b24db5b4cb5efe53a2ca28e06a02c88d8674dc1d324e194fbe57"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:45Z"
+  },
+  "limitations": [],
+  "pack": "ops",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:41:45Z",
+  "status": "pass"
+}

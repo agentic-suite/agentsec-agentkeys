@@ -1,0 +1,62 @@
+{
+  "assertions": [
+    {
+      "actual": "b1388abbb6cc18637a35c3426cac5b35",
+      "expected": true,
+      "kind": "present",
+      "name": "s1-authenticated",
+      "passed": true
+    },
+    {
+      "actual": "0b1c14355e0747a2a9ca2be964e0066e",
+      "expected": true,
+      "kind": "present",
+      "name": "s2-authenticated",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "distinct-tokens",
+      "passed": true
+    },
+    {
+      "actual": 2,
+      "expected": 2,
+      "kind": "eq",
+      "name": "one-revoke-kills-both",
+      "passed": true
+    }
+  ],
+  "case": "FT-CL-TWOHARNESS",
+  "class": "P/F",
+  "detail": "two harnesses, one broker, one kill",
+  "driver": "two-sessions",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "4dc978c3607a5361c84cbb19697badef66210c5e1342e12f3bfd412168502386",
+      "commands.log": "5116b976f6461144bb6a5dabe43a58ec81452a362ca01e221df5c2465e3e4a50",
+      "env.json": "03eab060703aec7f6a074385f25a1c234331d139f910ee169a48a5d26885d693"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:43Z"
+  },
+  "limitations": [],
+  "pack": "core",
+  "passed": true,
+  "scenario": "SC-07",
+  "started_at": "2026-11-10T03:41:43Z",
+  "status": "pass"
+}
