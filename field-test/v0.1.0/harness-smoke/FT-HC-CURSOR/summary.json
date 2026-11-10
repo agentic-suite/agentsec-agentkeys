@@ -1,0 +1,68 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "wiring-valid",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "smoke-authenticated",
+      "passed": true
+    },
+    {
+      "actual": [
+        "ref_1"
+      ],
+      "expected": [
+        "ref_1"
+      ],
+      "kind": "eq",
+      "name": "transcript-only-reference",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "no-token-in-transcript",
+      "passed": true
+    }
+  ],
+  "case": "FT-HC-CURSOR",
+  "class": "P/F|W",
+  "detail": "Cursor not installed; wiring + smoke green",
+  "driver": "recipe",
+  "duration_ms": 0,
+  "env": [
+    "harness"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "a61170070dcbe9f0f9ba46e97d46789f58981863d021102201194b25f8ad4609",
+      "commands.log": "29ceb7aa501e2a7833d8c6c7bf6bc25b73c42d8ea05327d0a1a10c87a1090425",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [
+    "no Cursor on the box; the smoke is mandatory and the live run is declared (plan \u00a78)"
+  ],
+  "pack": "harness",
+  "passed": false,
+  "scenario": "SC-36",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "warn"
+}

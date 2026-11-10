@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": "rejected",
+      "expected": "rejected",
+      "kind": "eq",
+      "name": "revoked-token-rejected",
+      "passed": true
+    },
+    {
+      "actual": "s1",
+      "expected": "s1",
+      "kind": "eq",
+      "name": "token-was-session-bound",
+      "passed": true
+    }
+  ],
+  "case": "FT-BR-SESSION",
+  "class": "P/F",
+  "detail": "session-bound token dies with the session",
+  "driver": "revoke",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "54d6f060d2f0b101cdd75c21e22653c0103206f90adcb5a4a1a865a42f01368d",
+      "commands.log": "45f7db5c6f549c510974b0bb09701fc526e3506434e1ff833e82aa46a117ac41",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "binding",
+  "passed": true,
+  "scenario": "SC-10",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

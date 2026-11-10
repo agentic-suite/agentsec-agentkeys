@@ -1,0 +1,76 @@
+{
+  "assertions": [
+    {
+      "actual": "https://api.example.com",
+      "expected": "https://api.example.com",
+      "kind": "eq",
+      "name": "audience",
+      "passed": true
+    },
+    {
+      "actual": "call",
+      "expected": "call",
+      "kind": "eq",
+      "name": "scope",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "subject-is-broker-token",
+      "passed": true
+    },
+    {
+      "actual": "agentkeys:broker",
+      "expected": true,
+      "kind": "present",
+      "name": "actor-present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "client-token-absent",
+      "passed": true
+    },
+    {
+      "actual": "exchanged-token",
+      "expected": "exchanged-token",
+      "kind": "eq",
+      "name": "exchanged-token-returned",
+      "passed": true
+    }
+  ],
+  "case": "FT-CL-EXCHANGE",
+  "class": "P/F",
+  "detail": "exchange request is narrow and passthrough-free",
+  "driver": "exchange-inject",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "4d2d81eea0bfe01225d62afae539e8285bdc022ccc3e3539c993e6ba7f46e1ee",
+      "commands.log": "2ce66e2bf1e0e9057416e136e902a4ec66fa355df7835876069678a6de037c63",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "core",
+  "passed": true,
+  "scenario": "SC-04",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

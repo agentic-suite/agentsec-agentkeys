@@ -1,0 +1,35 @@
+{
+  "assertions": [],
+  "case": "FT-DK-COMPOSE",
+  "class": "P/F",
+  "detail": "docker unavailable: FT-DK-COMPOSE requires the field topology",
+  "driver": "compose-up",
+  "duration_ms": 0,
+  "env": [
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "commands.log": "edd23b14be07db1e2308dc3adc4d70730663ba20b7e21381e5882eed6c8e752e",
+      "env.json": "8795b91dec060fb2e7ff2e1183793b21275f8921952efb49d692328512b5707d"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:00Z"
+  },
+  "limitations": [
+    "docker unavailable: FT-DK-COMPOSE requires the field topology"
+  ],
+  "pack": "docker",
+  "passed": false,
+  "scenario": null,
+  "started_at": "2026-11-10T03:33:00Z",
+  "status": "not-run"
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "actual": "present",
+    "expected": "present",
+    "kind": "eq",
+    "name": "child-sees-token",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "token-not-in-output",
+    "passed": true
+  },
+  {
+    "actual": "{'AGENTKEYS_SCOPED_TOKEN': 'c4138fdfb3870bf8c3137038c0cf1693', 'SAFE': 'x'}",
+    "expected": "akref:",
+    "kind": "absent",
+    "name": "reference-not-in-child-env",
+    "passed": true
+  },
+  {
+    "actual": "{'AGENTKEYS_SCOPED_TOKEN': 'c4138fdfb3870bf8c3137038c0cf1693', 'SAFE': 'x'}",
+    "expected": "SENTINEL-BACKEND-VALUE",
+    "kind": "absent",
+    "name": "backend-value-absent",
+    "passed": true
+  },
+  {
+    "actual": [],
+    "expected": [],
+    "kind": "eq",
+    "name": "no-secret-shapes",
+    "passed": true
+  }
+]

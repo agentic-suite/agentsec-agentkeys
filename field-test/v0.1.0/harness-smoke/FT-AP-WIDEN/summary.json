@@ -1,0 +1,55 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "tool",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "scope",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "audience",
+      "passed": true
+    }
+  ],
+  "case": "FT-AP-WIDEN",
+  "class": "P/F",
+  "detail": "all widening vectors refused",
+  "driver": "injector",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "288e7c82346005d36930541b752612e8dee97337096c158010d975a3719c5b27",
+      "commands.log": "63b9c27fa8e89dffa40abeac6ae3b699aa326f7c4f3821845a4557e20180c1a5",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "attack",
+  "passed": true,
+  "scenario": "SC-42",
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

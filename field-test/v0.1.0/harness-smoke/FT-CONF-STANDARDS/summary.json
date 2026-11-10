@@ -1,0 +1,59 @@
+{
+  "assertions": [
+    {
+      "actual": [],
+      "expected": [],
+      "kind": "eq",
+      "name": "no-failures",
+      "passed": true
+    },
+    {
+      "actual": [
+        "rfc9449"
+      ],
+      "expected": [
+        "rfc9449"
+      ],
+      "kind": "eq",
+      "name": "dpop-not-supported",
+      "passed": true
+    },
+    {
+      "actual": 9,
+      "expected": 9,
+      "kind": "gte",
+      "name": "has-passing-suites",
+      "passed": true
+    }
+  ],
+  "case": "FT-CONF-STANDARDS",
+  "class": "P/F",
+  "detail": "conformance green; DPoP explicitly not supported",
+  "driver": "conformance",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "5ef4ad6b96ad6261f9755f252e04fd2ffc6c7679ed75e24ef9a76d0079821ee5",
+      "commands.log": "dbd2c570424bf678f6882fdc206087e7c5898f3c528c5df79b08f6ef895a9937",
+      "env.json": "b214aaa68e87959b7cdd59fb0b6edb386e0134a540efeb6bdae179004a28d9e2"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:03Z"
+  },
+  "limitations": [],
+  "pack": "conformance",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:33:03Z",
+  "status": "pass"
+}

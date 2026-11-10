@@ -1,0 +1,23 @@
+[
+  {
+    "actual": "rotated-v1",
+    "expected": "rotated-v1",
+    "kind": "eq",
+    "name": "v1-read",
+    "passed": true
+  },
+  {
+    "actual": "rotated-v2",
+    "expected": "rotated-v2",
+    "kind": "eq",
+    "name": "v2-read-without-restart",
+    "passed": true
+  },
+  {
+    "actual": "expired",
+    "expected": "expired",
+    "kind": "eq",
+    "name": "pre-rotation-token-dead",
+    "passed": true
+  }
+]

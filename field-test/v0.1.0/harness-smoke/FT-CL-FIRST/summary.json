@@ -1,0 +1,107 @@
+{
+  "assertions": [
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "scan",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "migrate",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "ref",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "brokered-call",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "revoke",
+      "passed": true
+    },
+    {
+      "actual": 4,
+      "expected": 4,
+      "kind": "eq",
+      "name": "replay-refused",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "export",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "verify-log",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "no-secret-printed",
+      "passed": true
+    },
+    {
+      "actual": 0.583,
+      "expected": 900.0,
+      "kind": "lte",
+      "name": "elapsed-under-15min",
+      "passed": true
+    }
+  ],
+  "case": "FT-CL-FIRST",
+  "class": "P/F|W",
+  "detail": "scripted quickstart green in 0.58s",
+  "driver": "quickstart",
+  "duration_ms": 586,
+  "env": [
+    "human",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "df54ab856cbf2a294dbb147cfdff33adc685d446767f3e7b505ffd28e9e674d1",
+      "commands.log": "ec2b70ea635562c2835bf21d38ba39723f1da872c84f159ea12654e7ff703219",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [
+    "no fresh field box for the timed <15-min median; the scripted path ran (plan \u00a78)"
+  ],
+  "pack": "core",
+  "passed": false,
+  "scenario": "SC-01",
+  "started_at": "2026-11-10T03:33:00Z",
+  "status": "warn"
+}

@@ -453,7 +453,7 @@ python scripts/fieldtest/run_pack.py --pack core|binding|stdio|evasion|failclose
 # Blocking measurements
 python -m agentkeys.bench.killtime --iterations 100
 python scripts/fieldtest/run_pack.py --pack killtime
-python scripts/fieldtest/run_pack.py --pack contextdump
+python scripts/fieldtest/run_pack.py --pack attack --case FT-AP-CONTEXTDUMP
 docker compose -f field-test/v0.1.0/docker/compose.yaml run --rm --network none airgap \
   python scripts/fieldtest/run_pack.py --pack offline
 

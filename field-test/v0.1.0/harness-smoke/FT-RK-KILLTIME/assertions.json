@@ -1,0 +1,30 @@
+[
+  {
+    "actual": 5,
+    "expected": 5,
+    "kind": "eq",
+    "name": "iterations",
+    "passed": true
+  },
+  {
+    "actual": 0.041042,
+    "expected": 1000.0,
+    "kind": "lte",
+    "name": "p95-lte-1s",
+    "passed": true
+  },
+  {
+    "actual": 0.041042,
+    "expected": 1000.0,
+    "kind": "lte",
+    "name": "max-lte-1s",
+    "passed": true
+  },
+  {
+    "actual": 5,
+    "expected": 5,
+    "kind": "eq",
+    "name": "every-replay-refused",
+    "passed": true
+  }
+]

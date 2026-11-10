@@ -1,0 +1,55 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "evidence-clean",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "kind": "eq",
+      "name": "export-clean",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "export-no-secret",
+      "passed": true
+    }
+  ],
+  "case": "FT-LA-NOSECRET",
+  "class": "P/F",
+  "detail": "store and export contain no secret-shape material",
+  "driver": "evidence",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "6c98f5b5e2c19c0641e8a473a57531a07ded85a3cc8a447fe02361558a8d843b",
+      "commands.log": "71f417abc7d1ff2997363f8090f6e1c733f0cb6d171d85dfdfc6249b631e0ca9",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "audit",
+  "passed": true,
+  "scenario": "SC-31",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

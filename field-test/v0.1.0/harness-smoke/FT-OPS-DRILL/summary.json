@@ -1,0 +1,63 @@
+{
+  "assertions": [
+    {
+      "actual": 5,
+      "expected": 5,
+      "kind": "eq",
+      "name": "replay-failures",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "passed",
+      "passed": true
+    },
+    {
+      "actual": 4242,
+      "expected": 4242,
+      "kind": "eq",
+      "name": "generated-at",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "has-percentiles",
+      "passed": true
+    }
+  ],
+  "case": "FT-OPS-DRILL",
+  "class": "P/F",
+  "detail": "drill produces machine-readable kill-time numbers",
+  "driver": "drill",
+  "duration_ms": 0,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "be9db223a1ee8423c8fce18f03c8a26fafe1717ff38ca38951fd74c0f18e0395",
+      "commands.log": "f4d165a40c922b2d97b1f3e0987adc2fb6d1434a6423b28735034ee89ff999d2",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "ops",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "actual": 1000,
+    "expected": 1000,
+    "kind": "eq",
+    "name": "first-now",
+    "passed": true
+  },
+  {
+    "actual": "wall clock moved backwards by 100s (tolerance 0s)",
+    "expected": "moved backwards",
+    "kind": "contains",
+    "name": "backwards-fails-closed",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "forwards-expires",
+    "passed": true
+  },
+  {
+    "actual": [
+      1,
+      0
+    ],
+    "expected": [
+      1,
+      0
+    ],
+    "kind": "eq",
+    "name": "expiry-once",
+    "passed": true
+  }
+]
