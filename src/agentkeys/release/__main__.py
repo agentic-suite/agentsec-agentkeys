@@ -15,6 +15,7 @@ from agentkeys.release.claims import (
     results_index,
     scan_prose,
 )
+from agentkeys.release.compat import ROWS, render, write_document
 
 __all__ = ["main"]
 
@@ -32,11 +33,21 @@ def _parser() -> argparse.ArgumentParser:
     claims = sub.add_parser("claims", help="lint public claims against their evidence labels")
     claims.add_argument("--root", default=".", help="repository root")
     claims.add_argument("--json", action="store_true", help="emit the findings as JSON")
+
+    compat = sub.add_parser(
+        "compat", help="render the harness compatibility matrix from committed packs"
+    )
+    compat.add_argument("--root", default=".", help="repository root")
+    compat.add_argument(
+        "--write", action="store_true", help="write the generated document in place"
+    )
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.command == "compat":
+        return _run_compat(args.root, write=args.write)
     if args.command == "claims":
         return _run_claims(args.root, json_output=args.json)
     if args.command != "audit":  # pragma: no cover - argparse rejects unknown subcommands first
@@ -58,6 +69,18 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  limit: {limitation}")
 
     return 0 if report.ok else 1
+
+
+def _run_compat(root: str, *, write: bool) -> int:
+    base = Path(root)
+    index = results_index(base / "field-test" / "v0.1.0" / "results")
+    matrix = render(ROWS, index)
+    if write:
+        target = write_document(base / "docs" / "release" / "v0.1.0" / "COMPATIBILITY.md", matrix)
+        print(f"wrote {target}")
+    else:
+        print(matrix, end="")
+    return 0
 
 
 def _run_claims(root: str, *, json_output: bool) -> int:
