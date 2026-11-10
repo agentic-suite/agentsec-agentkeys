@@ -47,20 +47,18 @@ and the [release notes](docs/release/v0.1.0/RELEASE_NOTES.md). Claims stay at th
 
 ## Install & run
 
-> **Not on PyPI yet.** The v0.1.0 upload is pending, so `pip install agentsec-agentkeys` does not resolve
-> today — install from source. Once the upload lands, that one-liner becomes the way in and this note is
-> removed.
+```sh
+pip install agentsec-agentkeys   # published: v0.1.0 (unsigned release)
+agentkeys --version              # agentkeys 0.1.0
+agentkeys --help                 # the frozen v0.1.0 command surface
+agentkeys doctor                 # read-only health check: 0 healthy · 2 denied · 3 tamper
+```
 
-**From source (works today):**
+From source, if you prefer a checkout:
 
 ```sh
 git clone https://github.com/agentic-suite/agentsec-agentkeys
-cd agentsec-agentkeys
-python -m venv .venv && . .venv/bin/activate
-pip install .                   # stdlib-only, no runtime dependencies
-agentkeys --version             # agentkeys 0.1.0
-agentkeys --help                # the frozen v0.1.0 command surface
-agentkeys doctor                # read-only health check: 0 healthy · 2 denied · 3 tamper
+cd agentsec-agentkeys && python -m venv .venv && . .venv/bin/activate && pip install .
 ```
 
 `agentkeys init` is still an honest **stub** (it exits non-zero and names its milestone), so the quickest

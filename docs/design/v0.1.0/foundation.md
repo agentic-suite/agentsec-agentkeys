@@ -18,7 +18,7 @@ is a bug in the code, not an amendment to the design.
 
 | Item | Decision |
 |---|---|
-| Distribution name | `agentsec-agentkeys` (`pip install agentsec-agentkeys` once the PyPI upload lands) |
+| Distribution name | `agentsec-agentkeys` (`pip install agentsec-agentkeys` — published v0.1.0) |
 | Import package | `agentkeys` (`src/` layout) |
 | Console script | `agentkeys` |
 | Runtime dependencies | **none** — Python **stdlib only** (PRD 13 §5) |
