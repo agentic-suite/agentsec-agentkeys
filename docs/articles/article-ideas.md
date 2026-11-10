@@ -1,271 +1,359 @@
 # Article ideas — agentkeys v0.1.0 field test
 
-One file: title, hook, and grounding facts for each. Full source: the
-[field test report](../field-test/v0.1.0/FIELD_TEST_REPORT.md) — 74 cases, **71 PASS · 0 FAIL · 3 WARN** —
-plus the [plan](../field-test/v0.1.0/FIELD_TEST_PLAN.md), the
-[defect catalogue](../field-test/v0.1.0/FIELD_TEST_REPORT.md#defect-catalogue) (H-1…H-12), and the
-[field notes](../field-test/v0.1.0/FIELD_TEST_REPORT.md#field-notes--findings-learnings-and-observations).
+These are the **best Dev.to candidates** from the field-test work: educational,
+engaging, and grounded in reusable engineering lessons — **not** “look at my
+mistake” stories.
+
+Each entry keeps three things only:
+- a strong title,
+- a reader-facing hook,
+- grounding facts from the committed field evidence.
+
+Full source material:
+- [field test report](../field-test/v0.1.0/FIELD_TEST_REPORT.md)
+- [field test plan](../field-test/v0.1.0/FIELD_TEST_PLAN.md)
+- [traceability](../field-test/v0.1.0/TRACEABILITY.md)
+- [published benchmark pack](../../bench/README.md)
 
 ---
 
-## 1. Your test dashboard lies by omission
-
-**Title.** Your Test Dashboard Lies by Omission — Here's a Verdict Vocabulary That Doesn't
-
-**Hook.** "97% green" hides exactly the five rows a reader needs most. Our field test ran 74 cases: 71
-passed, 0 failed, 3 warned — and every non-pass is named, limited, and evidenced in the published report.
-The one FAIL we hit (a Docker volume-permission bug in **our own harness**) was root-caused, fixed, and
-**re-run to green while the report recorded both states honestly**. The 3 WARNs each cite their limitation.
-Nothing dropped, nothing rounded, nothing averaged.
-
-**Grounding facts.**
-- Master table: all 74 case ids with ✅/❌/⚠ and a one-line note — `FIELD_TEST_REPORT.md` §Scenario Results.
-- Run-status table leads the report: 71 PASS (all grounded) · 0 FAIL · 3 WARN · 0 NOT RUN.
-- The FAIL→PASS arc is recorded, not smoothed: the RCA section shows both the failing run and the green
-  re-run (defect H-1).
-- Verdict vocabulary: PASS | FAIL | WARN | NOT RUN, plus the ✓-grounded qualifier (assertions re-derived
-  from committed results, never trusted from an exit code).
-- Honest limit: *field-tested* on one box — not *verified* (no third party has re-run it).
-
----
-
-## 2. Exit code 0 is the weakest evidence you have
+## 1. Exit Code 0 Is the Weakest Evidence You Have
 
 **Title.** Exit Code 0 Is the Weakest Evidence You Have — Make Your Verifier Re-Derive Every Claim
 
-**Hook.** Our runner's exit code was never trusted once. An independent gate re-derives every PASS from the
-committed results — each assertion's `kind` + `expected` + `actual` recomputed, `passed` re-checked,
-evidence files sha256-verified. It caught a **plausible-sounding assertion that encoded a false belief about
-our own product**: "no live issuance after revoke" — wrong, because revoke is an epoch CAS, not a status
-flip. An exit code blesses that mistake; a re-derivation catches it.
+**Stronger alternate title.** Your Green Build Proves Less Than You Think
+
+**Core promise.** Most engineering teams still trust the easiest signal in the room: “the command passed.”
+This article argues that **process success is not evidence success**. If a claim matters — security, correctness,
+compliance, performance, migration safety, anything release-blocking — the checker should re-derive the claim
+from the emitted artifacts instead of trusting the runner’s own verdict.
+
+**Reader hook.** We have all seen this failure mode: a script exits 0, CI goes green, and everyone relaxes.
+But a green process can hide the exact thing you care about:
+- an assertion encoded with the wrong belief,
+- an evidence file that was never written,
+- an output that says “passed” while the artifact contradicts it,
+- a summary that claims success but cannot be re-checked independently.
+
+The article should open by challenging a familiar assumption: **an exit code only tells you that a program
+finished in the way its author defined as success**. It does not tell you the claim is true.
+
+**Why this is unique.** A lot of writing says “write better tests” or “add more observability.” This article is
+more specific and stronger: **make the verifier distrust the test runner itself**. That is a memorable, reusable
+ idea for infra, security, AI evals, benchmarking, and CI design.
+
+**Why a Dev.to reader should care.**
+- CI pipelines trust command success too easily.
+- Benchmark posts often trust one script’s self-reported number.
+- Security checks frequently stop at “scanner returned 0 findings” without re-checking the emitted evidence.
+- AI/eval workflows often trust model-run summaries rather than their underlying traces.
+
+This idea generalizes far beyond this repo.
+
+**Proposed article shape.**
+1. **The bad default:** why exit code 0 feels authoritative.
+2. **Why it fails:** a program can be internally consistent and still prove the wrong thing.
+3. **The better pattern:** separate the runner from the verifier.
+4. **What to re-derive:** assertion math, file hashes, required artifacts, minimum assertion depth, schema,
+   traceability, and status/limitation rules.
+5. **What this changes culturally:** green now means “independently checkable,” not “script says okay.”
+6. **A checklist readers can steal** for their own pipelines.
+
+**Important points to develop in the article.**
+- A runner should be allowed to be wrong; the verifier exists to catch that.
+- Verification should be **artifact-first**, not log-first.
+- The checker should recompute `passed` from `kind`, `expected`, and `actual`.
+- Evidence files should be present, hashed, and tied back to the summary.
+- A PASS with shallow or missing assertions should itself fail verification.
+- A self-test for the verifier is part of the design; otherwise you are just moving blind trust one layer over.
 
 **Grounding facts.**
-- Gate: `scripts/fieldtest/check_grounding.py` → findings = 0 across all 74 results.
-- The caught bug: defect H-8 in the catalogue — the assertion tested a status flip instead of the
-  `revoked` event; fixed to assert the event was recorded + next-hop refused.
-- Second catch of the same class: H-11 — the fresh-install leg of FT-CL-FIRST wrote the *original* home's
-  config path into the fresh home; the runner was green, the fresh CLI silently read a stale store. Found
-  only by re-running the leg standalone and diffing behavior.
-- Minimum depth enforced: ≥2 assertions per case, ≥3 for the five blocking cases; a PASS with no assertions
-  is a finding.
-- The gate is self-tested (`verify_harness.py`) on temp copies only — a destructive gate is never exercised
-  on the real artifacts.
+- Gate: `scripts/fieldtest/check_grounding.py` re-derives every assertion from committed results.
+- Final sweep: `findings = 0` across all 74 results.
+- Minimum evidence depth enforced: ≥2 assertions per case, ≥3 for the five blocking scenarios.
+- PASS with no grounded assertions is itself a finding.
+- Evidence files are hash-checked, not merely expected to exist.
+- The harness self-test runs only on temp copies, never on the real report/results tree.
+
+**Closing angle.** The memorable line for the article is: **“A green process is only a suggestion. A
+re-derived claim is evidence.”**
 
 ---
 
-## 3. My leak scanner caught a real secret — in my own test harness
+## 2. Most Performance Benchmarks Are Too Easy to Game
 
-**Title.** My Leak Scanner Caught a Real Secret — in My Own Test Harness
+**Title.** Most Performance Benchmarks Are Too Easy to Game — Here’s How to Publish One That Isn’t
 
-**Hook.** The best moment of the sweep: the results-tree leak gate flagged **six credential shapes in the
-committed evidence**. Not in the product — in **our own executor**. The FT-CL-HEADER case had stored
-`Authorization: Bearer <token>` verbatim as an assertion "actual". The runner was green; the evidence was
-dirty. If your security product's field harness can't pass its own scanner, what is the scanner for?
+**Stronger alternate title.** How to Publish a Performance Claim Nobody Can Game
+
+**Core promise.** This article is not “look how fast my system is.” It is about a harder and more useful
+question: **what would make a performance claim credible even to a skeptic?** The answer is not a pretty p95.
+It is a protocol that makes self-deception difficult.
+
+**Reader hook.** Most benchmarks fail before the number even appears. The timer starts too late, stops too
+early, measures the command instead of the effect, drops the slowest runs, hides the machine class, or publishes
+only a percentile that flatters the system. That is why so many benchmark posts feel like marketing even when
+the author is sincere.
+
+This article should position itself as a practical answer to that skepticism: **how do you structure a
+performance test so even you cannot accidentally game it?**
+
+**Why this is unique.** Plenty of benchmark posts publish numbers. Fewer publish the anti-gaming method. That
+method is the real article.
+
+**Why a Dev.to reader should care.** Anyone shipping an API, broker, cache, auth system, queue, or infra tool
+can borrow the same template for:
+- latency claims,
+- revoke / invalidate / cache-expiry claims,
+- warmup and cold-start claims,
+- failover or restart claims,
+- throughput ceilings,
+- “eventually consistent within X seconds” claims.
+
+**Proposed article shape.**
+1. **Why most benchmark posts feel untrustworthy.**
+2. **The common failure modes:** bad timer boundaries, wrong success condition, percentile-only reporting,
+   no replay check, no hardware disclosure.
+3. **The anti-gaming protocol:**
+   - start the timer at the real event boundary,
+   - stop the timer at the externally visible effect,
+   - verify the effect, not the command,
+   - report max as well as p95,
+   - run enough iterations,
+   - publish machine class and re-run instructions.
+4. **Why “max” matters:** one catastrophic outlier can be the real story.
+5. **Why independent reproduction matters:** field-tested is not the same as verified.
+6. **A reusable benchmark template** readers can lift into their own repos.
+
+**Important points to develop in the article.**
+- A performance claim should be written as a falsifiable statement, not a bragging number.
+- You should measure the thing the user experiences, not an internal convenience metric.
+- A fast revoke command is meaningless if the old credential still works for a while after.
+- p95 alone can hide the run that actually matters; max tells you whether the budget was ever breached.
+- Machine disclosure is not optional if you want readers to reason about transferability.
+- Re-run instructions matter because claims get stronger when someone else can reproduce them.
 
 **Grounding facts.**
-- Finder: `scripts/fieldtest/scan_results.py` over `field-test/v0.1.0/results/` — flagged
-  `results/FT-CL-HEADER/{summary.json,summary.md,assertions.json}`.
-- Fix: assert **booleans** (`headers.get(...).startswith("Bearer ")`), never rendered header values; the
-  whole tree re-scanned to findings = 0.
-- Related: H-7 — `_FAKE_TOKEN`/`_FAKE_SECRET` module constants tripped S105 (hardcoded-password lint) and
-  were renamed `_PLANTED_VALUE` so they can never echo into an artifact.
-- "Usable" is defined (shape **and** authenticates-or-is-raw-backend-secret) in
-  [PRD 21 §3](../prd/21-evidence-register-and-method.md) and applied in FT-AP-CONTEXTDUMP.
+- Claim under test: revoke kills access in ≤1 second end-to-end.
+- Published pack: `bench/results/killtime-contextdump.json` with README in `bench/README.md`.
+- Result: p50 **0.012ms**, p95 **0.016833ms**, max **0.030667ms**, N=100; replay failures = 100/100.
+- PASS requires both p95 ≤ 1s **and** max ≤ 1s — not a flattering percentile alone.
+- The measurement verifies replay refusal, not just revoke dispatch time.
+- The published pack includes machine details and a re-run procedure so the claim can later move toward
+  independent verification.
+
+**Closing angle.** The article should end on a strong distinction: **a benchmark number is interesting; a
+benchmark protocol is useful.**
 
 ---
 
-## 4. How to publish a performance claim nobody can game
+## 3. Your Test Dashboard Lies by Omission
 
-**Title.** How to Publish a Performance Claim Nobody Can Game — Kill-Time in 0.03ms
+**Title.** Your Test Dashboard Lies by Omission — Here’s a Better Verdict Vocabulary
 
-**Hook.** Our headline number is "revoke kills access in ≤1 second." The protocol that produced it is
-ungameable in both directions: it measures **t0 → replay-refused** (a fast command with a still-live token
-is a false green), it checks **max**, not just p95 (one bad run fails; no averaging), and it runs N≥100
-**per scope**. Result: p50 0.010ms · p95 0.015ms · **max 0.030ms** — ~33,000× under budget — published with
-its machine class and still labeled *field-tested*, not *verified*, because nobody else has re-run it.
+**Stronger alternate title.** Your Green Dashboard Is Hiding the Most Important Rows
+
+**Core promise.** A dashboard full of green can still be low-trust if it erases the context a reader actually
+needs. This article argues that **verdict vocabulary is part of the engineering system**. If a report cannot
+distinguish “passed,” “failed,” “warned with a real limitation,” and “not run with a reason,” then it is
+optimizing for neatness over truth.
+
+**Reader hook.** We have all read dashboards that say some version of “97% passing” and leave the reader to dig
+through logs to find the only three cases that matter. The core frustration is not lack of data; it is bad
+compression. The report flattened meaningful differences into one pleasant-looking status line.
+
+The article should push a stronger idea: **test reporting is not the final coat of paint. It is part of the
+control plane for release decisions.** If the vocabulary is weak, the decision quality is weak.
+
+**Why this is unique.** A lot of writing talks about writing more tests. Much less talks about writing better
+verdicts. This article is about the semantics of outcomes: how to tell the truth without drowning the reader.
+
+**Why a Dev.to reader should care.**
+- Release dashboards often hide risk in summary percentages.
+- Engineering teams need a shared way to talk about conditional truth.
+- Ops, QA, platform, and security reports all suffer when every outcome is forced into pass/fail.
+
+**Proposed article shape.**
+1. **The lie of compression:** why one number or one color is often too lossy.
+2. **The missing states:** why WARN and NOT RUN are necessary, not messy.
+3. **What a verdict should carry:** status, reason, limitation, evidence, and claim label.
+4. **How better vocabulary improves decisions:** the reader knows whether to ship, investigate, defer, or
+   rerun.
+5. **What not to do:** percentages with no row-level accountability.
+6. **A compact template** readers can reuse for dashboards and release reports.
+
+**Important points to develop in the article.**
+- PASS should mean independently grounded, not merely “no exception happened.”
+- WARN should mean “true, with a named boundary,” not “we wanted yellow.”
+- NOT RUN should be explicit and justified, not hidden as missing data.
+- Blocking cases may need stricter status rules than informational cases.
+- One-line notes matter because leaders and reviewers often read the summary table first.
 
 **Grounding facts.**
-- Protocol: [PRD 17 §15](../prd/17-scenarios.md) — t0 immediately before the revoke dispatches, t1 the
-  instant a replay of the pre-revoke credential is rejected; PASS requires p95 ≤ 1s **and** max ≤ 1s.
-- Result: `results/FT-RK-KILLTIME/summary.json` — p50 0.010, p95 0.0147, max 0.0298ms, N=100,
-  `replay_failures == 100`.
-- Machine class recorded per result in `env.json` (macOS arm64, py3.14, Docker 29.5.2, git SHA).
-- The 1s budget maps to the spine gate ([PRD 07 §2.1](../prd/07-success-metrics.md)): it is CI-gated every
-  commit (`tests/test_revoke_killtime.py`), not benched once for a blog post.
+- Final field verdicts: **71 PASS · 0 FAIL · 3 WARN · 0 NOT RUN** across 74 cases.
+- The report’s master table records every case id with status and a one-line note.
+- WARN is allowed only for WARN-eligible classes and requires a named limitation.
+- The five blocking scenarios may never WARN; all five finished PASS.
+- The report stays at the correct claim label: *field-tested*, not *verified*.
+
+**Closing angle.** A useful line for the ending: **“A test report is not a scoreboard. It is a decision
+document.”**
 
 ---
 
-## 5. The stdio boundary is only as real as the process boundary under it
+## 4. The Claims Ladder: Documented, Conformance, Field-Tested, Verified
 
-**Title.** Every stdio MCP Server Reads Credentials from Its Environment — Nobody Covers It
+**Title.** The Claims Ladder: Documented, Conformance, Field-Tested, Verified
 
-**Hook.** The MCP spec tells stdio servers to read credentials from the environment — which, in an agent
-host, is agent-readable config: static, unscoped, unrevocable. No product covers it (coverage-map row #8).
-We cover it — and we're honest about the hard case: a co-located process can read what that runtime can
-read. The field topology answers it for real, in containers.
+**Stronger alternate title.** Don’t Call It Verified Until Someone Else Reproduces It
+
+**Core promise.** This article gives readers a stricter language for technical claims. The main idea is simple:
+**use the strongest word your evidence supports, and no stronger.** Most teams unintentionally overstate by
+collapsing different grades of support into the same label.
+
+**Reader hook.** Words like “tested,” “proven,” and “verified” sound precise but often hide very different kinds
+of evidence. A feature can be documented without ever being exercised. A suite can pass without a real-world
+trial. A field trial can succeed once without becoming independently reproducible. That ambiguity hurts release
+notes, blog posts, README claims, and even incident reviews.
+
+This article should present a memorable four-rung ladder that readers can apply immediately:
+- **Documented** — written and specified.
+- **Conformance** — the relevant suite passed.
+- **Field-tested** — a human entered a verdict against committed evidence.
+- **Verified** — an independent third party reproduced the claim.
+
+**Why this is unique.** The article is not just about “be honest.” It gives a concrete taxonomy that can clean up
+how teams talk about reliability, compliance, performance, and security.
+
+**Why a Dev.to reader should care.**
+- README and docs claims are often stronger than the evidence behind them.
+- Teams need a vocabulary for release notes and benchmark posts that does not drift into marketing.
+- Open-source maintainers can use this to make promises more credible.
+
+**Proposed article shape.**
+1. **Why the current language is sloppy.**
+2. **The four labels and what each one really means.**
+3. **Examples of mislabeling:** where teams say “verified” but only mean “we ran it once.”
+4. **How to label claims in practice:** performance, standards, field usage, and security.
+5. **Why the distinction improves trust instead of weakening the story.**
+6. **A small claims-audit template** readers can add to release notes or benchmarks.
+
+**Important points to develop in the article.**
+- A stronger claim label is not a compliment; it is an evidence category.
+- “Field-tested” is already meaningful and should not be treated as inferior marketing.
+- “Verified” should be rare and valuable because it means independent reproduction.
+- Claims become more trustworthy when the downgrade path is explicit.
+- This vocabulary is useful precisely because it is slightly stricter than normal engineering speech.
 
 **Grounding facts.**
-- FT-DK-BOUNDARY (PASS): the child container has **no mount and no readable path** to the broker store or
-  the credentials volume — the probe only succeeds because both paths are absent.
-- FT-DK-IMAGE (PASS): broker image non-root **UID 10001**, pinned base, secret-free Dockerfile (verified by
-  the same shape scanner).
-- FT-DK-SINGLEWRITER (PASS): a second broker on the same home is **refused** — single-writer (D-08)
-  enforced by the OS lock, not by convention.
-- FT-DK-AIRGAP (PASS, after a fix): the air-gap container runs the offline pack with `--network none`;
-  the first run **failed on a Docker named-volume root-ownership bug** (H-1) — fixed with a root-user
-  volume chown prep and re-run green. A FAIL→PASS arc recorded in the RCA.
-- The honest limit is first-class: the co-located same-runtime case is documented as **not protectable**
-  ([PRD 06 §4](../prd/06-security-baseline.md)); the container boundary is the tested shape.
+- The report includes a claims-label audit mapping promoted claims to their label and evidence.
+- Kill-time ≤1s is labeled *field-tested*.
+- Standards/RFC rows are labeled *conformance*.
+- Nothing is yet labeled *verified* because no independent third party has re-run the published pack.
+- The benchmark pack exists specifically to let a claim move from field-tested to verified later.
+
+**Closing angle.** End with the line: **“Trust grows when your labels get stricter, not louder.”**
 
 ---
 
-## 6. Where bugs actually live: the defect taxonomy after 74 field units
+## 5. Why PASS/FAIL Is Not Enough for Real-World Testing
 
-**Title.** 74 Field Test Cases, 12 Defects Found — Zero Were in the Product
+**Title.** Why PASS/FAIL Is Not Enough for Real-World Testing
 
-**Hook.** Twelve defects surfaced during the sweep. **All twelve were in the harness or the environment.**
-A root-owned Docker named volume fighting a non-root broker (H-1). A `compose run --network` flag that
-doesn't exist (H-2). An ENTRYPOINT that swallowed a probe (H-3). A leak in our own assertions (H-6). A wrong
-assertion about our own revocation semantics (H-8). A config path silently pointing the wrong home (H-11).
-A live CLI flag-order plus a login wall (H-12). The product's core — bindings, fail-closed, ledger,
-revocation — passed everywhere it was probed. The harness kept finding itself first, and that's the point.
+**Stronger alternate title.** PASS/FAIL Is Too Crude for Real Systems
+
+**Core promise.** Binary status reporting is emotionally satisfying and operationally weak. This article makes
+the case that real systems need a third honest category: **works, but with a named limitation that remains part
+of the verdict**. Without that, teams either overstate readiness or bury important caveats in prose nobody reads.
+
+**Reader hook.** Engineers are trained to love crisp outcomes: pass or fail, green or red, yes or no. But many
+important truths are conditional. A workflow might be correct but only on one surface. A measurement might be
+valid but not yet independently reproduced. A live integration may be wired correctly but blocked by external
+auth state. If the only allowed statuses are pass and fail, the report will lie somewhere.
+
+**Why this is unique.** This is not a generic “nuance matters” essay. It gives a disciplined argument for why
+WARN should exist, what rules should govern it, and how to stop it from turning into a dumping ground.
+
+**Why a Dev.to reader should care.**
+- Release gates frequently need a truthful middle state.
+- Platform support matrices often have real caveats that should not be hidden.
+- Integration and field reports become more useful when limitations stay attached to the verdict.
+
+**Proposed article shape.**
+1. **Why teams overuse pass/fail.**
+2. **Where binary status breaks down in practice.**
+3. **What a disciplined WARN means:** not vague concern, but truth with a named boundary.
+4. **Rules that keep WARN honest:** eligibility, required limitations, and hard no-WARN zones.
+5. **When a WARN should be upgraded to PASS:** only after the missing proof or missing control exists.
+6. **A practical status policy** readers can adopt.
+
+**Important points to develop in the article.**
+- WARN should never mean “we are unsure.” It should mean “the claim is bounded in this explicit way.”
+- Some scenarios are too important to allow WARN at all.
+- Limitations should be machine-visible, not buried in paragraph text.
+- A WARN should create pressure to either tighten the test or narrow the claim.
+- The existence of WARN makes PASS stronger, because PASS now means the limitation is truly gone.
 
 **Grounding facts.**
-- Catalogue: H-1…H-12 in `FIELD_TEST_REPORT.md` §Defect Catalogue — each with its finder, fix, and status;
-  **every one closed** (H-1 fixed + re-run PASS; H-11 fixed; H-12 fixed to an honest WARN).
-- Product defect count: **0** across all deterministic packs (core, binding, stdio, fail-closed, killtime,
-  audit, stepup, offline, attack, migrate, ops, nfr, conformance).
-- The one FAIL that ever appeared (FT-DK-AIRGAP) was H-1 — a harness environment defect — and is now PASS.
-- Honest limit: "zero product defects **found**" ≠ "zero product defects exist" — it's what 74 cases on
-  one box found.
+- Final state includes exactly **3 WARN**, each with a named limitation.
+- Remaining WARNs are honest environment limitations, not silent failures:
+  - fresh-machine install median still lacks a naive-human run,
+  - Claude Code is installed but not logged in headlessly,
+  - Cursor has no headless surface on this box.
+- One earlier WARN (`FT-EV-ENFORCE`) was upgraded to PASS only after composing a real OS-backed deny check.
+- The rules enforce that WARN cannot appear without a limitation, and cannot be used for the five blocking cases.
+
+**Closing angle.** The article should land on: **“A truthful middle state makes your green states more
+trustworthy.”**
 
 ---
 
-## 7. Measured, recorded, labeled — a template for honest benchmarks
+## 6. The Test Itself Is Part of the Product
 
-**Title.** Eight Performance Targets, Eight Crushings, Zero Roundings — an Honest Benchmark Template
+**Title.** The Test Itself Is Part of the Product — Especially for Security and Infra Tools
 
-**Hook.** Every NFR target was met by orders of magnitude — and recorded exactly as measured, machine class
-attached, none rounded into a pass: injection p99 **0.001ms** (target <10ms), file backend **0.017ms**
-(<5ms), throughput **26,988 issuances/s** (≥100/s), cold start **54ms** (<200ms), restart-to-serving
-**1.486ms** (<1s), ledger append **0.012ms** (<2ms), RSS **35.1MB** (<50MB), `doctor` **4ms** (<2s). Plus a
-**fresh-venv install → first brokered call in 2.7s** — the CUJ-1 journey, machine-measured.
+**Stronger alternate title.** Your Test Harness Is Part of the Security Boundary
 
-**Grounding facts.**
-- Table: `FIELD_TEST_REPORT.md` §Performance & Timings — every row carries its machine class.
-- Per-case evidence: `results/FT-NFR-*/summary.json` with the p99 samples in `assertions.json`.
-- The fresh-install measurement (added during the sweep): a genuinely new venv, `pip install` from the
-  working tree, then the **full quickstart** (scan → migrate → first brokered call) timed end-to-end —
-  2.7s, three orders of magnitude under the 15-minute CUJ-1 budget.
-- Measurement discipline: p99 computed over 200–300 samples per measure; the numbers are this box only,
-  stated in the table header — **never a fleet claim**.
+**Core promise.** For infra, platform, and security tooling, the test harness is not a disposable wrapper around
+the “real” product. It participates directly in the trust claim. If the harness can leak a secret, mislabel a
+result, overwrite a human report, or smooth over a bad outcome, then the evidence it emits is weaker than the
+feature it is supposed to validate.
 
----
+**Reader hook.** Teams often treat harness code as second-class: a few scripts, a temp report generator, some
+glue around Docker, maybe a smoke check or two. But when the product’s value proposition is security, safety,
+or controlled access, **the harness becomes part of the proof surface**. Readers should come away with a bigger
+idea: a trustworthy test harness has its own invariants, its own attack surface, and its own quality bar.
 
-## 8. How to keep a human journal machine-safe
+**Why this is unique.** Many articles say “test your tests.” This one is sharper: **for trust-sensitive tools,
+the harness is itself part of the product boundary.** That is a stronger and more memorable claim.
 
-**Title.** The Report No Automation May Write — Enforced in Code, Not by Convention
+**Why a Dev.to reader should care.**
+- Security tools can be undermined by sloppy evidence handling.
+- Infra tools live or die on trust, reproducibility, and operator confidence.
+- Harness design matters for any project where the proof is as important as the feature.
 
-**Hook.** Our field report is a hand-maintained journal — and that rule is **enforced by tests**: the file
-carries a `HAND-MAINTAINED` marker, a guard proves a writer refuses it (relative *and* absolute paths — a
-real prior bug where a guard missed and clobbered the file), drafts land only in
-`FIELD_TEST_REPORT.generated.md`, and the runner rejects any results path under `docs/`. "No automation
-writes the report" is a passing test case like any other.
+**Proposed article shape.**
+1. **Why harnesses are usually under-designed.**
+2. **What can go wrong when the harness is weak:** secret leaks, false greens, artifact drift, report clobbering.
+3. **What harness invariants look like in practice:** grounding, leak scanning, traceability, report guards,
+   self-tests, and independent benchmark packs.
+4. **Why this matters more for infra/security than for ordinary app features.**
+5. **How to raise the harness to product quality:** tests, coverage, static checks, and refusal behavior.
+6. **A practical checklist** for readers maintaining their own tooling.
 
-**Grounding facts.**
-- Guard: `tests/test_field_report_guard.py` — marker presence, builder refusal (exit 2, file untouched),
-  marked-file refusal, generated-sibling-only.
-- Case: FT-HONESTY-REPORT (PASS) — the guard is itself a field case with committed evidence.
-- Precedent: the agentpolicy v0.1.0 report was destroyed once by exactly this bug (relative vs absolute
-  `-o` path comparison) — the lesson is codified in the repo's AGENTS.md violation log.
-- The sweep that filled this report never wrote a byte of it — the runner refuses the path by design.
-
----
-
-## 9. The WARN is the honesty system working — not softness
-
-**Title.** Three Warnings Made This Report Better — and One WARN We Flipped to a PASS
-
-**Hook.** A report with zero WARNs here would be a report that lied. But we also learned the flip side:
-**a WARN can be too pessimistic, and the fix is to compose the missing piece, not to argue.** FT-EV-ENFORCE
-warned "no OS enforcer composed" — so we composed one: `chmod 000` on a planted `.env` plus an enforcer
-callable that **verifies the OS denial is real** (returns False if the file is readable, so it can't lie).
-The WARN became a PASS with a provable block. The three that remain are genuine: a fresh-machine install
-median needs a naive human, Claude Code needs a login, and Cursor is a GUI IDE with no headless surface.
+**Important points to develop in the article.**
+- Evidence quality can be degraded by tooling even when product logic is correct.
+- Human-maintained artifacts sometimes need explicit code-level protection.
+- A benchmark pack should be treated as a product surface, not a throwaway export.
+- Traceability is not bureaucracy; it is how you preserve meaning between claim, case, result, and report.
+- If a harness can silently lower the truth standard, it belongs inside the engineering threat model.
 
 **Grounding facts.**
-- The flip: `results/FT-EV-ENFORCE/summary.json` — PASS; the enforcer's `blocked=True` is backed by an
-  actual `PermissionError`, not a stub returning True.
-- The remaining three WARNs + their `limitations` fields: `results/FT-CL-FIRST/` (scripted median 0.54s +
-  fresh-venv 2.7s green — but not a naive-human fresh-machine median), `results/FT-HC-CLAUDE/` (claude
-  v2.1.187 installed, wiring + smoke green, **`Not logged in · Please run /login`** for headless),
-  `results/FT-HC-CURSOR/` (GUI IDE, no headless CLI on this box).
-- Rules that make WARN honest: a WARN requires a **named limitation and a WARN-eligible class**; the five
-  blocking scenarios (SC-24/40/41/43/51) may never WARN — and none did.
-- The one FAIL we hit was likewise honest: FT-DK-AIRGAP stayed ❌ until the H-1 fix re-ran green, even
-  though the gate it could block was carried by another case.
+- The field-test tooling shipped with its own gates: grounding, leak scan, traceability, and harness self-test.
+- The hand-maintained report is protected by code and tests; automation refuses the canonical report path.
+- The published benchmark pack is machine-readable and tied back to committed results.
+- Final M14 gate: **743 passed**, `ruff` clean, `mypy --strict` clean, coverage **95.22%**.
+- The strongest lessons from the sweep improved the harness and the reporting discipline, not just the product code.
 
----
-
-## 10. Small batches are a durability decision
-
-**Title.** Interrupted Mid-Run Three Times, Lost Nothing — Batches as a Durability Decision
-
-**Hook.** The docker pack ran three times with a fix between each; the final air-gap re-run was
-**interrupted mid-flight** — and nothing else was lost. Packs run one at a time, each group commits its
-evidence, each group is re-runnable alone, and the gates re-derive from disk rather than trusting in-flight
-state. One big `run-all` would have left half a sweep's evidence in an unknown state.
-
-**Grounding facts.**
-- Journal: `FIELD_TEST_REPORT.md` §Small-Group Run Journal, groups 1–6 — run → ground → fix → journal,
-  pause between groups.
-- Runner: `scripts/fieldtest/run_pack.py --pack <one pack>` — packs are independent; a crash in one
-  executor becomes a FAIL result for that case, never a dead sweep (proven by the runner test).
-- The FAIL→fix→re-run loop only ever re-ran the affected pack — three docker re-runs, never the other 15
-  packs.
-- The report was filled in incrementally by hand after each group, not reconstructed at the end.
-
----
-
-## 11. The claims ladder — never use a stronger word than the evidence
-
-**Title.** Documented · Conformance · Field-Tested · Verified — Never Use a Stronger Word
-
-**Hook.** Every claim in our report carries a label: *documented* (written, no test), *conformance* (suite
-green in CI), *field-tested* (a hand-entered verdict against committed evidence), *verified* (a third party
-re-ran it). Kill-time ≤1s is field-tested. The RFC suites are conformance. **Nothing is verified yet** —
-because `bench/` hasn't been re-run by anyone else. The claims audit maps every promoted claim to its row
-and its label.
-
-**Grounding facts.**
-- Audit table: `FIELD_TEST_REPORT.md` §Claims-label audit — 13 claims, each with its label and evidence row.
-- Ladder definitions: [PRD 20 §6](../prd/20-standards-and-claims.md); product-claim vocabulary §6a
-  ("brokered", "audience-bound", "first-class recipe" each have exactly one meaning).
-- Examples in the audit: revoke ≤1s → field-tested (FT-RK-KILLTIME); RFC 8693/8707/… → conformance
-  (FT-CONF-STANDARDS); install <15 min → **documented + machine-measured** (fresh-venv 2.7s; WARN for the
-  naive-human median); third-party re-runs → **not yet**, stated.
-- Anti-pattern the ladder forbids: a "field-tested" claim with no hand-entered verdict; a "verified" claim
-  from our own re-run of our own benchmark.
-
----
-
-## 12. A credential broker with no LLM in it — and no LLM in its tests
-
-**Title.** 74 Test Cases, Zero Model Calls — Determinism Is the Product
-
-**Hook.** Unlike our sibling policy engine (whose field sweep drives local LLMs as oracles), the entire
-agentkeys field test — 74 cases, 16 packs, a full Docker topology — contains **zero model calls**. Every
-decision path is deterministic, every HTTP/exchange target is a fake service that records sha256 hashes
-instead of tokens, every harness "agent" is a fixture child process. For a credential broker, determinism
-isn't a nice-to-have — it's the product.
-
-**Grounding facts.**
-- Plan §2 rule 4: "No ML, no decision-affecting randomness, no network in the decision path" — the boundary
-  is stated before any case runs.
-- Fake upstream: `field-test/v0.1.0/docker/upstream.py` — records metadata + sha256 of auth material,
-  **never a token value**; fake STS returns a fixture exchanged token.
-- Fixture child: `field-test/v0.1.0/docker/child_server.py` — answers only
-  `token_present`/`token_length`/`reference_present`, never echoes the token.
-- Runtime deps: `dependencies = []` — stdlib-only broker (FT-SC-INREPO verifies it against `pyproject.toml`).
-- The only agentic surface would be the live Claude Code / Cursor runs — and those are the **declared
-  WARNs** (Claude: not logged in; Cursor: no headless surface), not silent assumptions.
+**Closing angle.** A strong final line: **“If your tool sells trust, your harness is part of what you are
+selling.”**
