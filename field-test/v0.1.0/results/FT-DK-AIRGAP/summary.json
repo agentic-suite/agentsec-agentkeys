@@ -1,11 +1,11 @@
 {
   "assertions": [
     {
-      "actual": 1,
+      "actual": 0,
       "expected": 0,
       "kind": "eq",
       "name": "airgap-run",
-      "passed": false
+      "passed": true
     },
     {
       "actual": [],
@@ -19,30 +19,30 @@
   "class": "P/F",
   "detail": "offline pack passes in a --network none container",
   "driver": "compose-run",
-  "duration_ms": 390,
+  "duration_ms": 633,
   "env": [
     "docker"
   ],
   "evidence": {
     "files": {
-      "assertions.json": "4d80c111c38e4908b699e188fbc9f23d5b1bae3990226bd7f1d9198c0247ce76",
-      "commands.log": "e58b240e3bb8e7130796dde39f221deb61dc8d6b50aab20b05deec77911db4e0",
-      "env.json": "3c02350c5b685370ed7e8487d37777966cd68a4c7541dd63937f0ffacd905463"
+      "assertions.json": "9a332f15092b6cfa5711aabbb3b16ee9c7ed2906bc2fe38ea56d67ad3052300c",
+      "commands.log": "f158c7b576387e4f4ff22efbb554ee5243f7e21602494963e0cc7feb313d1c22",
+      "env.json": "165c3aba7b3120c064f64990661d57d89a6b21af88ad25a80ed72704709ff6cb"
     }
   },
   "fingerprint": {
     "docker": "Docker version 29.5.2, build 79eb04c7d8",
-    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
     "machine": "arm64",
     "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
     "python": "3.14.5",
     "system": "darwin",
-    "utc": "2026-11-10T03:42:32Z"
+    "utc": "2026-11-10T03:52:43Z"
   },
   "limitations": [],
   "pack": "docker",
-  "passed": false,
+  "passed": true,
   "scenario": "SC-39",
-  "started_at": "2026-11-10T03:42:31Z",
-  "status": "fail"
+  "started_at": "2026-11-10T03:52:42Z",
+  "status": "pass"
 }

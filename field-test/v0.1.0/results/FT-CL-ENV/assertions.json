@@ -14,14 +14,14 @@
     "passed": true
   },
   {
-    "actual": "{'AGENTKEYS_SCOPED_TOKEN': '3f6e5d6c7631532515a447a0ffc8d63d', 'SAFE': 'x'}",
+    "actual": "{'AGENTKEYS_SCOPED_TOKEN': 'e6b6b7a90244fdd57fa69cc156a36b21', 'SAFE': 'x'}",
     "expected": "akref:",
     "kind": "absent",
     "name": "reference-not-in-child-env",
     "passed": true
   },
   {
-    "actual": "{'AGENTKEYS_SCOPED_TOKEN': '3f6e5d6c7631532515a447a0ffc8d63d', 'SAFE': 'x'}",
+    "actual": "{'AGENTKEYS_SCOPED_TOKEN': 'e6b6b7a90244fdd57fa69cc156a36b21', 'SAFE': 'x'}",
     "expected": "SENTINEL-BACKEND-VALUE",
     "kind": "absent",
     "name": "backend-value-absent",

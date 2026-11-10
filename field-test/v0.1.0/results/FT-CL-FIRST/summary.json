@@ -1,59 +1,24 @@
 {
   "assertions": [
     {
-      "actual": 0,
-      "expected": 0,
-      "kind": "eq",
-      "name": "scan",
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "all-exit-codes",
       "passed": true
     },
     {
-      "actual": 0,
-      "expected": 0,
-      "kind": "eq",
-      "name": "migrate",
-      "passed": true
-    },
-    {
-      "actual": 0,
-      "expected": 0,
-      "kind": "eq",
-      "name": "ref",
-      "passed": true
-    },
-    {
-      "actual": 0,
-      "expected": 0,
-      "kind": "eq",
-      "name": "brokered-call",
-      "passed": true
-    },
-    {
-      "actual": 0,
-      "expected": 0,
-      "kind": "eq",
-      "name": "revoke",
-      "passed": true
-    },
-    {
-      "actual": 4,
-      "expected": 4,
-      "kind": "eq",
+      "actual": true,
+      "expected": true,
+      "kind": "true",
       "name": "replay-refused",
       "passed": true
     },
     {
-      "actual": 0,
-      "expected": 0,
+      "actual": 5,
+      "expected": 5,
       "kind": "eq",
-      "name": "export",
-      "passed": true
-    },
-    {
-      "actual": 0,
-      "expected": 0,
-      "kind": "eq",
-      "name": "verify-log",
+      "name": "five-runs",
       "passed": true
     },
     {
@@ -64,44 +29,65 @@
       "passed": true
     },
     {
-      "actual": 0.541,
+      "actual": 0.543,
       "expected": 900.0,
       "kind": "lte",
-      "name": "elapsed-under-15min",
+      "name": "median-under-15min",
+      "passed": true
+    },
+    {
+      "actual": 0.55,
+      "expected": 900.0,
+      "kind": "lte",
+      "name": "max-under-15min",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "fresh-install-ok",
+      "passed": true
+    },
+    {
+      "actual": 0.468,
+      "expected": 900.0,
+      "kind": "lte",
+      "name": "fresh-first-call-under-15min",
       "passed": true
     }
   ],
   "case": "FT-CL-FIRST",
   "class": "P/F|W",
-  "detail": "scripted quickstart green in 0.54s",
+  "detail": "scripted quickstart green; median 0.54s over 5 runs; fresh-venv install\u2192first-call 2.7s",
   "driver": "quickstart",
-  "duration_ms": 541,
+  "duration_ms": 5496,
   "env": [
     "human",
     "docker"
   ],
   "evidence": {
     "files": {
-      "assertions.json": "60b7d4316d53837ccdac34be5c4ba209f369db9614a11a9264881ea87900a14c",
-      "commands.log": "90875fe5c40072782914274aba2d0a67421de4f7c29cfee4992fee5f9901f5df",
-      "env.json": "03eab060703aec7f6a074385f25a1c234331d139f910ee169a48a5d26885d693"
+      "assertions.json": "5b76902c996c0a675ce7f00c3a000347383bc14caa6ed662cff2a2945f585195",
+      "commands.log": "2253594a062fa655e5671fae31973e95579f8c33de4a02f34a41d98221c88e12",
+      "env.json": "63e25fe9d67e2263be5be5aa128ab7cde45dfc5a85ed4cc7d9bc9d05ecc55a87"
     }
   },
   "fingerprint": {
     "docker": "Docker version 29.5.2, build 79eb04c7d8",
-    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
     "machine": "arm64",
     "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
     "python": "3.14.5",
     "system": "darwin",
-    "utc": "2026-11-10T03:41:43Z"
+    "utc": "2026-11-10T04:01:43Z"
   },
   "limitations": [
-    "no fresh field box for the timed <15-min median; the scripted path ran (plan \u00a78)"
+    "the timed path ran 5x on this machine plus a fresh-venv install median; not a naive-human fresh-machine median (plan \u00a78)"
   ],
   "pack": "core",
   "passed": false,
   "scenario": "SC-01",
-  "started_at": "2026-11-10T03:41:42Z",
+  "started_at": "2026-11-10T04:01:37Z",
   "status": "warn"
 }

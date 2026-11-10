@@ -1,7 +1,7 @@
 {
   "assertions": [
     {
-      "actual": "edd960eb1b5ad03f006afcb9dd8dd5b1",
+      "actual": "c7eff442474d67610437fadbec5d5982",
       "expected": true,
       "kind": "present",
       "name": "resolved",
@@ -32,24 +32,24 @@
   ],
   "evidence": {
     "files": {
-      "assertions.json": "7d9b4f808da2f46fa71a140fa05c3ca90bf17b7b5bf55636f8e3669100605a11",
-      "commands.log": "a854d97deef67927127663e3c0e060f3c17185a10de20d2ce88baec20895ab2e",
-      "env.json": "2b84aa3d66477695368f6d13c4c8e7c44beb33ae75fe3ce676e4435f2739d7ab"
+      "assertions.json": "b547996559251c84c17f9dbd9a85ecd4e1d9ffe355b006829c4673f0a3842afb",
+      "commands.log": "22bd1eb14b94dd8c349cfc35d3b22b88f805aeed44fb76301e4890d547ad183d",
+      "env.json": "e83844e7b24308964646d56e2873d8b536777bb5637632e6e46c6d86b5c2ff82"
     }
   },
   "fingerprint": {
     "docker": "Docker version 29.5.2, build 79eb04c7d8",
-    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
     "machine": "arm64",
     "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
     "python": "3.14.5",
     "system": "darwin",
-    "utc": "2026-11-10T03:41:44Z"
+    "utc": "2026-11-10T04:00:52Z"
   },
   "limitations": [],
   "pack": "harness",
   "passed": true,
   "scenario": "SC-37",
-  "started_at": "2026-11-10T03:41:44Z",
+  "started_at": "2026-11-10T04:00:52Z",
   "status": "pass"
 }

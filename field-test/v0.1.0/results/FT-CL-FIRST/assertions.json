@@ -1,58 +1,23 @@
 [
   {
-    "actual": 0,
-    "expected": 0,
-    "kind": "eq",
-    "name": "scan",
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "all-exit-codes",
     "passed": true
   },
   {
-    "actual": 0,
-    "expected": 0,
-    "kind": "eq",
-    "name": "migrate",
-    "passed": true
-  },
-  {
-    "actual": 0,
-    "expected": 0,
-    "kind": "eq",
-    "name": "ref",
-    "passed": true
-  },
-  {
-    "actual": 0,
-    "expected": 0,
-    "kind": "eq",
-    "name": "brokered-call",
-    "passed": true
-  },
-  {
-    "actual": 0,
-    "expected": 0,
-    "kind": "eq",
-    "name": "revoke",
-    "passed": true
-  },
-  {
-    "actual": 4,
-    "expected": 4,
-    "kind": "eq",
+    "actual": true,
+    "expected": true,
+    "kind": "true",
     "name": "replay-refused",
     "passed": true
   },
   {
-    "actual": 0,
-    "expected": 0,
+    "actual": 5,
+    "expected": 5,
     "kind": "eq",
-    "name": "export",
-    "passed": true
-  },
-  {
-    "actual": 0,
-    "expected": 0,
-    "kind": "eq",
-    "name": "verify-log",
+    "name": "five-runs",
     "passed": true
   },
   {
@@ -63,10 +28,31 @@
     "passed": true
   },
   {
-    "actual": 0.541,
+    "actual": 0.543,
     "expected": 900.0,
     "kind": "lte",
-    "name": "elapsed-under-15min",
+    "name": "median-under-15min",
+    "passed": true
+  },
+  {
+    "actual": 0.55,
+    "expected": 900.0,
+    "kind": "lte",
+    "name": "max-under-15min",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "fresh-install-ok",
+    "passed": true
+  },
+  {
+    "actual": 0.468,
+    "expected": 900.0,
+    "kind": "lte",
+    "name": "fresh-first-call-under-15min",
     "passed": true
   }
 ]

@@ -7,6 +7,13 @@
     "passed": true
   },
   {
+    "actual": "{'mcpServers': {'agentkeys': {'command': 'agentkeys', 'args': ['run', '--server', 'akref:file/agentkeys/dev/token', '--', '<server-command>'], 'env': {}}}}",
+    "expected": "agentkeys",
+    "kind": "contains",
+    "name": "wiring-command-is-broker",
+    "passed": true
+  },
+  {
     "actual": true,
     "expected": true,
     "kind": "true",
@@ -22,13 +29,6 @@
     ],
     "kind": "eq",
     "name": "transcript-only-reference",
-    "passed": true
-  },
-  {
-    "actual": true,
-    "expected": true,
-    "kind": "true",
-    "name": "no-token-in-transcript",
     "passed": true
   }
 ]

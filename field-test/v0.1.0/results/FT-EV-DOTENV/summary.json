@@ -40,23 +40,23 @@
   "evidence": {
     "files": {
       "assertions.json": "27ce3c1dfe3a30e939756d63e3f1725af07aa433a18918abc1138ded1e7f2298",
-      "commands.log": "4cfc630d8c4dbbc2582d402340463526d6a008c9a667ec5cc6d83dde115946a5",
-      "env.json": "03eab060703aec7f6a074385f25a1c234331d139f910ee169a48a5d26885d693"
+      "commands.log": "1aa8930963623fe718bc05c42f6a773792ef176abc6234c85d3bbf9f6aadee16",
+      "env.json": "918a4a679088c1a0fde38963899ba0eb8f7b089f239a8feae986f91e177907ed"
     }
   },
   "fingerprint": {
     "docker": "Docker version 29.5.2, build 79eb04c7d8",
-    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
     "machine": "arm64",
     "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
     "python": "3.14.5",
     "system": "darwin",
-    "utc": "2026-11-10T03:41:43Z"
+    "utc": "2026-11-10T04:00:51Z"
   },
   "limitations": [],
   "pack": "evasion",
   "passed": true,
   "scenario": "SC-14",
-  "started_at": "2026-11-10T03:41:43Z",
+  "started_at": "2026-11-10T04:00:51Z",
   "status": "pass"
 }

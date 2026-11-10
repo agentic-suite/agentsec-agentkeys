@@ -19,30 +19,30 @@
   "class": "P/F",
   "detail": "quickstart broker step runs inside the broker container",
   "driver": "compose-run",
-  "duration_ms": 504,
+  "duration_ms": 545,
   "env": [
     "docker"
   ],
   "evidence": {
     "files": {
       "assertions.json": "b1390ceeef888465aa26c2264228d5a936827c4bf15f3cefa1c5492fbffffa40",
-      "commands.log": "48f7333b5eded24dba15551b6fe7903945b1577f80dcbce343823ff859f11f78",
-      "env.json": "b723b929732188974ae4087f61214f6b2da5a031c9cef8c2471808edf9e85c92"
+      "commands.log": "c710fffc3b838ba59f9b576cb2e34aa8d4a42a04964e5b051ee112779da340ab",
+      "env.json": "0cbf66145cc454502127e9daa2807d79a4a255a61a9f8bd7dc2abb009b2abaa8"
     }
   },
   "fingerprint": {
     "docker": "Docker version 29.5.2, build 79eb04c7d8",
-    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
     "machine": "arm64",
     "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
     "python": "3.14.5",
     "system": "darwin",
-    "utc": "2026-11-10T03:42:31Z"
+    "utc": "2026-11-10T03:52:42Z"
   },
   "limitations": [],
   "pack": "docker",
   "passed": true,
   "scenario": "SC-01",
-  "started_at": "2026-11-10T03:42:30Z",
+  "started_at": "2026-11-10T03:52:42Z",
   "status": "pass"
 }

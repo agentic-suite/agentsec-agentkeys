@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import json
 import shutil
 import socket
+import subprocess
 from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
@@ -19,9 +21,10 @@ from agentkeys.egress.contract import (
 )
 from agentkeys.egress.env import DEFAULT_VARIABLE
 from agentkeys.egress.header import HeaderInjector
+from agentkeys.events import build_event
 from agentkeys.evidence import scan_evidence, scan_text
 from agentkeys.export import render_rows
-from agentkeys.fieldtest.models import CaseOutcome, RunEnv, emit
+from agentkeys.fieldtest.models import Assertion, CaseOutcome, RunEnv, emit
 from agentkeys.invariants import AUDIENCE, TOOL, build_context
 from agentkeys.ledger import verify_chain
 from agentkeys.migrate import FileSecretWriter, Migrator
@@ -48,7 +51,7 @@ def _warn(detail: str, limitation: str, assertions: Sequence[Any]) -> CaseOutcom
     )
 
 
-def _recipe_case(name: str) -> CaseOutcome:
+def _recipe_case(name: str) -> tuple[Any, dict[str, Any], Any]:
     recipe = get_recipe(name)
     wiring = render_mcp_wiring(recipe, reference="akref:file/agentkeys/dev/token")
     validate_wiring(recipe, wiring)
@@ -78,29 +81,93 @@ def _recipe_case(name: str) -> CaseOutcome:
         )
     finally:
         ctx.store.close()
-    assertions = [
+    return recipe, wiring, smoke
+
+
+def _recipe_assertions(
+    recipe: Any, wiring: dict[str, Any], smoke: Any
+) -> list[tuple[str, str, object, object]]:
+    return [
         ("wiring-valid", "true", True, recipe.supported),
+        ("wiring-command-is-broker", "contains", "agentkeys", str(wiring)),
         ("smoke-authenticated", "true", True, smoke.ok),
         ("transcript-only-reference", "eq", ("ref_1",), smoke.transcript),
-        ("no-token-in-transcript", "true", True, expected not in str(smoke.transcript)),
     ]
-    return _warn(
-        f"{recipe.harness}: wiring + smoke green",
-        f"the live {recipe.harness} run is not automated in the runner; the mandatory "
-        "wiring + smoke are verified and the live run is declared (plan §8)",
-        [
-            __import__("agentkeys.fieldtest.models", fromlist=["Assertion"]).Assertion(*a)
-            for a in assertions
-        ],
-    )
 
 
 def hc_claude(env: RunEnv, tmp: Path) -> CaseOutcome:
-    return _recipe_case("claude-code")
+    """SC-35: Claude Code recipe — wiring + smoke + a live headless `claude -p` run."""
+    recipe, wiring, smoke = _recipe_case("claude-code")
+    assertions = _recipe_assertions(recipe, wiring, smoke)
+    claude_bin = shutil.which("claude")
+    if claude_bin is None:
+        return _warn(
+            "Claude Code: wiring + smoke green; claude CLI absent",
+            "claude CLI not installed on this box; wiring + smoke verified, "
+            "the live run is declared (plan §8)",
+            [Assertion(*a) for a in assertions],
+        )
+    version = subprocess.run(
+        [claude_bin, "--version"], capture_output=True, text=True, check=False
+    ).stdout.strip()
+    mcp_config = tmp / "mcp.json"
+    mcp_config.write_text(json.dumps(wiring, indent=2))
+    live = subprocess.run(
+        [claude_bin, "--mcp-config", str(mcp_config), "-p", "list tools"],
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=120,
+        cwd=str(tmp),
+    )
+    live_output = (live.stdout + live.stderr).strip()
+    assertions += [
+        ("claude-installed", "contains", "Claude Code", version),
+        (
+            "live-no-secret",
+            "eq",
+            (),
+            scan_text(live_output),
+        ),
+    ]
+    if live.returncode != 0 or "Not logged in" in live_output:
+        # The honest state: the CLI is installed but not authenticated for
+        # headless use. The wiring + smoke are green; the live loop is declared,
+        # not faked.
+        return _warn(
+            f"Claude Code {version}: wiring + smoke green; live headless run not authenticated",
+            "claude CLI installed but not logged in on this box "
+            f"({live_output[:80] or 'exit ' + str(live.returncode)}); "
+            "wiring + smoke verified, the live run is declared (plan §8)",
+            [Assertion(*a) for a in assertions],
+        )
+    assertions += [("live-exit-zero", "true", True, live.returncode == 0)]
+    return emit(
+        list(assertions),
+        detail=f"Claude Code {version}: wiring + smoke + live headless run green",
+    )
 
 
 def hc_cursor(env: RunEnv, tmp: Path) -> CaseOutcome:
-    return _recipe_case("cursor")
+    """SC-36: Cursor recipe — wiring + smoke; Cursor is a GUI IDE with no headless CLI."""
+    recipe, wiring, smoke = _recipe_case("cursor")
+    assertions = _recipe_assertions(recipe, wiring, smoke)
+    cursor_bin = shutil.which("cursor") or shutil.which("cursor-agent")
+    if cursor_bin is None:
+        return _warn(
+            "Cursor: wiring + smoke green; no headless CLI on this box",
+            "Cursor is a GUI IDE (VS Code fork) with no headless/evidence-capturing "
+            "CLI surface on this box; the wiring + smoke are verified and the live "
+            "run is declared (plan §8)",
+            [Assertion(*a) for a in assertions],
+        )
+    version = subprocess.run(
+        [cursor_bin, "--version"], capture_output=True, text=True, check=False
+    ).stdout.strip()
+    return emit(
+        [*assertions, ("cursor-version", "present", True, version)],
+        detail=f"Cursor {version}: wiring + smoke green",
+    )
 
 
 def hc_generic(env: RunEnv, tmp: Path) -> CaseOutcome:
@@ -220,9 +287,7 @@ def ap_tamper(env: RunEnv, tmp: Path) -> CaseOutcome:
     except TamperError as exc:
         tampered = str(exc)
     store.append_event(
-        __import__("agentkeys.events", fromlist=["build_event"]).build_event(
-            "issuance.created", occurred_at=1000, session_id="s1"
-        )
+        build_event("issuance.created", occurred_at=1000, session_id="s1")
     )
     rows = list(store.read_ledger())
     rows[0] = rows[0].__class__(
@@ -296,8 +361,11 @@ def ap_evidence(env: RunEnv, tmp: Path) -> CaseOutcome:
         ctx.core.resolve("ref_1", audience=AUDIENCE, tool=TOOL, session_id=ctx.session_id)
         clean = scan_evidence(ctx.store)
         ctx.store.append_event(
-            __import__("agentkeys.events", fromlist=["build_event"]).build_event(
-                "exchange-rejected", occurred_at=2000, session_id=ctx.session_id, reason=_SEEDED
+            build_event(
+                "exchange-rejected",
+                occurred_at=2000,
+                session_id=ctx.session_id,
+                reason=_SEEDED,
             )
         )
         seeded = scan_evidence(ctx.store)

@@ -1,10 +1,10 @@
 [
   {
-    "actual": 1,
+    "actual": 0,
     "expected": 0,
     "kind": "eq",
     "name": "airgap-run",
-    "passed": false
+    "passed": true
   },
   {
     "actual": [],

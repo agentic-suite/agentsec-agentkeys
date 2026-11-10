@@ -1,8 +1,8 @@
 case=FT-DK-QUICKSTART
 pack=docker
 driver=compose-run
-started=2026-11-10T03:42:30Z
-duration_ms=504
+started=2026-11-10T03:52:42Z
+duration_ms=545
 iterations=100
 fresh_box=False
 results=/Users/deghosal/Desktop/code/github/agentic-suite/agentkeys/field-test/v0.1.0/results/FT-DK-QUICKSTART

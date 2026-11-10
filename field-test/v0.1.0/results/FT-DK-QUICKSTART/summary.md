@@ -1,7 +1,7 @@
 # FT-DK-QUICKSTART — PASS
 
 - pack: `docker` · scenario: `SC-01` · class: `P/F`
-- driver: `compose-run` · duration: 504ms
+- driver: `compose-run` · duration: 545ms
 - detail: quickstart broker step runs inside the broker container
 
 | assertion | kind | expected | actual | passed |

@@ -19,30 +19,30 @@
   "class": "P/F",
   "detail": "the child container has no path to the broker store or credentials",
   "driver": "compose-exec",
-  "duration_ms": 264,
+  "duration_ms": 249,
   "env": [
     "docker"
   ],
   "evidence": {
     "files": {
       "assertions.json": "e8a03b57505ec98fba7f22efdd9d013282d80ec56fc254e286b5807c800e4dba",
-      "commands.log": "77a59ef566790e1a34a31cb5cca4ae7d9ca04feeb3ab1874c79f88461085a32e",
-      "env.json": "b723b929732188974ae4087f61214f6b2da5a031c9cef8c2471808edf9e85c92"
+      "commands.log": "32eed887ed1be83e9b1b639e60f07a5b93bf58e78817fa29f4026e2fb3c01c17",
+      "env.json": "0cbf66145cc454502127e9daa2807d79a4a255a61a9f8bd7dc2abb009b2abaa8"
     }
   },
   "fingerprint": {
     "docker": "Docker version 29.5.2, build 79eb04c7d8",
-    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
     "machine": "arm64",
     "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
     "python": "3.14.5",
     "system": "darwin",
-    "utc": "2026-11-10T03:42:31Z"
+    "utc": "2026-11-10T03:52:42Z"
   },
   "limitations": [],
   "pack": "docker",
   "passed": true,
   "scenario": null,
-  "started_at": "2026-11-10T03:42:31Z",
+  "started_at": "2026-11-10T03:52:42Z",
   "status": "pass"
 }

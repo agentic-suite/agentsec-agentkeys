@@ -19,5 +19,12 @@
     "kind": "true",
     "name": "blocked-when-composed",
     "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "composed-block-is-real",
+    "passed": true
   }
 ]

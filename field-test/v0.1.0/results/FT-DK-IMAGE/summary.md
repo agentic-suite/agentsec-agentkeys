@@ -1,7 +1,7 @@
 # FT-DK-IMAGE — PASS
 
 - pack: `docker` · scenario: `None` · class: `P/F`
-- driver: `compose-inspect` · duration: 3308ms
+- driver: `compose-inspect` · duration: 5837ms
 - detail: image built; user=10001:10001
 
 | assertion | kind | expected | actual | passed |

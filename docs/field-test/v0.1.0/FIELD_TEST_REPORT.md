@@ -6,27 +6,28 @@
 
 # agentkeys v0.1.0 — Field Test Report
 
-> **Status: SWEEP COMPLETE — 69 PASS · 1 FAIL · 4 WARN · 0 NOT RUN (74/74).** This is a **hand-maintained**
+> **Status: SWEEP COMPLETE — 71 PASS · 0 FAIL · 3 WARN · 0 NOT RUN (74/74).** This is a **hand-maintained**
 > journal, updated as the field test runs — not a generated scoreboard. Counts here are read from the committed
 > `field-test/v0.1.0/results/` verdicts and written **by hand**; nothing is auto-overwritten.
-> **Current:** **69 ✅ PASS · 1 ❌ FAIL · 4 ⚠ WARN · 0 ▫ NOT RUN** (74/74 — every case has a verdict).
+> **Current:** **71 ✅ PASS · 0 ❌ FAIL · 3 ⚠ WARN · 0 ▫ NOT RUN** (74/74 — every case has a verdict).
 > **All five blocking scenarios are PASS** (SC-24 kill-time, SC-40 context-dump, SC-41 tamper, SC-43 evidence,
-> SC-51 scan/migrate). The one FAIL (FT-DK-AIRGAP) is a **harness environment defect** — a Docker named-volume
-> permissions issue in the air-gap executor — not a product defect; the underlying property (offline core +
-> revoke) is **proven green by FT-AG-OFFLINE** (the same assertions against a sockets-disabled broker). The 4
-> WARN are the four `P/F|W` cases with their §8-plan limitations named.
+> SC-51 scan/migrate). The 3 WARN are genuine limitations of this box, each named: FT-CL-FIRST (the scripted
+> quickstart + a fresh-venv install median ran green — but not a *naive-human fresh-machine* median),
+> FT-HC-CLAUDE (claude CLI v2.1.187 installed, wiring + smoke green — but **not logged in** for a live
+> headless run), FT-HC-CURSOR (Cursor is a GUI IDE with no headless CLI on this box). The earlier
+> FT-DK-AIRGAP FAIL and the FT-EV-ENFORCE WARN are **both fixed and re-run green** (defects H-1 and the
+> composed-enforcer fix in the catalogue).
 > **Structure:** follows the format of the `agentpolicy` v0.1.0 `FIELD_TEST_REPORT.md` (a journal, not a
 > scoreboard), pointed at [FIELD_TEST_PLAN.md](FIELD_TEST_PLAN.md) §4 (case matrix), §5 (coverage),
-> §6 (blocking specs), §9 (gates). This report states **honestly** what was tested, what passed, and what
-> was **not** run. Verdicts are entered by hand from committed evidence; a `WARN` always names its §8-plan
-> limitation; a blocking case (SC-24/40/41/43/51) may never be WARN or NOT RUN — none is.
-> **Reviewer:** @deghosal-2026 · **Date opened:** 2026-11-09 · **Last hand-edit:** 2026-11-09 19:50 PST
+> §6 (blocking specs), §9 (gates). Verdicts are entered by hand from committed evidence; a `WARN` always
+> names its §8-plan limitation; a blocking case (SC-24/40/41/43/51) may never be WARN or NOT RUN — none is.
+> **Reviewer:** @deghosal-2026 · **Date opened:** 2026-11-09 · **Last hand-edit:** 2026-11-09 21:30 PST
 
 ---
 
 ## BLUF + Release Gate Verdict
 
-> **69 PASS · 1 FAIL · 4 WARN · 0 NOT RUN (74/74 — sweep complete).** All 16 packs ran in small groups
+> **71 PASS · 0 FAIL · 3 WARN · 0 NOT RUN (74/74 — sweep complete).** All 16 packs ran in small groups
 > (run → deep-validate → fix → journal), every PASS is **grounded** (each assertion re-derived from the
 > committed `summary.json` by `check_grounding.py`, never trusted from an exit code), and the leak gate
 > (`scan_results.py`) is clean over the entire results tree. **The Docker topology is built and exercised**:
@@ -35,19 +36,17 @@
 > green**: kill-time ≤1s (p95 0.015ms, max 0.030ms — 33,000× under budget), context-dump finds zero usable
 > credentials with the seeded falsification control firing, tamper fails closed on every vector, the
 > evidence scanner is clean with its seeded leak caught, and scan/migrate reaches 100% recall with zero
-> printed values. The one FAIL is a Docker volume-permissions bug in the air-gap **executor** (root-owned
-> named volume blocks the non-root user's `mkdir`); the property it was probing is proven by FT-AG-OFFLINE
-> (same assertions, sockets-disabled broker) — the fix is a one-line volume chown, recorded in the defect
-> catalogue.
+> printed values. The 4 WARN are the four `P/F|W` cases with their §8-plan limitations named — each is
+> a genuine limitation of this box, not a softness.
 
 ### Run status (74/74 verdicts)
 
 | | Count |
 |---|---|
-| PASS (raw verdict) | 69 |
-| — of which grounded (assertion re-derived from the committed results, not exit-0) | 69 (0 over-claimed) |
-| FAIL | 1 (FT-DK-AIRGAP — harness env defect; property covered by FT-AG-OFFLINE PASS) |
-| WARN (P/F\|W with a §8-plan limitation named) | 4 (FT-CL-FIRST, FT-EV-ENFORCE, FT-HC-CLAUDE, FT-HC-CURSOR) |
+| PASS (raw verdict) | 71 |
+| — of which grounded (assertion re-derived from the committed results, not exit-0) | 71 (0 over-claimed) |
+| FAIL | **0** (the earlier FT-DK-AIRGAP FAIL is **fixed and re-run green** — defect H-1, RCA below) |
+| WARN (P/F\|W with a §8-plan limitation named) | 3 (FT-CL-FIRST, FT-HC-CLAUDE, FT-HC-CURSOR — FT-EV-ENFORCE flipped PASS with a composed enforcer) |
 | NOT RUN | 0 (all 74 cases have verdicts) |
 | Removed from scope (not claimed as supported) | 0 |
 | N/A (retired) | 0 |
@@ -63,14 +62,14 @@ limitation is the only honest alternative; never a silent skip). `WARN` is forbi
 |---|---|---|---|
 | 1 | **Kill-time ≤1s end-to-end, replay-verified, in CI** (SC-24, blocking) | ✅ | FT-RK-KILLTIME — **p95 0.015ms · max 0.030ms over N=100/scope**; every replay refused; 33,000× under budget |
 | 2 | **Context-dump finds 0 usable credentials** (SC-40, blocking) | ✅ | FT-AP-CONTEXTDUMP — 0 usable in every variant; the seeded falsification control **fires** |
-| 3 | **Fail-closed matrix 100% deny-or-pending** (E4) | ✅ | FT-FC-* 6/6 — locked/absent/config/store/sink/crash all deny-or-recover, zero fallbacks |
+| 3 | **Fail-closed matrix 100% deny-or-pending** (E4) | ✅ | FT-FC-* 6/6 + FT-EV-ENFORCE (composed deny) — zero fallbacks |
 | 4 | **Evidence scanner: 0 secrets in store/export/ledger** (SC-43, blocking) | ✅ | FT-AP-EVIDENCE — clean scan; the seeded leak **fails naming its row** |
 | 5 | **Tamper against us fails closed** (SC-41, blocking) | ✅ | FT-AP-TAMPER — config/ledger/spoof vectors all deny + emit events |
 | 6 | **stdio MCP: authenticated call, 0 secret in config/env/context** (SC-12/13) | ✅ | FT-ST-* 2/2 + FT-DK-BOUNDARY — child container isolated, no path to store/credentials |
 | 7 | **scan/migrate: 100% recall, 0 printed values** (SC-51, blocking) | ✅ | FT-MP-SCANMIGRATE — 100% recall, 0 printed, every site rewritten, finding closed |
 | 8 | **Install → first brokered call < 15 min** (CUJ-1) | ⚠ | FT-CL-FIRST — scripted quickstart green in 0.54s; **no fresh-box median** (§8 limitation, named) |
 | 9 | **≥2 Tier-1 harness recipes end in a verified authenticated call** (E8) | ⚠ | FT-HC-CLAUDE/CURSOR — wiring + smoke green for both; **live harness runs not automated** (§8 limitation, named) |
-| 10 | **Offline: core + revoke with the network off** (CUJ-11, SC-39) | ✅ | FT-AG-OFFLINE — resolve/use/revoke with sockets disabled; cloud backend refuses. FT-DK-AIRGAP ❌ is a **harness env defect** (volume permissions), property covered |
+| 10 | **Offline: core + revoke with the network off** (CUJ-11, SC-39) | ✅ | FT-AG-OFFLINE + FT-DK-AIRGAP — **both PASS** (airgap fixed: H-1 volume chown) |
 | 11 | **Conformance report green; unsupported standards labeled** (E13) | ✅ | FT-CONF-STANDARDS — zero failures; DPoP reported `not-supported`, never implied |
 | 12 | **Supply-chain floor** (E15, in-repo scope; signing/attestation = M15) | ✅ | FT-SC-INREPO + FT-DK-IMAGE — stdlib-only, security.txt, CI gates, SBOM, fuzz; image non-root UID 10001, secret-free |
 | 13 | **Claims ≤ evidence labels; gaps named** (PRD 20 §6) | ✅ | FT-HONESTY-GAPS + FT-HONESTY-REPORT — claims audit below; every gap named |
@@ -118,9 +117,9 @@ attack → migrate → ops → nfr → conformance → killtime → contextdump 
   broker, one kill; all four binding replays refused; stdio child authenticates with **zero secrets** in its
   config/env/transcript and the client token is stripped; evasion classified + recorded as high-severity
   events on all three path classes.
-- **WARN (honest):** `FT-CL-FIRST` — the scripted quickstart is green in **0.54s** (all 8 commands exit as
-  documented, replay refuses, no secret printed), but there is **no fresh field box** for the <15-min median
-  of ≥5 runs. Limitation named in the result and here.
+- **WARN (honest):** `FT-CL-FIRST` — the scripted quickstart is green (5-run **median 0.54s**, all exit
+  codes exact, replay refuses, no secret printed) plus a **fresh-venv install→first-call 2.7s** measurement
+  — but there is **no naive-human fresh-machine median**. Limitation named in the result and here.
 - **WARN (honest):** `FT-EV-ENFORCE` — enforce mode blocks **only** where an enforcer composes; with none
   composed the gap is **named**, never claimed as a block (plan §8).
 - **Captured evidence:** `results/FT-CL-*/`, `results/FT-BR-*/`, `results/FT-ST-*/`, `results/FT-EV-*/`.
@@ -155,16 +154,16 @@ attack → migrate → ops → nfr → conformance → killtime → contextdump 
 - **Captured evidence:** `results/FT-OPS-*/`, `results/FT-NFR-*/`, `results/FT-CONF-*/`,
   `results/FT-HC-*/`, `results/FT-SC-INREPO/`, `results/FT-HONESTY-*/`.
 
-### Group 6 — `docker` — **6/7 ✅ · 1 ❌ FAIL (harness env defect, RCA below), grounded** (2026-11-09)
-- **Run:** `--pack docker` → exit 1; **6 PASS + 1 FAIL** across three attempts (fixes between attempts).
-- **Grounding:** all 6 PASS re-derived; the FAIL is honest and root-caused below.
+### Group 6 — `docker` — **7/7 ✅ PASS, grounded** (2026-11-09; airgap FAIL→fixed→re-run green)
+- **Run:** `--pack docker` → exit 0; **7/7 PASS** (after two fix rounds: H-1 volume chown, H-3 entrypoint).
+- **Grounding:** all 7 PASS re-derived; leak scan clean.
 - **Findings:** image non-root **UID 10001**, pinned, secret-free; topology boots healthy with `0600` store;
   quickstart runs green **inside** the broker container; **the child container has no path to the store or
   credentials** (the stdio boundary is real); evidence sidecar scans clean; a second broker on the same home
   is **refused** (single writer, D-08).
-- **FAIL (honest):** `FT-DK-AIRGAP` — the air-gap container leg. **Root cause: a Docker named-volume
-  permissions bug in the harness executor, not the product** — see RCA. The property (offline core + revoke)
-  is **proven green by FT-AG-OFFLINE** in the same sweep.
+- **FAIL→FIXED (honest):** `FT-DK-AIRGAP` failed on the first run — a Docker named-volume root-ownership
+  vs non-root broker bug in the **executor** (H-1). Fixed with a root-user volume chown prep step; re-run
+  **PASS**. The property was never in doubt (FT-AG-OFFLINE carried it green throughout).
 - **What I fixed (between attempts):** the runner's fingerprint hardened for container use (`docker`/`git`
   absent → "unavailable", no crash); the scan service got `AGENTKEYS_FIELD_ROOT`; the child probe got an
   explicit `--entrypoint`; `compose run --network` → plain `docker run --network none` (compose v2 has no
@@ -246,7 +245,7 @@ FT-HC-CURSOR (live harness runs not automated). The WARNs are the honesty system
 
 | Case | Suite | Class | Status | Notes |
 |---|---|---|---|---|
-| FT-CL-FIRST | core (SC-01) | P/F\|W | ⚠ WARN | scripted quickstart green in 0.54s; **no fresh-box median** (§8) |
+| FT-CL-FIRST | core (SC-01) | P/F\|W | ⚠ WARN | scripted 5×median 0.54s + fresh-venv install→call 2.7s green; not a naive-human median (§8) |
 | FT-CL-ENV | core (SC-02) | P/F | ✅ PASS | placeholder → scoped token; 0 secret bytes in transcript |
 | FT-CL-HEADER | core (SC-03) | P/F | ✅ PASS | upstream sees broker token; client token absent |
 | FT-CL-EXCHANGE | core (SC-04) | P/F | ✅ PASS | audience/scope/act correct; client token absent |
@@ -277,7 +276,7 @@ FT-HC-CURSOR (live harness runs not automated). The WARNs are the honesty system
 | FT-EV-DOTENV | evasion (SC-14) | P/F | ✅ PASS | high-severity event, attributed |
 | FT-EV-CLOUD | evasion (SC-15) | P/F | ✅ PASS | path named |
 | FT-EV-KEYCHAIN | evasion (SC-16) | P/F | ✅ PASS | attributed |
-| FT-EV-ENFORCE | evasion (SC-17) | P/F\|W | ⚠ WARN | gap **named** without an enforcer; blocked when composed |
+| FT-EV-ENFORCE | evasion (SC-17) | P/F\|W | ✅ PASS | OS filesystem deny composed; the read is **provably blocked**; gap named without |
 
 ### Fail-closed (SC-18–23)
 
@@ -319,7 +318,7 @@ FT-HC-CURSOR (live harness runs not automated). The WARNs are the honesty system
 
 | Case | Suite | Class | Status | Notes |
 |---|---|---|---|---|
-| FT-HC-CLAUDE | harness (SC-35) | P/F\|W | ⚠ WARN | wiring+smoke green; live run not automated (§8) |
+| FT-HC-CLAUDE | harness (SC-35) | P/F\|W | ⚠ WARN | claude v2.1.187 installed; wiring+smoke green; **live headless not logged in** (§8) |
 | FT-HC-CURSOR | harness (SC-36) | P/F\|W | ⚠ WARN | wiring+smoke green; Cursor absent on this box (§8) |
 | FT-HC-GENERIC | harness (SC-37) | P/F | ✅ PASS | SDK resolve→use; no `get_secret` |
 | FT-HC-NOTYET | harness (SC-38) | P/F | ✅ PASS | JetBrains labelled not-yet |
@@ -351,7 +350,7 @@ FT-HC-CURSOR (live harness runs not automated). The WARNs are the honesty system
 | FT-DK-COMPOSE | docker | P/F | ✅ PASS | topology healthy; store `0600` |
 | FT-DK-QUICKSTART | docker | P/F | ✅ PASS | quickstart green inside the container |
 | FT-DK-BOUNDARY | docker | P/F | ✅ PASS | **child container isolated** from store/credentials |
-| FT-DK-AIRGAP | docker | P/F | ❌ FAIL | **harness env defect** (volume permissions) — RCA below |
+| FT-DK-AIRGAP | docker | P/F | ✅ PASS | offline pack passes in a `--network none` container (H-1 fix) |
 | FT-DK-EVIDENCE | docker | P/F | ✅ PASS | sidecar scan clean |
 | FT-DK-SINGLEWRITER | docker | P/F | ✅ PASS | second broker refused |
 
@@ -392,7 +391,7 @@ FT-HC-CURSOR (live harness runs not automated). The WARNs are the honesty system
 | FT-HONESTY-GAPS | conformance | P/F | ✅ PASS | claims ≤ evidence |
 | FT-HONESTY-REPORT | conformance | P/F | ✅ PASS | marker present; guard refuses this file |
 
-**Totals:** **69 ✅ PASS · 1 ❌ FAIL · 4 ⚠ WARN · 0 ▫ NOT RUN** (74/74).
+**Totals:** **71 ✅ PASS · 0 ❌ FAIL · 3 ⚠ WARN · 0 ▫ NOT RUN** (74/74).
 
 ---
 
@@ -400,11 +399,11 @@ FT-HC-CURSOR (live harness runs not automated). The WARNs are the honesty system
 
 | Pack | Cases | PASS | FAIL | WARN | NOT RUN |
 |---|---|---|---|---|---|
-| docker | 7 | 6 | 1 | 0 | 0 |
+| docker | 7 | 7 | 0 | 0 | 0 |
 | core | 7 | 6 | 0 | 1 | 0 |
 | binding | 4 | 4 | 0 | 0 | 0 |
 | stdio | 2 | 2 | 0 | 0 | 0 |
-| evasion | 4 | 3 | 0 | 1 | 0 |
+| evasion | 4 | 4 | 0 | 0 | 0 |
 | failclosed | 6 | 6 | 0 | 0 | 0 |
 | killtime | 5 | 5 | 0 | 0 | 0 |
 | audit | 4 | 4 | 0 | 0 | 0 |
@@ -416,13 +415,13 @@ FT-HC-CURSOR (live harness runs not automated). The WARNs are the honesty system
 | ops | 7 | 7 | 0 | 0 | 0 |
 | nfr | 10 | 10 | 0 | 0 | 0 |
 | conformance | 5 | 5 | 0 | 0 | 0 |
-| **Total** | **74** | **69** | **1** | **4** | **0** |
+| **Total** | **74** | **71** | **0** | **3** | **0** |
 
 ---
 
 ## Root Cause Analysis
 
-### FT-DK-AIRGAP — FAIL (open; harness env defect, not a product defect)
+### FT-DK-AIRGAP — FAIL → ✅ FIXED (harness env defect, not a product defect)
 - **Symptom:** the air-gap container leg exits 1 instead of 0. The broker process inside the container dies
   on `PermissionError: [Errno 13] Permission denied: '/results'` (or `/data/results-airgap`) when the runner
   tries to create the case's results directory.
@@ -434,14 +433,11 @@ FT-HC-CURSOR (live harness runs not automated). The WARNs are the honesty system
   no network at all** — is **proven green in the same sweep by FT-AG-OFFLINE**, which runs the identical
   assertions against a sockets-disabled broker (`socket.socket` and `socket.create_connection` patched to
   raise). What FT-DK-AIRGAP adds is the *containerized* form of that leg; only that form is red.
-- **Fix (staged, not yet re-run):** a one-step prep in the executor — run a short root-user container first to
-  `mkdir -p` the results dir inside the volume and `chown -R 10001:10001 /data` — then run the air-gap
-  container as `10001` as before. The code change is in `packs_docker.py`; the final pack re-run was
-  **interrupted before it could complete**, so the committed verdict honestly remains **FAIL** until the
-  re-run lands. This is the only open item blocking a 70/69 split.
-- **Honest status:** the release gate is **not** blocked — the gate maps to FT-AG-OFFLINE (PASS), and
-  FT-DK-AIRGAP is not one of the blocking five. But the verdict is FAIL and is recorded as FAIL, not
-  smoothed.
+- **Fix (applied and re-run green):** a one-step prep in the executor — a short root-user container first
+  `mkdir -p`s the results dir inside the volume and `chown -R 10001:10001 /data`, then the air-gap
+  container runs as `10001` as before (`packs_docker.py`). **Re-run: FT-DK-AIRGAP → PASS** (exit 0,
+  `no-secret` clean). Docker pack is now **7/7 PASS**.
+- **Honest status:** recorded as FAIL while open, re-run to PASS after the fix — the record shows both.
 
 ---
 
@@ -452,7 +448,7 @@ no invariant, binding, fail-closed, ledger, or revocation defect surfaced anywhe
 
 | # | Defect | Found by | Fix | Status |
 |---|---|---|---|---|
-| H-1 | Docker named volume mounts root-owned; the non-root broker user cannot `mkdir` its results dir → FT-DK-AIRGAP exits 1 | docker pack run | root-user prep step (`mkdir` + `chown`) before the air-gap run, in `packs_docker.py` | **staged; re-run pending** |
+| H-1 | Docker named volume mounts root-owned; the non-root broker user cannot `mkdir` its results dir → FT-DK-AIRGAP exits 1 | docker pack run | root-user prep step (`mkdir` + `chown`) before the air-gap run, in `packs_docker.py` | ✅ **fixed; re-run PASS** |
 | H-2 | `compose run --network none` is not a valid compose v2 flag → air-gap leg crashed on argument parsing | docker pack run | switch to plain `docker run --network none` | ✅ fixed, pack green |
 | H-3 | Child boundary probe failed: the child image's ENTRYPOINT (`child_server.py`) swallowed the `sh -c` probe → empty output | docker pack run | explicit `--entrypoint sh` on the probe | ✅ fixed, FT-DK-BOUNDARY PASS |
 | H-4 | Runner fingerprint called `docker`/`git` unconditionally → `FileNotFoundError` inside containers where neither exists | docker pack run | try/except → `"unavailable"` in the fingerprint | ✅ fixed |
@@ -462,6 +458,8 @@ no invariant, binding, fail-closed, ledger, or revocation defect surfaced anywhe
 | H-8 | FT-RK-INFLIGHT asserted `list_live(0) == 0` after revoke — wrong: revoke doesn't flip issuance status (by design; `use()` checks the epoch), so the row is still `live` until consumed | killtime grounding | assert the **`revoked` event was recorded** + next-hop refused instead of a status flip | ✅ fixed |
 | H-9 | Deep-validation counted assertion minimums on NOT-RUN cases (docker cases under `--no-docker` had 0 assertions) → false findings | `check_grounding.py` | skip the minimum-count rule for `not-run` cases (their reason + limitations are still required) | ✅ fixed |
 | H-10 | Gate self-tests initially ran the leak scanner against the real results dir | harness self-test | `verify_harness.py` exercises every gate on a **temp copy** only — a destructive gate is never tested on the real artifacts | ✅ fixed |
+| H-11 | FT-CL-FIRST fresh-venv leg wrote the *original* home's `config.toml` (store path pointing at the old store) into the fresh home → the fresh CLI read a stale store path and the call denied | fresh-install debugging (standalone run passed, executor failed) | parameterized the config (`_quickstart_config(home, reference)`) so the fresh home gets its **own** config and store | ✅ fixed; fresh-install-ok PASS |
+| H-12 | FT-HC-CLAUDE live leg: `claude -p --mcp-config <file> <prompt>` — the prompt was parsed as the config path (flag order); and the CLI is **not logged in** on this box (`Not logged in · Please run /login`) | live harness debugging | correct flag order (`claude --mcp-config <file> -p <prompt>`); detect the unauthenticated state and **WARN with the named limitation** instead of FAIL | ✅ fixed (WARN, honest) |
 
 ---
 
@@ -547,7 +545,7 @@ sweep never wrote it.
 Evidence: `results/FT-HONESTY-REPORT/`, `tests/test_field_report_guard.py`.
 
 ### 10. Honest remaining work
-- **FT-DK-AIRGAP** — fix staged (H-1), final re-run pending → the only path from 69 to 70 PASS.
+- ~~**FT-DK-AIRGAP** — fix staged (H-1), final re-run pending~~ — **FIXED and re-run PASS** (H-1 + H-11 in the catalogue); docker pack 7/7.
 - **FT-CL-FIRST** — a fresh-box timed median (≥5 installs) would turn WARN into PASS; needs a machine
   that isn't this one.
 - **FT-HC-CLAUDE / FT-HC-CURSOR** — live harness runs (Claude Code installed; Cursor absent); wiring +
@@ -567,13 +565,13 @@ Status vocabulary: **NOT RUN | PASS | FAIL | WARN | N/A** — this run: **69 PAS
 - **Coverage:** every pack ran (16/16); every plan §5 coverage row is satisfied by a verdict — R1–R9 + R17,
   E1–E15, F1–F21, CUJ-1…CUJ-14, I1–I10, D-01…D-17, STRIDE, and the ops surface all point at ≥1 green case.
   All five blocking scenarios are PASS.
-- **Failing (1):** FT-DK-AIRGAP — harness env defect (Docker named-volume root ownership vs the non-root
-  broker user); RCA above; fix staged, re-run pending. Not one of the blocking five; the gate's offline row
-  is carried by FT-AG-OFFLINE (PASS).
-- **WARN (4):** FT-CL-FIRST (no fresh-box median — scripted quickstart green in 0.54s), FT-EV-ENFORCE
-  (no OS enforcer composed — the gap is named), FT-HC-CLAUDE / FT-HC-CURSOR (live harness runs not
-  automated; wiring + smoke green; Claude installed, Cursor absent). Each names its §8-plan limitation in
-  its committed result.
+- **Failing (0):** none. The one FAIL (FT-DK-AIRGAP) was fixed (H-1) and re-run **PASS** — recorded
+  honestly in the RCA and the catalogue.
+- **WARN (3):** FT-CL-FIRST (scripted 5-run median 0.54s + fresh-venv install→call 2.7s green — but
+  not a naive-human fresh-machine median), FT-HC-CLAUDE (claude v2.1.187 installed, wiring + smoke green —
+  **not logged in** for a live headless run), FT-HC-CURSOR (GUI IDE, no headless CLI on this box).
+  **FT-EV-ENFORCE flipped to PASS** — a real filesystem-deny enforcer is composed and the read is provably
+  blocked. Each WARN names its §8-plan limitation in its committed result.
 - **Removed from scope:** none.
 - **NOT RUN:** none — all 74 cases have verdicts.
 - **Not tested (honest):** the live Claude Code / Cursor agent loops; the fresh-box install median; the
@@ -613,7 +611,7 @@ No claim above its evidence; nothing is *verified* until a third party re-runs `
 | Time-to-first-brokered-call | <15 min median, ≥5 runs | ⚠ scripted path 0.54s; **no fresh-box median** | FT-CL-FIRST (WARN) |
 | Step-up no-widening | 100% | ✅ deny/timeout/self-approval mint nothing | FT-SU-*, FT-AP-WIDEN |
 | Tier-1 harnesses covered | ≥2 with green recipes | ⚠ wiring+smoke green ×2; **live runs declared** | FT-HC-CLAUDE/CURSOR (WARN) |
-| Evasion pack caught | 100% of the pack; gaps named | ✅ 3/3 path classes + named enforce gap | FT-EV-* |
+| Evasion pack caught | 100% of the pack; gaps named | ✅ 4/4 incl. **composed enforce block** | FT-EV-* |
 | Passthrough rejected | 100% of fixtures | ✅ client token stripped everywhere | FT-ST-NOPASSTHRU, FT-CL-HEADER |
 | Fail-closed matrix | 100% deny-or-pending | ✅ 6/6, zero fallbacks | FT-FC-* |
 | Scan recall / printed values | 100% recall; 0 printed | ✅ 100% / 0 | FT-MP-SCANMIGRATE |
@@ -636,6 +634,7 @@ Measured on this box only (macOS arm64, recorded per case in `env.json`) — nev
 | Idle RSS | 35.1 MB | same |
 | `doctor` runtime | 4 ms | same |
 | Docker image build | green; manifest `sha256:d22a045…`, non-root UID 10001 | Docker 29.5.2 |
+| Fresh-venv install → first brokered call | **2.7s** (full quickstart: scan→migrate→run) | same |
 
 ---
 
@@ -648,17 +647,23 @@ Done:
 3. [x] Report guard shipped with the builder (FT-HONESTY-REPORT PASS; this file never machine-written).
 4. [x] All 16 packs run; all five blocking scenarios PASS; 69/74 green.
 5. [x] This report filled in by hand: verdicts, journal, RCA, defect catalogue, field notes, claims audit.
+6. [x] **All FAILs fixed and re-run green; one WARN flipped to PASS (enforce)** — final: 71 PASS · 3 WARN.
 
 Next:
-6. [ ] **FT-DK-AIRGAP re-run** with the staged H-1 fix (volume chown prep) → expected 70/74 PASS.
-7. [ ] Fresh-box install median (≥5 runs) → FT-CL-FIRST WARN → PASS.
-8. [ ] Live Claude Code run (installed on this box) + a Cursor host → FT-HC-* WARN → PASS.
-9. [ ] Cut and publish `bench/` (14.8) from the committed results so a third party can re-run toward
+6. [x] **FT-DK-AIRGAP fixed and re-run PASS** (H-1 volume chown) — docker pack 7/7.
+7. [x] **FT-EV-ENFORCE flipped to PASS** — a real filesystem-deny enforcer composed; the read is provably
+       blocked (chmod 000 + an enforcer that verifies the OS denial, not a stub).
+8. [x] **FT-CL-FIRST strengthened** — 5-run median + fresh-venv install→first-call measurement (2.7s);
+       WARN remains only for the naive-human-median limitation.
+9. [x] **FT-HC-CLAUDE live leg attempted** — claude v2.1.187 runs; **not logged in** headlessly on this
+       box → honest WARN with the named limitation (wiring + smoke green).
+10. [ ] Log in to Claude Code on this box → re-run FT-HC-CLAUDE → WARN → PASS.
+11. [ ] Cut and publish `bench/` (14.8) from the committed results so a third party can re-run toward
        *verified*.
-10. [ ] M15 hand-off — security audit (`trufflehog` + full git-history scan), claims lint, compatibility
-        matrix, SBOM + signing + Scorecard, tag `v0.1.0` — **the blocking five are green, so M15 may open**
-        once the FT-DK-AIRGAP re-run lands and the M14 gates (14.T/C/L/CR/D) are recorded.
-11. [ ] Keep updating **this report by hand** with any re-run verdicts + learnings.
+12. [ ] M15 hand-off — security audit (`trufflehog` + full git-history scan), claims lint, compatibility
+        matrix, SBOM + signing + Scorecard, tag `v0.1.0` — **the blocking five are green and the FAIL is
+        fixed; M15 may open** once the M14 gates (14.T/C/L/CR/D) are recorded.
+13. [ ] Keep updating **this report by hand** with any re-run verdicts + learnings.
 
 ---
 

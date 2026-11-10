@@ -8,6 +8,13 @@
       "passed": true
     },
     {
+      "actual": "{'mcpServers': {'agentkeys': {'command': 'agentkeys', 'args': ['run', '--server', 'akref:file/agentkeys/dev/token', '--', '<server-command>'], 'env': {}}}}",
+      "expected": "agentkeys",
+      "kind": "contains",
+      "name": "wiring-command-is-broker",
+      "passed": true
+    },
+    {
       "actual": true,
       "expected": true,
       "kind": "true",
@@ -26,43 +33,50 @@
       "passed": true
     },
     {
-      "actual": true,
-      "expected": true,
-      "kind": "true",
-      "name": "no-token-in-transcript",
+      "actual": "2.1.187 (Claude Code)",
+      "expected": "Claude Code",
+      "kind": "contains",
+      "name": "claude-installed",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "kind": "eq",
+      "name": "live-no-secret",
       "passed": true
     }
   ],
   "case": "FT-HC-CLAUDE",
   "class": "P/F|W",
-  "detail": "Claude Code: wiring + smoke green",
+  "detail": "Claude Code 2.1.187 (Claude Code): wiring + smoke green; live headless run not authenticated",
   "driver": "recipe",
-  "duration_ms": 0,
+  "duration_ms": 542,
   "env": [
     "harness"
   ],
   "evidence": {
     "files": {
-      "assertions.json": "a61170070dcbe9f0f9ba46e97d46789f58981863d021102201194b25f8ad4609",
-      "commands.log": "7037ef820161b75b10d4eff70a018c3fd981c91cce6e273f4d9c57d598a087a0",
-      "env.json": "2b84aa3d66477695368f6d13c4c8e7c44beb33ae75fe3ce676e4435f2739d7ab"
+      "assertions.json": "ad766524d795f67972405da4c7ae7b536f61c914b9e6013c87e5545b0ad30745",
+      "commands.log": "b1b847a00103f1619b69cb0f1f8160e24823d71d5075337d95a5cf5f1ec05b53",
+      "env.json": "e83844e7b24308964646d56e2873d8b536777bb5637632e6e46c6d86b5c2ff82"
     }
   },
   "fingerprint": {
     "docker": "Docker version 29.5.2, build 79eb04c7d8",
-    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
     "machine": "arm64",
     "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
     "python": "3.14.5",
     "system": "darwin",
-    "utc": "2026-11-10T03:41:44Z"
+    "utc": "2026-11-10T04:00:52Z"
   },
   "limitations": [
-    "the live Claude Code run is not automated in the runner; the mandatory wiring + smoke are verified and the live run is declared (plan \u00a78)"
+    "claude CLI installed but not logged in on this box (Not logged in \u00b7 Please run /login); wiring + smoke verified, the live run is declared (plan \u00a78)"
   ],
   "pack": "harness",
   "passed": false,
   "scenario": "SC-35",
-  "started_at": "2026-11-10T03:41:44Z",
+  "started_at": "2026-11-10T04:00:51Z",
   "status": "warn"
 }

@@ -6,7 +6,7 @@
 
 | assertion | kind | expected | actual | passed |
 |---|---|---|---|---|
-| s1-authenticated | present | `True` | `b1388abbb6cc18637a35c3426cac5b35` | yes |
-| s2-authenticated | present | `True` | `0b1c14355e0747a2a9ca2be964e0066e` | yes |
+| s1-authenticated | present | `True` | `30663e485af0c859582480eba3f14710` | yes |
+| s2-authenticated | present | `True` | `eab985b28848f32a2ec1063c3d550134` | yes |
 | distinct-tokens | true | `True` | `True` | yes |
 | one-revoke-kills-both | eq | `2` | `2` | yes |

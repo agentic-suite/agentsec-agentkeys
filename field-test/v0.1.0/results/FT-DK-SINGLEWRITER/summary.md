@@ -1,7 +1,7 @@
 # FT-DK-SINGLEWRITER — PASS
 
 - pack: `docker` · scenario: `None` · class: `P/F`
-- driver: `compose-run` · duration: 2515ms
+- driver: `compose-run` · duration: 2532ms
 - detail: a second broker on the same home is refused
 
 | assertion | kind | expected | actual | passed |

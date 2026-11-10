@@ -7,6 +7,13 @@
     "passed": true
   },
   {
+    "actual": "{'mcpServers': {'agentkeys': {'command': 'agentkeys', 'args': ['run', '--server', 'akref:file/agentkeys/dev/token', '--', '<server-command>'], 'env': {}}}}",
+    "expected": "agentkeys",
+    "kind": "contains",
+    "name": "wiring-command-is-broker",
+    "passed": true
+  },
+  {
     "actual": true,
     "expected": true,
     "kind": "true",
@@ -25,10 +32,17 @@
     "passed": true
   },
   {
-    "actual": true,
-    "expected": true,
-    "kind": "true",
-    "name": "no-token-in-transcript",
+    "actual": "2.1.187 (Claude Code)",
+    "expected": "Claude Code",
+    "kind": "contains",
+    "name": "claude-installed",
+    "passed": true
+  },
+  {
+    "actual": [],
+    "expected": [],
+    "kind": "eq",
+    "name": "live-no-secret",
     "passed": true
   }
 ]
