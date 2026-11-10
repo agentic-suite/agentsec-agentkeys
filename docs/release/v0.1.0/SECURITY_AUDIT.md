@@ -8,7 +8,9 @@ allowlisted **by exact value** — not by path, not by shape.
 - **Requirement:** [E15](../../prd/05-features.md), [PRD 06 §5](../../prd/06-security-baseline.md)
 - **Gate:** `python -m agentkeys.release audit --root . --json` (exit `0` = green)
 - **CI:** [`.github/workflows/release-audit.yml`](../../../.github/workflows/release-audit.yml)
-- **Run on:** commit `f4266c8` · macOS arm64 · trufflehog `3.99.8` · gitleaks `8.30.1`
+- **Run on:** macOS arm64 · trufflehog `3.99.8` · gitleaks `8.30.1` — **both pinned in CI**, because a scanner
+  upgrade can silently stop firing on the control and the allowlist dialect changed between gitleaks 8.28
+  and 8.30 (8.28 ignored the config and reported 6 findings — the pin is what makes the gate reproducible).
 
 ---
 
