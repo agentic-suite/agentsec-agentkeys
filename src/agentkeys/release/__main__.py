@@ -16,6 +16,7 @@ from agentkeys.release.claims import (
     scan_prose,
 )
 from agentkeys.release.compat import ROWS, render, write_document
+from agentkeys.release.supply import sbom, write_sbom
 
 __all__ = ["main"]
 
@@ -41,11 +42,22 @@ def _parser() -> argparse.ArgumentParser:
     compat.add_argument(
         "--write", action="store_true", help="write the generated document in place"
     )
+
+    bom = sub.add_parser("sbom", help="emit (or write) the CycloneDX SBOM")
+    bom.add_argument("--root", default=".", help="repository root")
+    bom.add_argument("--write", action="store_true", help="write docs/release/v0.1.0/SBOM.cdx.json")
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.command == "sbom":
+        base = Path(args.root) / "docs" / "release" / "v0.1.0" / "SBOM.cdx.json"
+        if args.write:
+            print(f"wrote {write_sbom(base)}")
+        else:
+            print(json.dumps(sbom(), indent=2))
+        return 0
     if args.command == "compat":
         return _run_compat(args.root, write=args.write)
     if args.command == "claims":
