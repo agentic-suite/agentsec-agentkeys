@@ -53,3 +53,23 @@ def test_the_cli_reference_marks_the_stubs_as_stubs() -> None:
     for row in cli.splitlines():
         if "`agentkeys init`" in row or "`agentkeys context-dump" in row:
             assert "stub" in row.lower(), f"stub not marked: {row[:70]}"
+
+
+def test_the_readme_has_the_suite_badges() -> None:
+    for badge in (
+        "actions/workflows/ci.yml/badge.svg",
+        "license-Apache--2.0",
+        "python-3.11",
+        "status-release%20candidate",
+        "field--tested",
+        "release-unsigned",
+        "mypy-strict",
+        "securityscorecards.dev/projects/github.com/agentic-suite/agentsec-agentkeys",
+    ):
+        assert badge in README, f"missing badge: {badge}"
+
+
+def test_the_audit_workflow_pins_the_scanner_versions() -> None:
+    workflow = (REPO / ".github" / "workflows" / "release-audit.yml").read_text(encoding="utf-8")
+    assert "GITLEAKS_VERSION=8.30.1" in workflow
+    assert "TRUFFLEHOG_VERSION=3.99.8" in workflow
