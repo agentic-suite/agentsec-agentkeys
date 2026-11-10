@@ -320,6 +320,37 @@ the harness or the environment, found by the gates, fixed with a test or re-run.
 No open findings. The report-guard test proves the hand-maintained report cannot be written by any script;
 the sweep edited it by hand under the user's explicit instruction.
 
+### 15.CR — Release readiness (2026-11-09)
+
+Review of the release tooling (`src/agentkeys/release/`) and the M15 documents. **Product defects: zero.**
+Every finding below was in the *release machinery* or the *public docs*, and each was found by running the
+gate on real data rather than by reading it.
+
+- **CR-073** · blocker · `src/agentkeys/release/audit.py` · the first planted-fake control used an AWS key-ID
+  shape, and **trufflehog 3.99 did not fire on it** — a silent control would have certified a clean tree on
+  no evidence · fixed: dual control (fake DSN for trufflehog, high-entropy assignment for gitleaks), and a
+  **half-awake control denies** · `(15.1)` · RESOLVED
+- **CR-074** · major · `.gitleaks.toml` · `[[allowlists]]` + `regexTarget = "match"` silently matched nothing,
+  so 6 synthetic fixtures stayed "findings" · fixed: root `[allowlist]` with `regexTarget = "line"`; the
+  five planted values were re-derived **from history**, where a fifth value existed that HEAD did not have ·
+  `(15.1)` · RESOLVED
+- **CR-075** · major · `src/agentkeys/release/audit.py` · the tree scan walked `.venv/` and `.pytest_cache/`,
+  reporting third-party noise as our own candidates · fixed: `.trufflehog-exclude.txt` (generated trees only,
+  asserted never to name first-party source) · `(15.1)` · RESOLVED
+- **CR-076** · major · `README.md`, `docs/explanation/honest-gaps.md` · stale public docs claimed M14 was
+  future work and "field re-run at M14" after the field test had finished — a false claim **by omission** ·
+  fixed: both rewritten against the hand-entered verdicts; 10 tests guard the docs from drifting back ·
+  `(15.7)` · RESOLVED
+- **CR-077** · minor · `src/agentkeys/release/{compat,supply}.py` · the generators failed when the target
+  directory did not exist, which made the CLI untestable on a temp root · fixed: `mkdir(parents=True)`,
+  still refusing the hand-maintained report by name · `(15.3, 15.5)` · RESOLVED
+- **CR-078** · minor · `tests/` · the new `release` package was 79–87% covered and the CLI 0% — the gates
+  could not have been run by hand without re-reading the source · fixed: CLI tests for audit/claims/compat/
+  sbom plus ledger-parser and prose edges → coverage back above the 95% gate · `(15.T, 15.C)` · RESOLVED
+
+No open findings. The hand-maintained field report was not touched by any release script; the guard tests
+still prove it (FT-HONESTY-REPORT).
+
 <!--
 Template:
 

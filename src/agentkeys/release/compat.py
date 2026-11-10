@@ -193,5 +193,6 @@ def write_document(path: str | Path, body: str) -> Path:
     target = Path(path)
     if target.name in _FORBIDDEN_TARGETS:
         raise ValueError(f"refusing to write {target}: hand-maintained reports are never generated")
+    target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(body, encoding="utf-8")
     return target

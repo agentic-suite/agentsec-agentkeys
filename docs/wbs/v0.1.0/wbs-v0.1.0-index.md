@@ -240,6 +240,21 @@ A milestone is **closed** only when all of these hold:
   enforcer composed) were **fixed and re-run green**. Published `bench/killtime-contextdump.json` + README.
   Results: `field-test/v0.1.0/results/` · plan/ report/ traceability: `docs/field-test/v0.1.0/`.
   `14.CR` logged 11 findings (CR-062…CR-072), all resolved; **zero product defects**.
+- **2026-11-09 — M15 Release readiness (except the tag).** Release tooling built test-first:
+  `python -m agentkeys.release {audit,claims,compat,sbom}`. **Security audit green** — trufflehog 0 verified in
+  the tree and in the **full history** (58 commits, no `--since-commit`), gitleaks 0 after a by-value allowlist
+  (5 exact planted values + 1 named fake-key fixture, all inspected), and a **dual-scanner planted-fake control
+  that fired**. **Claims lint green** — 18 claims, 0 over-claims, **0 verified**; WARN evidence capped at
+  *documented* and required to state its limitation. **Compatibility matrix generated** from committed packs
+  (Claude Code/Cursor *documented*, Copilot *lower-layer*, Codex/Gemini/Windows *not yet*, macOS/Linux
+  *first-class*) with a drift guard. SBOM generated; release notes + risk re-grade written; README,
+  honest-gaps and demo scripts reconciled with the built core, and the three backing packs re-ran green
+  (12 PASS / 0 FAIL). **Milestone gate (run once, at the end):** `ruff` zero · `ruff format --check` clean ·
+  `mypy --strict` clean (**191 files**) · full suite **824 passed** · coverage **95.10% ≥ 95%**. Commits:
+  `f4266c8` (15.D0) · `0b57a01` (15.1) · `a25abfd` (15.2) · `290514e` (15.3) · `db9a5db` (15.4) ·
+  `b928eaa` (15.5 prep) · `4d6b85e` (15.6) · `f783449` (15.7). `15.CR` logged CR-073…CR-078, all resolved;
+  **zero product defects**. **BLOCKED: `15.5` signing + `v0.1.0` tag + PyPI publish** — irreversible and
+  credential-bound; the `[0.1.0]` CHANGELOG entry stays unwritten until that gate passes.
 - **2026-11-09 — M14 milestone gate (run once, at the end).** `ruff` zero violations · `ruff format --check`
   clean · `mypy --strict` clean (**177 files**) · full suite **743 passed** · coverage **95.22% ≥ 95%**
   (field-test tooling covered by pack-level execution tests). **Next: M15 opens at `15.D0` — security

@@ -135,3 +135,74 @@ def test_honest_usage_and_non_claims_pass() -> None:
 def test_the_release_docs_and_readme_pass_the_prose_lint() -> None:
     findings = claims.scan_prose(claims.public_files(REPO))
     assert findings == (), "\n".join(f"{f.path}: {f.problem}" for f in findings)
+
+
+# ---------------------------------------------------------------- ledger + prose edges
+
+
+def test_the_ledger_parser_skips_prose_separators_and_headers(tmp_path: Path) -> None:
+    ledger = tmp_path / "CLAIMS.md"
+    ledger.write_text(
+        "# Claims\n\nSome prose that is not a table.\n\n"
+        "| Claim | Label | Evidence | Third party | Note |\n"
+        "|---|---|---|---|---|\n"
+        "| grounded | field-tested | FT-RK-KILLTIME | no | fine |\n"
+        "| reproduced elsewhere | verified | FT-RK-KILLTIME | yes | third party |\n"
+        "\nAfter the table.\n",
+        encoding="utf-8",
+    )
+    parsed = claims.load_ledger(ledger)
+
+    assert [claim.text for claim in parsed] == ["grounded", "reproduced elsewhere"]
+    assert parsed[1].third_party is True
+    assert parsed[0].note == "fine"
+
+
+def test_a_claim_with_unknown_status_is_named(tmp_path: Path) -> None:
+    findings = claims.lint_claims([_claim(evidence=("FT-ODD",))], {"FT-ODD": "skipped"})
+    assert any("unknown status" in finding.problem for finding in findings)
+
+
+def test_prose_ignores_negations_but_catches_the_rest() -> None:
+    files = {
+        "README.md": (
+            "We are not certified. This is not enterprise-grade. "
+            "But it is production-ready and bank-grade."
+        )
+    }
+    findings = claims.scan_prose(files)
+    problems = " ".join(finding.problem for finding in findings)
+    assert "production-ready" in problems
+    assert "bank-grade" in problems
+    assert "enterprise-grade" not in problems
+
+
+def test_public_files_collects_the_docs_that_count(tmp_path: Path) -> None:
+    (tmp_path / "docs" / "reference").mkdir(parents=True)
+    (tmp_path / "README.md").write_text("# x\n", encoding="utf-8")
+    (tmp_path / "docs" / "reference" / "cli.md").write_text("# y\n", encoding="utf-8")
+    (tmp_path / "docs" / "prd").mkdir()
+    (tmp_path / "docs" / "prd" / "00.md").write_text("# prd, exempt\n", encoding="utf-8")
+
+    found = claims.public_files(tmp_path)
+    assert "README.md" in found
+    assert "docs/reference/cli.md" in found
+    assert not any(path.startswith("docs/prd") for path in found)
+
+
+def test_compat_lint_rejects_a_strong_label_with_no_case() -> None:
+    doc = "| Harness | Label | Evidence |\n|---|---|---|\n| X | first-class | — |\n"
+    findings = claims.lint_compat(doc, {})
+    assert findings
+    assert "no evidence case" in findings[0].problem
+
+
+def test_compat_lint_passes_a_green_row_and_ignores_weak_labels() -> None:
+    doc = (
+        "| Harness | Label | Evidence |\n"
+        "|---|---|---|\n"
+        "| A | supported | FT-RK-KILLTIME |\n"
+        "| B | documented | — |\n"
+        "not a row\n"
+    )
+    assert claims.lint_compat(doc, {"FT-RK-KILLTIME": "pass"}) == ()

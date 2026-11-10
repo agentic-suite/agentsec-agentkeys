@@ -118,6 +118,26 @@ passthrough) applied to the stdio case.
 | `5.4` no passthrough | client credential stripped; server receives a broker token | `tests/test_stdio_no_token_passthrough.py` |
 | `5.5` pattern + ext-auth | the placeholder pattern documented; fixtures + appendix staged | `docs/reference/stdio-virtualization.md`, `docs/design/v0.1.0/stdio-ext-auth-appendix.md` |
 
+## 0.6 v0.1.0 — field test + release readiness (M14–M15, 2026-11-09)
+
+| Requirement | Where it is proven | Label |
+|---|---|---|
+| R1 (never-in-context) | FT-AP-CONTEXTDUMP — 0 usable across variants, seeded control fires | field-tested |
+| R4 (revoke ≤1s) | FT-RK-KILLTIME — p95 0.017ms / max 0.031ms at N=100, 100/100 replays refused | field-tested |
+| R8 (stdio virtualization) | FT-ST-NOSECRET, FT-ST-NOPASSTHRU, FT-DK-BOUNDARY | field-tested |
+| R17 (scan/migrate) | FT-MP-SCANMIGRATE — 100% recall, 0 printed values | field-tested |
+| E13 (standards conformance) | FT-CONF-STANDARDS, FT-CONF-BACKENDS (DPoP explicitly not supported) | conformance |
+| E15 (supply chain) | SBOM + supply checks + audit; **signing/tag/PyPI BLOCKED on credentials** | documented |
+| CUJ-1 (install → first call) | FT-CL-FIRST — scripted + fresh-venv green; **no naive-human fresh-box median** | documented (WARN) |
+| CUJ-12 (harness recipes) | FT-HC-CLAUDE / FT-HC-CURSOR — wiring + smoke green; **live legs blocked** | documented (WARN) |
+| PRD 20 §6 (no over-claim) | `python -m agentkeys.release claims` — 18 claims, 0 findings, 0 verified | enforced in CI-by-test |
+| PRD 06 §5 (no live secret anywhere) | `python -m agentkeys.release audit` — 0 verified in tree + full history, control fired | enforced in CI |
+
+Evidence: [field report](../field-test/v0.1.0/FIELD_TEST_REPORT.md) (hand-maintained) ·
+[benchmark](../../bench/README.md) · [audit](../release/v0.1.0/SECURITY_AUDIT.md) ·
+[claims](../release/v0.1.0/CLAIMS.md) · [compatibility](../release/v0.1.0/COMPATIBILITY.md) ·
+[release notes](../release/v0.1.0/RELEASE_NOTES.md).
+
 ## 1. v0.1.0 — P0 product requirements (R1–R9 + R17)
 
 > **Implemented (M6–M13, 2026-11-09).** R4, R6, R7, R9, R17 and E6, E8, E10, E12 are implemented and
@@ -245,6 +265,11 @@ passthrough) applied to the stdio case.
 | `tests/test_supply_chain.py` | release supply-chain gate | E15 |
 | `tests/test_scan_candidates.py`, `test_migrate_flow.py`, `test_scan_cli.py`, `test_posture_report.py` | migration + posture | R17, R18 |
 | `tests/conformance/test_rfc8693.py` … `test_otel_semconv.py` | standards conformance | E13, E14 |
+| `tests/test_release_audit.py` | secret-leakage audit + planted-fake control | E15, PRD 06 §5 |
+| `tests/test_release_claims.py` | claims lint vs the evidence ladder | PRD 20 §6 |
+| `tests/test_release_compat.py` | compatibility matrix derived from committed packs | PRD 19 §6 |
+| `tests/test_release_supply.py` | SBOM + release-artefact boundary | E15 |
+| `tests/test_release_notes.py`, `test_release_risk.py`, `test_release_docs.py` | release notes, risk re-grade, public docs | PRD 09 §3, PRD 08 |
 
 ## 9. Related documents
 

@@ -51,7 +51,9 @@ def test_the_readme_keeps_the_honest_stubs() -> None:
 def test_the_gaps_doc_stops_promising_m14() -> None:
     assert "field re-run at M14" not in GAPS
     assert "M14 owns" not in GAPS
-    assert "not field-tested" not in GAPS.lower(), "M14 produced verdicts; the blanket label is stale"
+    assert "not field-tested" not in GAPS.lower(), (
+        "M14 produced verdicts; the blanket label is stale"
+    )
 
 
 def test_the_gaps_doc_records_the_three_warns() -> None:
