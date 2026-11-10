@@ -162,6 +162,45 @@ A milestone is **closed** only when all of these hold:
   [PRD 02 §5 note](../../prd/02-architecture.md) · [PRD 12 §0.5](../../prd/12-traceability.md).
   A stock stdio server now authenticates under the broker with references in its config and a scoped token at
   its egress; the co-located-runtime limit is documented, not hidden. **Next: M6 opens at `6.D0`.**
+- **2026-11-09 — M6 Revocation + kill-time ≤1s + time correctness closed** (branch `feat-v0.1.0`).
+  Items `6.D0`, `6.1`-`6.6` implemented test-first. `revoke` is a CAS on `revoke_epoch` (session/agent/all),
+  `replay --last` proves the kill (exit `4` only on a refused replay), the kill-time harness reports
+  p50/p95/max with p95 and max ≤1s, and `TimeGuard`/`ExpirySweeper` make a clock jump unable to extend or
+  resurrect a TTL. Commits: `3d492b4`. Docs: [revoke design](../../design/v0.1.0/revoke.md) ·
+  [revoke reference](../../reference/revoke.md). `6.CR` logged 3 findings, all resolved.
+  **Next: M7 opens at `7.D0`.**
+- **2026-11-09 — M7 Lifecycle ledger + agentwatch events + export/verify-log closed** (branch
+  `feat-v0.1.0`). Items `7.D0`, `7.1`-`7.6` implemented test-first. The chain verifier names the first bad
+  `seq`, the event emitter is allow-listed (`event_version` 1.0), `export` is deterministic 0600 JSONL,
+  `verify-log` reports tamper as exit `3`, correlation exposes the join keys, and a sink outage leaves the
+  local ledger authoritative with one `sink-gap` marker. Commit: `3d492b4`. Docs:
+  [ledger design](../../design/v0.1.0/ledger.md) · [ledger reference](../../reference/ledger.md).
+  `7.CR` logged 2 findings, both resolved. **Next: M8 opens at `8.D0`.**
+- **2026-11-09 — M8 Secret-hygiene scan + migrate closed** (branch `feat-v0.1.0`). Items `8.D0`, `8.1`-`8.5`
+  implemented test-first. The seeded corpus reaches **100% recall with 0 printed values**, broad reuse is
+  flagged across files, `migrate` moves the value to the file backend and rewrites every site atomically
+  (rollback on failure), and `--ci` refuses honestly as not-yet. Commit: `3d492b4`. Docs:
+  [scan/migrate design](../../design/v0.1.0/scan-migrate.md) · [scan/migrate reference](../../reference/scan-migrate.md).
+  `8.CR` logged 3 findings, all resolved. **Next: M9 opens at `9.D0`.**
+- **2026-11-09 — M9 Evasion detection + tamper resistance closed** (branch `feat-v0.1.0`). Items `9.D0`,
+  `9.1`-`9.6` implemented test-first. Raw reads are classified and recorded as high-severity events;
+  enforce mode blocks only with a composed enforcer and **names the gap** otherwise; config integrity pins a
+  digest and fails closed with `tamper-detected`; unknown-reference probes raise the enumeration signal.
+  Commit: `1ebf136`. Docs: [evasion/tamper design](../../design/v0.1.0/evasion-tamper.md) ·
+  [evasion reference](../../reference/evasion.md). `9.CR` logged 2 findings, both resolved.
+  **Next: M10 opens at `10.D0`.**
+- **2026-11-09 — M10 Step-up issuance + harness recipes closed** (branch `feat-v0.1.0`). Items `10.D0`,
+  `10.1`-`10.6` implemented test-first. A prod-class mint requires an agentpolicy decision recorded in
+  `provenance` (self-approval and free-text verdicts are refused; timeout = deny); the grant event is
+  emitted after the mint and carries the issuance id. Claude Code (env) and Cursor (header) recipes use the
+  same `agentkeys run` wrapper with reference-only env, and a smoke harness ends in an authenticated call;
+  an uncovered harness is labelled not-yet. Commit: `1ebf136`. Docs:
+  [step-up design](../../design/v0.1.0/stepup-recipes.md) · [step-up reference](../../reference/stepup.md) ·
+  [recipes](../../guides/recipes/claude-code.md) · [PRD 12](../../prd/12-traceability.md).
+  `10.CR` logged 1 finding, resolved.
+- **2026-11-09 — M6–M10 milestone gate (run once, at the end).** `ruff` zero violations · `mypy --strict`
+  clean (127 files) · full suite **582 passed** · coverage **95.45% ≥ 95%**. Test-first per ticket; no
+  full-suite run between tickets. **Next: M11 opens at `11.D0`; M12–M15 remain.**
 
 ## PRD coverage matrix (every doc 00–23 + Appendix A)
 
