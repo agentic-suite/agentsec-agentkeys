@@ -36,8 +36,12 @@
 > green**: kill-time ≤1s (p95 0.015ms, max 0.030ms — 33,000× under budget), context-dump finds zero usable
 > credentials with the seeded falsification control firing, tamper fails closed on every vector, the
 > evidence scanner is clean with its seeded leak caught, and scan/migrate reaches 100% recall with zero
-> printed values. The 4 WARN are the four `P/F|W` cases with their §8-plan limitations named — each is
-> a genuine limitation of this box, not a softness.
+> printed values. The 3 WARN are genuine limitations of this box, each named: the fresh-machine install
+> median needs a naive human (the machine-measured fresh-venv path ran green in 2.7s); Claude Code is
+> installed (v2.1.187) but **not logged in** for headless use; and Cursor is a GUI IDE with no headless
+> surface on this box. The earlier FT-EV-ENFORCE WARN is **flipped to PASS** — a real filesystem-deny
+> enforcer is composed and the read is provably blocked — and the earlier FT-DK-AIRGAP FAIL is **fixed and
+> re-run green**. Every non-pass in this sweep is named, limited, evidenced, and where fixable, fixed.
 
 ### Run status (74/74 verdicts)
 
@@ -167,8 +171,8 @@ attack → migrate → ops → nfr → conformance → killtime → contextdump 
 - **What I fixed (between attempts):** the runner's fingerprint hardened for container use (`docker`/`git`
   absent → "unavailable", no crash); the scan service got `AGENTKEYS_FIELD_ROOT`; the child probe got an
   explicit `--entrypoint`; `compose run --network` → plain `docker run --network none` (compose v2 has no
-  such flag); the airgap executor got a root-user volume chown prep step — **staged but the final re-run was
-  interrupted before it could complete**, so the committed verdict stays FAIL until re-run.
+  such flag); the airgap executor got a root-user volume chown prep step — **applied and re-run green**
+  (FT-DK-AIRGAP → PASS; docker pack 7/7).
 - **Captured evidence:** `results/FT-DK-*/`.
 
 ---
@@ -218,7 +222,7 @@ leak gate (`scan_results.py`, findings=0 over the whole tree).
 **Spot-verified cases.** FT-RK-KILLTIME, FT-AP-CONTEXTDUMP, FT-AP-TAMPER, FT-AP-EVIDENCE,
 FT-MP-SCANMIGRATE, FT-DK-BOUNDARY, FT-FC-CRASH — all PASS, all grounded.
 
-**Not yet run (honest).** **Nothing.** All 74 cases have verdicts: 69 ✅ · 1 ❌ · 4 ⚠ · 0 ▫.
+**Not yet run (honest).** **Nothing.** All 74 cases have verdicts: 71 ✅ · 0 ❌ · 3 ⚠ · 0 ▫.
 
 **WARN (honest).** The four `P/F|W` cases warned, each with its §8-plan limitation recorded in the result
 and named here: FT-CL-FIRST (no fresh-box median), FT-EV-ENFORCE (no OS enforcer composed), FT-HC-CLAUDE and
@@ -475,7 +479,7 @@ rounding. A dashboard would have shown "97% green" and dropped exactly the five 
 Evidence: `results/FT-CL-FIRST/`, `results/FT-DK-AIRGAP/`, `results/FT-HC-*/`.
 
 ### 2. "Exit 0" is not "the test passed" — grounding re-derivation earned its keep
-Every one of the 69 PASS verdicts was re-derived by `check_grounding.py` from the committed assertions —
+Every one of the 71 PASS verdicts was re-derived by `check_grounding.py` from the committed assertions —
 `kind` + `expected` + `actual` recomputed, `passed` re-checked, evidence files sha256-verified — and the
 gate found real problems on the way (H-6, H-8, H-9). The most instructive: H-8, where a **plausible-sounding
 assertion** (`no live issuance after revoke`) encoded a wrong belief about the product (revoke is an epoch
@@ -559,7 +563,7 @@ Evidence: `results/FT-HONESTY-REPORT/`, `tests/test_field_report_guard.py`.
 
 ## Coverage, Gaps, and Declared Limitations
 
-Status vocabulary: **NOT RUN | PASS | FAIL | WARN | N/A** — this run: **69 PASS · 1 FAIL · 4 WARN ·
+Status vocabulary: **NOT RUN | PASS | FAIL | WARN | N/A** — this run: **71 PASS · 0 FAIL · 3 WARN ·
 0 NOT RUN** (74/74).
 
 - **Coverage:** every pack ran (16/16); every plan §5 coverage row is satisfied by a verdict — R1–R9 + R17,
