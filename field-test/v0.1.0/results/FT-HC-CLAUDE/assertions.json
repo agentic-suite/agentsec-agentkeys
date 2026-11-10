@@ -1,0 +1,48 @@
+[
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "wiring-valid",
+    "passed": true
+  },
+  {
+    "actual": "{'mcpServers': {'agentkeys': {'command': 'agentkeys', 'args': ['run', '--server', 'akref:file/agentkeys/dev/token', '--', '<server-command>'], 'env': {}}}}",
+    "expected": "agentkeys",
+    "kind": "contains",
+    "name": "wiring-command-is-broker",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "smoke-authenticated",
+    "passed": true
+  },
+  {
+    "actual": [
+      "ref_1"
+    ],
+    "expected": [
+      "ref_1"
+    ],
+    "kind": "eq",
+    "name": "transcript-only-reference",
+    "passed": true
+  },
+  {
+    "actual": "2.1.187 (Claude Code)",
+    "expected": "Claude Code",
+    "kind": "contains",
+    "name": "claude-installed",
+    "passed": true
+  },
+  {
+    "actual": [],
+    "expected": [],
+    "kind": "eq",
+    "name": "live-no-secret",
+    "passed": true
+  }
+]

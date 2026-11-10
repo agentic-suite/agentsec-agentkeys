@@ -1,0 +1,16 @@
+[
+  {
+    "actual": "missing required key: sink",
+    "expected": true,
+    "kind": "present",
+    "name": "refused",
+    "passed": true
+  },
+  {
+    "actual": "missing required key: sink",
+    "expected": "missing required key",
+    "kind": "contains",
+    "name": "names-the-field",
+    "passed": true
+  }
+]

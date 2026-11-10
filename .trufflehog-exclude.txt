@@ -1,0 +1,17 @@
+# Paths trufflehog must not walk during the release audit.
+#
+# These are *generated or third-party* trees: an installed virtualenv, caches, and build output. They are
+# excluded because scanning them says nothing about our source, not because they might contain secrets —
+# `tests/test_release_audit.py` asserts this list never names a first-party source directory.
+(^|/)\.git/
+(^|/)\.venv/
+(^|/)venv/
+(^|/)node_modules/
+(^|/)__pycache__/
+(^|/)\.pytest_cache/
+(^|/)\.mypy_cache/
+(^|/)\.ruff_cache/
+(^|/)\.tox/
+(^|/)dist/
+(^|/)build/
+(^|/)\.eggs/

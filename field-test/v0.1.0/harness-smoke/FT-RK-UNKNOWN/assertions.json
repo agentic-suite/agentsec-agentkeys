@@ -1,0 +1,16 @@
+[
+  {
+    "actual": "unknown session: ghost",
+    "expected": true,
+    "kind": "present",
+    "name": "refused",
+    "passed": true
+  },
+  {
+    "actual": "unknown session: ghost",
+    "expected": "ghost",
+    "kind": "contains",
+    "name": "names-target",
+    "passed": true
+  }
+]

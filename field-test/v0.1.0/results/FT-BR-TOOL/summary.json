@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "other-tool-refused",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "wider-scope-refused",
+      "passed": true
+    }
+  ],
+  "case": "FT-BR-TOOL",
+  "class": "P/F",
+  "detail": "tool/scope widening refused",
+  "driver": "injector",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "b45b2c4f4292806759c051cf67af3bd0885326daf114fcee86503194a997c561",
+      "commands.log": "de0d890eb71d726a8c76917c5287977420528c5cc38c17e7bd85d263d20529ae",
+      "env.json": "03eab060703aec7f6a074385f25a1c234331d139f910ee169a48a5d26885d693"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:43Z"
+  },
+  "limitations": [],
+  "pack": "binding",
+  "passed": true,
+  "scenario": "SC-09",
+  "started_at": "2026-11-10T03:41:43Z",
+  "status": "pass"
+}

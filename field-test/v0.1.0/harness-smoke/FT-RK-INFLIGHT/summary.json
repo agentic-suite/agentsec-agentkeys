@@ -1,0 +1,55 @@
+{
+  "assertions": [
+    {
+      "actual": "rejected",
+      "expected": "rejected",
+      "kind": "eq",
+      "name": "next-hop-refused",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "eq",
+      "name": "revoke-epoch-set",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "eq",
+      "name": "revoke-recorded",
+      "passed": true
+    }
+  ],
+  "case": "FT-RK-INFLIGHT",
+  "class": "P/F",
+  "detail": "the next hop after revoke fails closed",
+  "driver": "use-after-revoke",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "ec42df9f831d10ae89d29fbbd96c23b63ef3d85efa65e716a3269bce8d366fbb",
+      "commands.log": "54cf93ee7516de4aa63ff34169dd4a6747a10c8d06c679bba15ec47ce15b6039",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "killtime",
+  "passed": true,
+  "scenario": "SC-26",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

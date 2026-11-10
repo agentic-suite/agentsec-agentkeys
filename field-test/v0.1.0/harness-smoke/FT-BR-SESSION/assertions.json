@@ -1,0 +1,16 @@
+[
+  {
+    "actual": "rejected",
+    "expected": "rejected",
+    "kind": "eq",
+    "name": "revoked-token-rejected",
+    "passed": true
+  },
+  {
+    "actual": "s1",
+    "expected": "s1",
+    "kind": "eq",
+    "name": "token-was-session-bound",
+    "passed": true
+  }
+]

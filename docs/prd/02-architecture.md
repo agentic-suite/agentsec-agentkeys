@@ -126,6 +126,10 @@ credential in a different place, and **no single network gateway reaches all thr
 - A driver **forgets**: nothing about the resolution is observable to the agent.
 - The audience is enforced **at the injector**, not merely requested of the downstream.
 
+> **Implemented (M4, 2026-11-09).** The three injection points below are implemented in
+> `src/agentkeys/egress/` (env / header / RFC 8693) behind one interface; see the
+> [egress reference](../reference/egress.md). The shared rules are enforced in code, not by convention.
+
 ## 5. stdio virtualization architecture
 
 The flagship case (R8, F12, coverage row #8) is the local **stdio MCP server** — the process the MCP
@@ -155,6 +159,10 @@ documented incidents.
   so the server's config, env, logs, and the agent transcript contain **no real secret**.
 - The reference pattern is documented for server authors and prepared as an **MCP ext-auth contribution**
   ([PRD 20](20-standards-and-claims.md)).
+
+> **Implemented (M5, 2026-11-09).** stdio credential virtualization is implemented in
+> `src/agentkeys/stdio/`; the reference/placeholder pattern and the honest boundary limit are documented in
+> the [stdio virtualization reference](../reference/stdio-virtualization.md).
 
 ### The honest co-located-runtime limit
 

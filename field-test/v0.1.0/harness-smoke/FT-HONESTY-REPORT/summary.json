@@ -1,0 +1,55 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "marker-present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "guard-test",
+      "passed": true
+    },
+    {
+      "actual": "HAND-MAINTAINED",
+      "expected": "HAND-MAINTAINED",
+      "kind": "eq",
+      "name": "refusal-text",
+      "passed": true
+    }
+  ],
+  "case": "FT-HONESTY-REPORT",
+  "class": "P/F",
+  "detail": "the canonical report is hand-maintained and guarded",
+  "driver": "report-guard",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "04da1ffea490b61ab79bac899c2178ecd207c625e4cc1b6fca8bd9223e7b2dbe",
+      "commands.log": "51656294aaa9e8827cdd293eedf675e73e3a9cf62abec4065dccd2f5984e4457",
+      "env.json": "b214aaa68e87959b7cdd59fb0b6edb386e0134a540efeb6bdae179004a28d9e2"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:03Z"
+  },
+  "limitations": [],
+  "pack": "conformance",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:33:03Z",
+  "status": "pass"
+}

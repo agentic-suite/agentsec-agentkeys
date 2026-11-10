@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": 58.555,
+      "expected": 200.0,
+      "kind": "lte",
+      "name": "coldstart-under-200ms",
+      "passed": true
+    },
+    {
+      "actual": 5,
+      "expected": 5,
+      "kind": "eq",
+      "name": "samples",
+      "passed": true
+    }
+  ],
+  "case": "FT-NFR-COLDSTART",
+  "class": "P/F",
+  "detail": "import+CLI cold start p99=58.555ms",
+  "driver": "timing",
+  "duration_ms": 385,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "233414b39abaffa48b92af88c2a5672e096db743264102526e162b229b35607b",
+      "commands.log": "3b402c6ae2282aac37ca812b7c698fb098e17f92cf9a93884dac3e7f01d40bc4",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "nfr",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

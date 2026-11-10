@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": 0.003,
+      "expected": 10.0,
+      "kind": "lte",
+      "name": "env-p99-under-10ms",
+      "passed": true
+    },
+    {
+      "actual": 0.002,
+      "expected": 10.0,
+      "kind": "lte",
+      "name": "header-p99-under-10ms",
+      "passed": true
+    }
+  ],
+  "case": "FT-NFR-INJECT",
+  "class": "P/F",
+  "detail": "env p99=0.003ms, header p99=0.002ms",
+  "driver": "timing",
+  "duration_ms": 1,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "e9a25856bc346ba300c2080d1cb2eec9a5f77b43a8796f9cf7bfd5dcef2d3006",
+      "commands.log": "ec025308b4f307411953417ec3040cbc5dcda1947a68a0019ffb869bcabcb395",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "nfr",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

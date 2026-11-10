@@ -1,0 +1,56 @@
+{
+  "assertions": [
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "eq",
+      "name": "exactly-once-under-flood",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "eq",
+      "name": "one-issuance-row",
+      "passed": true
+    },
+    {
+      "actual": 5,
+      "expected": 5,
+      "kind": "eq",
+      "name": "probes-still-refused",
+      "passed": true
+    }
+  ],
+  "case": "FT-AP-FLOOD",
+  "class": "P/F",
+  "detail": "flood is exactly-once; no bypass under load",
+  "driver": "flood",
+  "duration_ms": 4,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "396776a3772099d42fd6c616c53dfa89ddd4d8d08eccbcd46c0f97e452ddac54",
+      "commands.log": "31e4785e47e112fd205d267da5ee8fd94878e9ac643b3c17fdc14424cf9dcc6a",
+      "env.json": "2b84aa3d66477695368f6d13c4c8e7c44beb33ae75fe3ce676e4435f2739d7ab"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:44Z"
+  },
+  "limitations": [],
+  "pack": "attack",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:41:44Z",
+  "status": "pass"
+}

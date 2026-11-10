@@ -1,0 +1,23 @@
+[
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "build-exit",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "non-root-user",
+    "passed": true
+  },
+  {
+    "actual": [],
+    "expected": [],
+    "kind": "eq",
+    "name": "no-secret-in-dockerfile",
+    "passed": true
+  }
+]

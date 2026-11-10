@@ -1,0 +1,72 @@
+[
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "scan",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "migrate",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "ref",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "brokered-call",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "revoke",
+    "passed": true
+  },
+  {
+    "actual": 4,
+    "expected": 4,
+    "kind": "eq",
+    "name": "replay-refused",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "export",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "verify-log",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "no-secret-printed",
+    "passed": true
+  },
+  {
+    "actual": 0.583,
+    "expected": 900.0,
+    "kind": "lte",
+    "name": "elapsed-under-15min",
+    "passed": true
+  }
+]

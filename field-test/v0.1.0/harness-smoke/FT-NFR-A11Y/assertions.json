@@ -1,0 +1,30 @@
+[
+  {
+    "actual": "ok",
+    "expected": "ok",
+    "kind": "eq",
+    "name": "json-envelope",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "stable-exit",
+    "passed": true
+  },
+  {
+    "actual": "{\"ok\": true, \"exit_class\": \"ok\", \"data\": {\"version\": \"0.1.0\"}, \"receipts\": []}\n",
+    "expected": "\u001b[",
+    "kind": "absent",
+    "name": "no-ansi",
+    "passed": true
+  },
+  {
+    "actual": "1",
+    "expected": "1",
+    "kind": "eq",
+    "name": "no-color-env",
+    "passed": true
+  }
+]

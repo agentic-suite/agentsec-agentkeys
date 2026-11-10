@@ -1,0 +1,69 @@
+{
+  "assertions": [
+    {
+      "actual": [
+        "GITHUB_TOKEN"
+      ],
+      "expected": [
+        "GITHUB_TOKEN"
+      ],
+      "kind": "eq",
+      "name": "literal-client-credential-stripped",
+      "passed": true
+    },
+    {
+      "actual": {
+        "AGENTKEYS_SCOPED_TOKEN": "akref:file/x/y"
+      },
+      "expected": "AGENTKEYS_SCOPED_TOKEN",
+      "kind": "contains",
+      "name": "placeholder-kept",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "header-client-token-absent",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "child-token-is-broker-minted",
+      "passed": true
+    }
+  ],
+  "case": "FT-ST-NOPASSTHRU",
+  "class": "P/F",
+  "detail": "no client token reaches the child or the upstream",
+  "driver": "stdio-strip",
+  "duration_ms": 0,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "34ed67ef69aef8af128ae343b3c454c4c0a56389024744768ab262c7e4beb159",
+      "commands.log": "66be3eb21db0725ab6182d0d69980a6b9ca8026e2794ed133d8d0227e11fc2b7",
+      "env.json": "03eab060703aec7f6a074385f25a1c234331d139f910ee169a48a5d26885d693"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:43Z"
+  },
+  "limitations": [],
+  "pack": "stdio",
+  "passed": true,
+  "scenario": "SC-13",
+  "started_at": "2026-11-10T03:41:43Z",
+  "status": "pass"
+}

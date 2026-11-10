@@ -1,0 +1,479 @@
+# Field-test case inventory — agentkeys v0.1.0 (M14, #173)
+# Frozen by docs/field-test/v0.1.0/FIELD_TEST_PLAN.md §4. The runner refuses an executor whose id is
+# absent here, and the case test refuses an id here without an executor. Do not renumber; add only.
+cases:
+  # --- Docker topology -------------------------------------------------------------------------
+  - id: FT-DK-IMAGE
+    pack: docker
+    scenario: null
+    class: P/F
+    env: [docker]
+    driver: compose-inspect
+  - id: FT-DK-COMPOSE
+    pack: docker
+    scenario: null
+    class: P/F
+    env: [docker]
+    driver: compose-up
+  - id: FT-DK-QUICKSTART
+    pack: docker
+    scenario: SC-01
+    class: P/F
+    env: [docker]
+    driver: compose-run
+  - id: FT-DK-BOUNDARY
+    pack: docker
+    scenario: null
+    class: P/F
+    env: [docker]
+    driver: compose-exec
+  - id: FT-DK-AIRGAP
+    pack: docker
+    scenario: SC-39
+    class: P/F
+    env: [docker]
+    driver: compose-run
+  - id: FT-DK-EVIDENCE
+    pack: docker
+    scenario: SC-43
+    class: P/F
+    env: [docker]
+    driver: compose-run
+  - id: FT-DK-SINGLEWRITER
+    pack: docker
+    scenario: null
+    class: P/F
+    env: [docker]
+    driver: compose-run
+
+  # --- Core lifecycle -------------------------------------------------------------------------
+  - id: FT-CL-FIRST
+    pack: core
+    scenario: SC-01
+    class: "P/F|W"
+    env: [human, docker]
+    driver: quickstart
+  - id: FT-CL-ENV
+    pack: core
+    scenario: SC-02
+    class: P/F
+    env: [ci, file]
+    driver: env-inject
+  - id: FT-CL-HEADER
+    pack: core
+    scenario: SC-03
+    class: P/F
+    env: [ci]
+    driver: header-inject
+  - id: FT-CL-EXCHANGE
+    pack: core
+    scenario: SC-04
+    class: P/F
+    env: [ci]
+    driver: exchange-inject
+  - id: FT-CL-TTL
+    pack: core
+    scenario: SC-05
+    class: P/F
+    env: [ci]
+    driver: expiry
+  - id: FT-CL-ROTATE
+    pack: core
+    scenario: SC-06
+    class: P/F
+    env: [ci, file]
+    driver: rotation
+  - id: FT-CL-TWOHARNESS
+    pack: core
+    scenario: SC-07
+    class: P/F
+    env: [ci]
+    driver: two-sessions
+
+  # --- Binding / replay -----------------------------------------------------------------------
+  - id: FT-BR-AUDIENCE
+    pack: binding
+    scenario: SC-08
+    class: P/F
+    env: [ci]
+    driver: injector
+  - id: FT-BR-TOOL
+    pack: binding
+    scenario: SC-09
+    class: P/F
+    env: [ci]
+    driver: injector
+  - id: FT-BR-SESSION
+    pack: binding
+    scenario: SC-10
+    class: P/F
+    env: [ci]
+    driver: revoke
+  - id: FT-BR-STALE
+    pack: binding
+    scenario: SC-11
+    class: P/F
+    env: [ci]
+    driver: lifecycle
+
+  # --- stdio ----------------------------------------------------------------------------------
+  - id: FT-ST-NOSECRET
+    pack: stdio
+    scenario: SC-12
+    class: P/F
+    env: [ci, docker]
+    driver: stdio-run
+  - id: FT-ST-NOPASSTHRU
+    pack: stdio
+    scenario: SC-13
+    class: P/F
+    env: [ci, docker]
+    driver: stdio-strip
+
+  # --- Evasion --------------------------------------------------------------------------------
+  - id: FT-EV-DOTENV
+    pack: evasion
+    scenario: SC-14
+    class: P/F
+    env: [ci]
+    driver: detector
+  - id: FT-EV-CLOUD
+    pack: evasion
+    scenario: SC-15
+    class: P/F
+    env: [ci]
+    driver: detector
+  - id: FT-EV-KEYCHAIN
+    pack: evasion
+    scenario: SC-16
+    class: P/F
+    env: [ci]
+    driver: detector
+  - id: FT-EV-ENFORCE
+    pack: evasion
+    scenario: SC-17
+    class: "P/F|W"
+    env: [ci]
+    driver: enforce-hook
+
+  # --- Fail-closed ----------------------------------------------------------------------------
+  - id: FT-FC-LOCKED
+    pack: failclosed
+    scenario: SC-18
+    class: P/F
+    env: [ci]
+    driver: backend
+  - id: FT-FC-ABSENT
+    pack: failclosed
+    scenario: SC-19
+    class: P/F
+    env: [ci]
+    driver: backend
+  - id: FT-FC-CONFIG
+    pack: failclosed
+    scenario: SC-20
+    class: P/F
+    env: [ci]
+    driver: config
+  - id: FT-FC-STORE
+    pack: failclosed
+    scenario: SC-21
+    class: P/F
+    env: [ci]
+    driver: core
+  - id: FT-FC-SINK
+    pack: failclosed
+    scenario: SC-22
+    class: P/F
+    env: [ci]
+    driver: sink
+  - id: FT-FC-CRASH
+    pack: failclosed
+    scenario: SC-23
+    class: P/F
+    env: [ci, docker]
+    driver: subprocess-crash
+
+  # --- Revocation -----------------------------------------------------------------------------
+  - id: FT-RK-KILLTIME
+    pack: killtime
+    scenario: SC-24
+    class: P/F
+    env: [ci, docker, mac, lin]
+    driver: bench
+  - id: FT-RK-SCOPE
+    pack: killtime
+    scenario: SC-25
+    class: P/F
+    env: [ci]
+    driver: revoke
+  - id: FT-RK-INFLIGHT
+    pack: killtime
+    scenario: SC-26
+    class: P/F
+    env: [ci]
+    driver: use-after-revoke
+  - id: FT-RK-UNKNOWN
+    pack: killtime
+    scenario: SC-27
+    class: P/F
+    env: [ci]
+    driver: revoke
+  - id: FT-RK-ATTR
+    pack: killtime
+    scenario: SC-28
+    class: P/F
+    env: [ci]
+    driver: revoke
+
+  # --- Lifecycle audit ------------------------------------------------------------------------
+  - id: FT-LA-EXPORT
+    pack: audit
+    scenario: SC-29
+    class: P/F
+    env: [ci, docker]
+    driver: export
+  - id: FT-LA-TAMPER
+    pack: audit
+    scenario: SC-30
+    class: P/F
+    env: [ci]
+    driver: verify-chain
+  - id: FT-LA-NOSECRET
+    pack: audit
+    scenario: SC-31
+    class: P/F
+    env: [ci]
+    driver: evidence
+  - id: FT-LA-EVENT
+    pack: audit
+    scenario: SC-32
+    class: P/F
+    env: [ci]
+    driver: events
+
+  # --- Step-up --------------------------------------------------------------------------------
+  - id: FT-SU-APPROVED
+    pack: stepup
+    scenario: SC-33
+    class: P/F
+    env: [ci]
+    driver: step-up-gate
+  - id: FT-SU-DENIED
+    pack: stepup
+    scenario: SC-34
+    class: P/F
+    env: [ci]
+    driver: step-up-gate
+
+  # --- Harness compatibility ------------------------------------------------------------------
+  - id: FT-HC-CLAUDE
+    pack: harness
+    scenario: SC-35
+    class: "P/F|W"
+    env: [harness]
+    driver: recipe
+  - id: FT-HC-CURSOR
+    pack: harness
+    scenario: SC-36
+    class: "P/F|W"
+    env: [harness]
+    driver: recipe
+  - id: FT-HC-GENERIC
+    pack: harness
+    scenario: SC-37
+    class: P/F
+    env: [ci]
+    driver: sdk
+  - id: FT-HC-NOTYET
+    pack: harness
+    scenario: SC-38
+    class: P/F
+    env: [ci]
+    driver: label
+
+  # --- Air-gap --------------------------------------------------------------------------------
+  - id: FT-AG-OFFLINE
+    pack: offline
+    scenario: SC-39
+    class: P/F
+    env: [ci, docker]
+    driver: sockets-off
+
+  # --- Attack packs ---------------------------------------------------------------------------
+  - id: FT-AP-CONTEXTDUMP
+    pack: attack
+    scenario: SC-40
+    class: P/F
+    env: [ci, docker, human]
+    driver: dump-scan
+  - id: FT-AP-TAMPER
+    pack: attack
+    scenario: SC-41
+    class: P/F
+    env: [ci, docker]
+    driver: tamper
+  - id: FT-AP-WIDEN
+    pack: attack
+    scenario: SC-42
+    class: P/F
+    env: [ci]
+    driver: injector
+  - id: FT-AP-EVIDENCE
+    pack: attack
+    scenario: SC-43
+    class: P/F
+    env: [ci, docker]
+    driver: evidence
+  - id: FT-AP-FLOOD
+    pack: attack
+    scenario: null
+    class: P/F
+    env: [ci, docker]
+    driver: flood
+
+  # --- Migration ------------------------------------------------------------------------------
+  - id: FT-MP-SCANMIGRATE
+    pack: migrate
+    scenario: SC-51
+    class: P/F
+    env: [ci]
+    driver: scan-migrate
+
+  # --- Operations -----------------------------------------------------------------------------
+  - id: FT-OPS-SERVE
+    pack: ops
+    scenario: null
+    class: P/F
+    env: [ci, docker]
+    driver: serve
+  - id: FT-OPS-BACKUP
+    pack: ops
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: backup
+  - id: FT-OPS-RESTORE
+    pack: ops
+    scenario: SC-30
+    class: P/F
+    env: [ci]
+    driver: restore
+  - id: FT-OPS-MIGRATE
+    pack: ops
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: migration
+  - id: FT-OPS-DOCTOR
+    pack: ops
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: doctor
+  - id: FT-OPS-DRILL
+    pack: ops
+    scenario: null
+    class: P/F
+    env: [ci, docker]
+    driver: drill
+  - id: FT-OPS-RETENTION
+    pack: ops
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: retention
+
+  # --- NFRs -----------------------------------------------------------------------------------
+  - id: FT-NFR-INJECT
+    pack: nfr
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: timing
+  - id: FT-NFR-BACKEND
+    pack: nfr
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: timing
+  - id: FT-NFR-THROUGHPUT
+    pack: nfr
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: timing
+  - id: FT-NFR-COLDSTART
+    pack: nfr
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: timing
+  - id: FT-NFR-RESTART
+    pack: nfr
+    scenario: null
+    class: P/F
+    env: [ci, docker]
+    driver: timing
+  - id: FT-NFR-LEDGER
+    pack: nfr
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: timing
+  - id: FT-NFR-RSS
+    pack: nfr
+    scenario: null
+    class: P/F
+    env: [docker]
+    driver: container-stats
+  - id: FT-NFR-CLOCK
+    pack: nfr
+    scenario: SC-05
+    class: P/F
+    env: [ci]
+    driver: clock
+  - id: FT-NFR-PORT
+    pack: nfr
+    scenario: null
+    class: P/F
+    env: [mac, lin]
+    driver: platform
+  - id: FT-NFR-A11Y
+    pack: nfr
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: cli-output
+
+  # --- Conformance / supply chain / honesty ---------------------------------------------------
+  - id: FT-CONF-STANDARDS
+    pack: conformance
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: conformance
+  - id: FT-CONF-BACKENDS
+    pack: conformance
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: conformance
+  - id: FT-SC-INREPO
+    pack: conformance
+    scenario: null
+    class: P/F
+    env: [ci, docker]
+    driver: supply-chain
+  - id: FT-HONESTY-GAPS
+    pack: conformance
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: claims
+  - id: FT-HONESTY-REPORT
+    pack: conformance
+    scenario: null
+    class: P/F
+    env: [ci]
+    driver: report-guard

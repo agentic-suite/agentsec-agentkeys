@@ -1,0 +1,16 @@
+[
+  {
+    "actual": "pass",
+    "expected": "pass",
+    "kind": "eq",
+    "name": "backends-pass",
+    "passed": true
+  },
+  {
+    "actual": "backend broken is not conformant: missing capabilities, close, health, list, open, resolve",
+    "expected": "not conformant",
+    "kind": "contains",
+    "name": "broken-refused",
+    "passed": true
+  }
+]

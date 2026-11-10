@@ -1,0 +1,8 @@
+case=FT-HC-CLAUDE
+pack=harness
+driver=recipe
+started=2026-11-10T04:00:51Z
+duration_ms=542
+iterations=100
+fresh_box=False
+results=/Users/deghosal/Desktop/code/github/agentic-suite/agentkeys/field-test/v0.1.0/results/FT-HC-CLAUDE

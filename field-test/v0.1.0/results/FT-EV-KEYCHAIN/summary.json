@@ -1,0 +1,62 @@
+{
+  "assertions": [
+    {
+      "actual": "keychain",
+      "expected": "keychain",
+      "kind": "eq",
+      "name": "class",
+      "passed": true
+    },
+    {
+      "actual": "high",
+      "expected": "high",
+      "kind": "eq",
+      "name": "severity",
+      "passed": true
+    },
+    {
+      "actual": "evasion-detected",
+      "expected": "evasion-detected",
+      "kind": "eq",
+      "name": "event",
+      "passed": true
+    },
+    {
+      "actual": "keychain: /Users/u/Library/Keychains/login.keychain-db; monitor-only: keychain read outside the broker",
+      "expected": "/Users/u/Library/Keychains/login.keychain-db",
+      "kind": "contains",
+      "name": "path-recorded",
+      "passed": true
+    }
+  ],
+  "case": "FT-EV-KEYCHAIN",
+  "class": "P/F",
+  "detail": "keychain read caught as a high-severity event",
+  "driver": "detector",
+  "duration_ms": 0,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "b594b7652bb20412b641b0265f48387497296bb430c484dcda8408433139b471",
+      "commands.log": "5e947714e89ff42ca395279610828d362102b7a62873e5fd82b805fb96680779",
+      "env.json": "918a4a679088c1a0fde38963899ba0eb8f7b089f239a8feae986f91e177907ed"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "0920aee3106103e081c33b680bf75d01e651c32f",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T04:00:51Z"
+  },
+  "limitations": [],
+  "pack": "evasion",
+  "passed": true,
+  "scenario": "SC-16",
+  "started_at": "2026-11-10T04:00:51Z",
+  "status": "pass"
+}

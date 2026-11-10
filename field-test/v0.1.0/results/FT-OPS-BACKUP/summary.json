@@ -1,0 +1,62 @@
+{
+  "assertions": [
+    {
+      "actual": 3,
+      "expected": 3,
+      "kind": "eq",
+      "name": "rows",
+      "passed": true
+    },
+    {
+      "actual": "02fde7a0ab6b57f2fcb7d20707c2c98878fcf8699169ca49a1a949f9653365a0",
+      "expected": true,
+      "kind": "present",
+      "name": "chain-head",
+      "passed": true
+    },
+    {
+      "actual": 384,
+      "expected": 384,
+      "kind": "eq",
+      "name": "manifest-0600",
+      "passed": true
+    },
+    {
+      "actual": "{\"chain_head\": \"02fde7a0ab6b57f2fcb7d20707c2c98878fcf8699169ca49a1a949f9653365a0\", \"contains_secrets\": false, \"contents\": \"references, bindings, issuance hashes, ledger, receipts\", \"created_at\": 1234, \"path\": \"/var/folders/1y/8cvcsmv53m7c2gzqb6gp09p40000gn/T/ak-FT-OPS-BACKUP-082sbii1/backup.db\", \"rows\": 3, \"schema_version\": 1}",
+      "expected": "\"contains_secrets\": false",
+      "kind": "contains",
+      "name": "secret-free-manifest",
+      "passed": true
+    }
+  ],
+  "case": "FT-OPS-BACKUP",
+  "class": "P/F",
+  "detail": "WAL-safe backup with verified chain head",
+  "driver": "backup",
+  "duration_ms": 3,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "1bd7ed74231468992e46bf7b9a621fa5e94448338cce3c769e83a8f43c9270a6",
+      "commands.log": "5b88e4e4a4da2259e946c3590071b226c1159885a5ca7568160d2965e370c161",
+      "env.json": "2b84aa3d66477695368f6d13c4c8e7c44beb33ae75fe3ce676e4435f2739d7ab"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "7b9f46e3012913468e1585d0f6f4030f6c1a3952",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:41:44Z"
+  },
+  "limitations": [],
+  "pack": "ops",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:41:44Z",
+  "status": "pass"
+}

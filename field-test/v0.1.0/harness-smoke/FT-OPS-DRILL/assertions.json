@@ -1,0 +1,30 @@
+[
+  {
+    "actual": 5,
+    "expected": 5,
+    "kind": "eq",
+    "name": "replay-failures",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "passed",
+    "passed": true
+  },
+  {
+    "actual": 4242,
+    "expected": 4242,
+    "kind": "eq",
+    "name": "generated-at",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "has-percentiles",
+    "passed": true
+  }
+]

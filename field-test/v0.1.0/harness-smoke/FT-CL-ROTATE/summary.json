@@ -1,0 +1,56 @@
+{
+  "assertions": [
+    {
+      "actual": "rotated-v1",
+      "expected": "rotated-v1",
+      "kind": "eq",
+      "name": "v1-read",
+      "passed": true
+    },
+    {
+      "actual": "rotated-v2",
+      "expected": "rotated-v2",
+      "kind": "eq",
+      "name": "v2-read-without-restart",
+      "passed": true
+    },
+    {
+      "actual": "expired",
+      "expected": "expired",
+      "kind": "eq",
+      "name": "pre-rotation-token-dead",
+      "passed": true
+    }
+  ],
+  "case": "FT-CL-ROTATE",
+  "class": "P/F",
+  "detail": "rotation is picked up per resolve; old token dies at TTL",
+  "driver": "rotation",
+  "duration_ms": 0,
+  "env": [
+    "ci",
+    "file"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "dc0df5c9066641a4269ba8f4650dff2dd4cabb3289083de1c33dc4707642354f",
+      "commands.log": "027b774a40d6303ffc589ddd72f5c5744190ef4657ad4f3b158c50b6cc1408af",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "core",
+  "passed": true,
+  "scenario": "SC-06",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

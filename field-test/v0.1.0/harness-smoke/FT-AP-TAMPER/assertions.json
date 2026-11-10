@@ -1,0 +1,23 @@
+[
+  {
+    "actual": "config-tampered: 6afe68c3c686 != dd5686bccb08",
+    "expected": "config-tampered",
+    "kind": "contains",
+    "name": "config-tamper",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "ledger-tamper",
+    "passed": true
+  },
+  {
+    "actual": "unknown reference_id: ref_invented",
+    "expected": "ref_invented",
+    "kind": "contains",
+    "name": "spoof-refused",
+    "passed": true
+  }
+]

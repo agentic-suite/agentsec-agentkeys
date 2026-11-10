@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "eq",
+      "name": "forward-migrate",
+      "passed": true
+    },
+    {
+      "actual": "store schema version 999 is newer than supported 1; downgrade is refused",
+      "expected": "newer than supported",
+      "kind": "contains",
+      "name": "downgrade-refused",
+      "passed": true
+    }
+  ],
+  "case": "FT-OPS-MIGRATE",
+  "class": "P/F",
+  "detail": "forward migrate; newer schema refuses loudly",
+  "driver": "migration",
+  "duration_ms": 3,
+  "env": [
+    "ci"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "657867839e3a360a34d614afd7b2834311b2f8362d0db8540128329d25d5b21c",
+      "commands.log": "14390172bfee6357ccbb89befbc6424095336168f22531cdd8650bcf09ce18a7",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "ops",
+  "passed": true,
+  "scenario": null,
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

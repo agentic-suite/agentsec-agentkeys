@@ -1,0 +1,58 @@
+[
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "all-exit-codes",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "replay-refused",
+    "passed": true
+  },
+  {
+    "actual": 5,
+    "expected": 5,
+    "kind": "eq",
+    "name": "five-runs",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "no-secret-printed",
+    "passed": true
+  },
+  {
+    "actual": 0.543,
+    "expected": 900.0,
+    "kind": "lte",
+    "name": "median-under-15min",
+    "passed": true
+  },
+  {
+    "actual": 0.55,
+    "expected": 900.0,
+    "kind": "lte",
+    "name": "max-under-15min",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "fresh-install-ok",
+    "passed": true
+  },
+  {
+    "actual": 0.468,
+    "expected": 900.0,
+    "kind": "lte",
+    "name": "fresh-first-call-under-15min",
+    "passed": true
+  }
+]

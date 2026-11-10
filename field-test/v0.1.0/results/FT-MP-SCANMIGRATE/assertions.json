@@ -1,0 +1,44 @@
+[
+  {
+    "actual": 8,
+    "expected": 7,
+    "kind": "gte",
+    "name": "recall",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "value-gone-from-file",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "value-in-backend",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "finding-closed",
+    "passed": true
+  },
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "zero-printed",
+    "passed": true
+  },
+  {
+    "actual": 3,
+    "expected": 1,
+    "kind": "gte",
+    "name": "broad-reuse-flagged",
+    "passed": true
+  }
+]

@@ -1,0 +1,66 @@
+name: Field test (M14)
+
+on:
+  workflow_dispatch:
+    inputs:
+      pack:
+        description: "pack to run (or all)"
+        default: "all"
+      iterations:
+        description: "kill-time iterations (N>=100 for a release run)"
+        default: "100"
+
+permissions:
+  contents: write
+
+jobs:
+  field-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the field topology
+        run: docker compose -f field-test/v0.1.0/docker/compose.yaml build
+
+      - name: Run the packs
+        run: |
+          docker compose -f field-test/v0.1.0/docker/compose.yaml run --rm broker \
+            python /work/scripts/fieldtest/run_pack.py \
+            --pack "${{ inputs.pack }}" --iterations "${{ inputs.iterations }}" --results /results
+
+      - name: Deep validation (re-derive every assertion)
+        run: |
+          docker compose -f field-test/v0.1.0/docker/compose.yaml run --rm broker \
+            python /work/scripts/fieldtest/check_grounding.py --results /results
+
+      - name: Leak gate (no secret shapes in results)
+        run: |
+          docker compose -f field-test/v0.1.0/docker/compose.yaml run --rm broker \
+            python /work/scripts/fieldtest/scan_results.py --path /results
+
+      - name: Traceability (plan -> case -> result -> report row)
+        run: |
+          docker compose -f field-test/v0.1.0/docker/compose.yaml run --rm broker \
+            python /work/scripts/fieldtest/trace.py --results /results
+
+      - name: Collect verdicts
+        run: |
+          docker compose -f field-test/v0.1.0/docker/compose.yaml run --rm broker \
+            python /work/scripts/fieldtest/collect_results.py --results /results
+
+      - name: Upload results artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: field-test-results-${{ github.run_id }}
+          path: field-test/v0.1.0/results/
+          retention-days: 365
+
+      - name: Persist results on a results branch
+        run: |
+          git config user.name "agentkeys-fieldtest"
+          git config user.email "fieldtest@users.noreply.github.com"
+          git checkout -B "field-test/v0.1.0-results-${GITHUB_RUN_ID}"
+          git add -f field-test/v0.1.0/results
+          git commit -m "field-test: results for pack ${{ inputs.pack }} (${GITHUB_SHA:0:7})" || echo "no changes"
+          git push origin "field-test/v0.1.0-results-${GITHUB_RUN_ID}"

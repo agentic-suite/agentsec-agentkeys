@@ -1,0 +1,70 @@
+{
+  "assertions": [
+    {
+      "actual": 0,
+      "expected": 0,
+      "kind": "eq",
+      "name": "child-exit",
+      "passed": true
+    },
+    {
+      "actual": "{'AGENTKEYS_SCOPED_TOKEN': 'ed848efa984e612b7feeb2bf69c780cd'}",
+      "expected": "file/agentkeys",
+      "kind": "absent",
+      "name": "reference-in-child-env",
+      "passed": true
+    },
+    {
+      "actual": "{'AGENTKEYS_SCOPED_TOKEN': 'ed848efa984e612b7feeb2bf69c780cd'}",
+      "expected": "SENTINEL-BACKEND-VALUE",
+      "kind": "absent",
+      "name": "backend-value-absent",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "kind": "eq",
+      "name": "no-secret-in-transcript",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": 1,
+      "kind": "gte",
+      "name": "receipts-issued",
+      "passed": true
+    }
+  ],
+  "case": "FT-ST-NOSECRET",
+  "class": "P/F",
+  "detail": "stdio child authenticates with no secret in its config/env/transcript",
+  "driver": "stdio-run",
+  "duration_ms": 18,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "af3280f62dff42602ab9f5254bcb7bb5528c3cb3fadcca856436a813e35affd6",
+      "commands.log": "e5a44c33275a4acc8c4ed6418c57d89cd6645bf4ed992d30118dd94ac6e7d6ea",
+      "env.json": "47b5655667ad221110dd2c032298310d2447556a9ae4552ba6372d71d31a23a7"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:01Z"
+  },
+  "limitations": [],
+  "pack": "stdio",
+  "passed": true,
+  "scenario": "SC-12",
+  "started_at": "2026-11-10T03:33:01Z",
+  "status": "pass"
+}

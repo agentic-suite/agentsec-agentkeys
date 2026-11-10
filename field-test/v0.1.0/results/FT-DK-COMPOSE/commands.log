@@ -1,0 +1,8 @@
+case=FT-DK-COMPOSE
+pack=docker
+driver=compose-up
+started=2026-11-10T03:52:38Z
+duration_ms=3587
+iterations=100
+fresh_box=False
+results=/Users/deghosal/Desktop/code/github/agentic-suite/agentkeys/field-test/v0.1.0/results/FT-DK-COMPOSE

@@ -6,13 +6,18 @@ minutes), **Path B** (a team, one afternoon + a policy PR), **Path C** (CI runne
 stages). Each path lists its steps, its done-criteria, and what deliberately stays out of scope at that
 stage. The deep version of the enterprise ladder is [PRD 23](../prd/23-enterprise-adoption-and-hardening.md).
 
-**Status:** design of record (v0.1.0) — *documented*, not yet *field-tested*.
+**Status:** the steps below are **field-tested** (M14) unless a step says otherwise. The package is **not on
+PyPI yet**, so every path starts from a source install; `agentkeys init` is still an honest stub and the
+config is written directly (the [quickstart](../tutorials/quickstart.md) shows it and is replayed by a test).
 
 ## Path A — solo developer (15 minutes)
 
 **Who:** Sam (P4). One machine, personal keys, 2–3 harnesses.
 
-1. `pip install agentsec-agentkeys` → `agentkeys init` → `agentkeys doctor` green.
+1. **Install from source** (PyPI upload pending): `git clone … && python -m venv .venv && pip install .`,
+   then write `~/.agentkeys/config.toml` directly (the quickstart's config block) and confirm
+   `agentkeys doctor` is green. `agentkeys init` is a stub at v0.1.0 — it exits non-zero rather than
+   guessing your config.
 2. `agentkeys scan` — see every secret your agent can read (masked previews).
 3. `agentkeys migrate` **one** credential — the one your MCP server uses most.
 4. Run the [quickstart](../tutorials/quickstart.md) proofs: context-dump → 0 usable; revoke → replay fails.

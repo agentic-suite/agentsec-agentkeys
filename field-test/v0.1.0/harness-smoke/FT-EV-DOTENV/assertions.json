@@ -1,0 +1,30 @@
+[
+  {
+    "actual": "dotenv",
+    "expected": "dotenv",
+    "kind": "eq",
+    "name": "class",
+    "passed": true
+  },
+  {
+    "actual": "high",
+    "expected": "high",
+    "kind": "eq",
+    "name": "severity",
+    "passed": true
+  },
+  {
+    "actual": "evasion-detected",
+    "expected": "evasion-detected",
+    "kind": "eq",
+    "name": "event",
+    "passed": true
+  },
+  {
+    "actual": "dotenv: .env; monitor-only: dotenv read outside the broker",
+    "expected": ".env",
+    "kind": "contains",
+    "name": "path-recorded",
+    "passed": true
+  }
+]

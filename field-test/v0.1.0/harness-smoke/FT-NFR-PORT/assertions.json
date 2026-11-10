@@ -1,0 +1,23 @@
+[
+  {
+    "actual": true,
+    "expected": true,
+    "kind": "true",
+    "name": "supported-platform",
+    "passed": true
+  },
+  {
+    "actual": 0,
+    "expected": 0,
+    "kind": "eq",
+    "name": "cli-version-exit",
+    "passed": true
+  },
+  {
+    "actual": "v0.1.0 supports macOS and Linux",
+    "expected": "Windows is supported",
+    "kind": "absent",
+    "name": "windows-not-claimed",
+    "passed": true
+  }
+]

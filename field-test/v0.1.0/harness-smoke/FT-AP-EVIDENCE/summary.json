@@ -1,0 +1,63 @@
+{
+  "assertions": [
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "clean-ok",
+      "passed": true
+    },
+    {
+      "actual": 2,
+      "expected": 2,
+      "kind": "gte",
+      "name": "clean-rows",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "kind": "true",
+      "name": "seeded-fails",
+      "passed": true
+    },
+    {
+      "actual": "ledger:3",
+      "expected": "ledger:",
+      "kind": "contains",
+      "name": "seeded-location",
+      "passed": true
+    }
+  ],
+  "case": "FT-AP-EVIDENCE",
+  "class": "P/F",
+  "detail": "evidence scanner is clean and its seeded control fires",
+  "driver": "evidence",
+  "duration_ms": 0,
+  "env": [
+    "ci",
+    "docker"
+  ],
+  "evidence": {
+    "files": {
+      "assertions.json": "9ab97459d688386f853b722e23d5a73786a54bc1ed9dc82fd7365eb7ba70b340",
+      "commands.log": "976303b938164d6b6cdddf7bfdff348b8b736514e9b7fde6ab1a02900cd22b56",
+      "env.json": "f6c3dda6a630626d0991aa4f56e256b4d3273ffa30aa1b645b63e6363fea4b56"
+    }
+  },
+  "fingerprint": {
+    "docker": "Docker version 29.5.2, build 79eb04c7d8",
+    "git_sha": "dbc12b15d889a16832c8cded079f66a515e3659a",
+    "machine": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.5",
+    "system": "darwin",
+    "utc": "2026-11-10T03:33:02Z"
+  },
+  "limitations": [],
+  "pack": "attack",
+  "passed": true,
+  "scenario": "SC-43",
+  "started_at": "2026-11-10T03:33:02Z",
+  "status": "pass"
+}

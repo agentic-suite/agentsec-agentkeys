@@ -1,0 +1,30 @@
+[
+  {
+    "actual": "alice",
+    "expected": "alice",
+    "kind": "eq",
+    "name": "principal",
+    "passed": true
+  },
+  {
+    "actual": "s1",
+    "expected": "s1",
+    "kind": "eq",
+    "name": "session",
+    "passed": true
+  },
+  {
+    "actual": 1234,
+    "expected": 1234,
+    "kind": "eq",
+    "name": "timestamp",
+    "passed": true
+  },
+  {
+    "actual": "high",
+    "expected": "high",
+    "kind": "eq",
+    "name": "severity",
+    "passed": true
+  }
+]

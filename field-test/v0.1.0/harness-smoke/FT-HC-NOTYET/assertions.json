@@ -1,0 +1,23 @@
+[
+  {
+    "actual": "JetBrains IDE MCP: not yet (no interception point documented)",
+    "expected": "not yet",
+    "kind": "contains",
+    "name": "labelled-not-yet",
+    "passed": true
+  },
+  {
+    "actual": "JetBrains IDE MCP: not yet (no interception point documented)",
+    "expected": "not yet",
+    "kind": "contains",
+    "name": "wiring-refused",
+    "passed": true
+  },
+  {
+    "actual": "JetBrains IDE MCP: not yet (no interception point documented)",
+    "expected": "supported",
+    "kind": "absent",
+    "name": "never-supported",
+    "passed": true
+  }
+]
